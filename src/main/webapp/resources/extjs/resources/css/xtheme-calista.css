@@ -1,0 +1,531 @@
+/*
+ * Ext JS Library 2.0
+ * Copyright(c) 2006-2007, Ext JS, LLC.
+ * licensing@extjs.com
+ * 
+ * http://extjs.com/license
+ */
+
+.x-panel {
+    border-style: solid;
+    border-color: #d0d0d0;
+}
+.x-panel-header {
+    color:#333;
+	border:1px solid #d0d0d0;
+    background-image:url(../images/calista/panel/white-top-bottom.gif);
+}
+
+.x-panel-body {
+    border-color:#d0d0d0;
+}
+
+.x-panel-bbar .x-toolbar {
+    border-color:#cccccc;
+}
+
+.x-panel-tbar .x-toolbar {
+    border-color:#d0d0d0;
+}
+
+.x-panel-tbar-noheader .x-toolbar, .x-panel-mc .x-panel-tbar .x-toolbar {
+    border-color:#d0d0d0;
+}
+.x-panel-body-noheader, .x-panel-mc .x-panel-body {
+    border-color:#d0d0d0;
+}
+.x-panel-tl .x-panel-header {
+    color:#333;
+}
+.x-panel-tc {
+	background-image:url(../images/calista/panel/top-bottom.gif);
+}
+
+.x-panel-tl {
+	background-image:url(../images/calista/panel/corners-sprite.gif);
+    border-color:#d0d0d0;
+}
+.x-panel-tr {
+	background-image:url(../images/calista/panel/corners-sprite.gif);
+}
+.x-panel-bc {
+	background-image:url(../images/calista/panel/top-bottom.gif);
+}
+.x-panel-bl {
+	background-image:url(../images/calista/panel/corners-sprite.gif);
+}
+.x-panel-br {
+	background-image:url(../images/calista/panel/corners-sprite.gif);
+}
+.x-panel-mc {
+    background-image:url(../images/calista/panel/bg-andreas-01.gif);
+}
+.x-panel-mc .x-panel-body {
+    background:transparent;
+    border: 0 none;
+}
+.x-panel-ml {
+	background-image:url(../images/calista/panel/left-right.gif);
+}
+.x-panel-mr {
+	background-image:url(../images/calista/panel/left-right.gif);
+}
+
+/* Tools */
+.x-tool {
+    background-image:url(../images/calista/panel/tool-sprites.gif);
+}
+
+/* Ghosting */
+.x-panel-ghost {
+    background:#e0e0e0;
+}
+
+.x-panel-ghost ul {
+    border-color:#b0b0b0;
+}
+
+.x-grid-panel .x-panel-mc .x-panel-body {
+    border:1px solid #d0d0d0;
+}
+
+/* Buttons */
+
+.x-btn-left{
+	background-image:url(../images/calista/button/btn-sprite.gif);
+}
+.x-btn-right{
+	background-image:url(../images/calista/button/btn-sprite.gif);
+}
+.x-btn-center{
+	background-image:url(../images/calista/button/btn-sprite.gif);
+}
+
+/* Layout classes */
+
+.x-border-layout-ct {
+    background:#C7FABB;
+}
+
+.x-accordion-hd {
+	background-image:url(../images/calista/panel/light-hd.gif);
+}
+
+.x-layout-collapsed{
+    background-color:#eee;
+    border-color:#e0e0e0;
+}
+.x-layout-collapsed-over{
+	 background-color:#fbfbfb;
+}
+/* Progress Bar */
+
+.x-progress-bar{
+	background:#9CBFEE url( ../images/calista/progress/progress-bg.gif ) repeat-x left center;
+	border-top:1px solid #ddd;
+	border-bottom:1px solid #ddd;
+}
+
+/* Forms */
+.x-form-text, textarea.x-form-field {
+	border:1px solid #9ab; 
+}
+.x-trigger-wrap-focus .x-form-trigger {
+	border-bottom:1px solid #4a7192;
+}
+.x-form-focus,textarea.x-form-focus {
+	border:1px solid #4a7192;
+}
+
+.x-form-field-wrap .x-form-trigger {
+	background:transparent url(../images/calista/form/trigger.gif) no-repeat 0 0;
+}
+.x-form-field-wrap .x-form-date-trigger {
+	background-image:url(../images/calista/form/date-trigger.gif);
+}
+.x-form-field-wrap .x-form-clear-trigger {
+	background-image:url(../images/calista/form/clear-trigger.gif);
+}
+.x-form-field-wrap .x-form-search-trigger {
+	background-image:url(../images/calista/form/search-trigger.gif);
+}
+
+.x-form-field-wrap .x-form-trigger {
+	border-bottom:1px solid #778899;
+}
+
+.x-form fieldset legend {
+	color:#333;
+}
+
+/* 	the following need to be duplicated from ext-all.js,
+	otherwise hover effects are broken */
+.x-form-field-wrap .x-form-trigger-over{background-position:-17px 0;}
+.x-form-field-wrap .x-form-trigger-click{background-position:-34px 0;}
+.x-trigger-wrap-focus .x-form-trigger{background-position:-51px 0;}
+.x-trigger-wrap-focus .x-form-trigger-over{background-position:-68px 0;}
+.x-trigger-wrap-focus .x-form-trigger-click{background-position:-85px 0;}
+
+/* Grid */
+
+.x-grid3-row-selected {
+	background:#ffddaa;
+	border:1px dotted #ccc;
+}
+.x-grid3-hd-btn{
+	background:#f2daa9 url(../images/calista/grid/grid3-hd-btn.gif) no-repeat left center;
+}
+.x-grid3-header{
+	background:#f9f9f9 url(../images/calista/grid/grid3-hrow.gif) repeat-x 0 bottom;
+}
+td.x-grid3-hd-over .x-grid3-hd-inner,td.sort-desc .x-grid3-hd-inner,td.sort-asc .x-grid3-hd-inner,td.x-grid3-hd-menu-open .x-grid3-hd-inner{
+	background:#ebf3fd url(../images/calista/grid/grid3-hrow-over.gif) repeat-x left bottom;
+}
+.sort-asc .x-grid3-sort-icon{
+	background-image:url(../images/calista/grid/sort_asc.gif);
+}
+.sort-desc .x-grid3-sort-icon{
+	background-image:url(../images/calista/grid/sort_desc.gif);
+}
+td.x-grid3-hd-over, td.sort-desc, td.sort-asc, td.x-grid3-hd-menu-open {
+	border-left:1px solid #fff;
+	border-right:1px solid #ccc;
+}
+.x-grid3-cell-selected{
+	background-color:#e0eaee!important;
+}
+.x-grid3-body .x-grid3-td-expander{
+	background:transparent url(../images/calista/grid/grid3-special-col-bg.gif) repeat-y right;
+}
+.x-grid3-body .x-grid3-td-checker{
+	background:transparent url(../images/calista/grid/grid3-special-col-bg.gif) repeat-y right;
+}
+.x-grid3-body .x-grid3-td-numberer{
+	background:transparent url(../images/calista/grid/grid3-special-col-bg.gif) repeat-y right;
+}
+.x-grid3-body .x-grid3-row-selected .x-grid3-td-numberer,.x-grid3-body .x-grid3-row-selected .x-grid3-td-checker,.x-grid3-body .x-grid3-row-selected .x-grid3-td-expander{
+	background:transparent url(../images/calista/grid/grid3-special-col-sel-bg.gif) repeat-y right;
+}
+.x-grid-group-hd {
+	border-bottom:2px solid #abb;
+}
+.x-grid-group-hd div {
+	color: #456;
+}
+.x-dd-drag-proxy .x-grid3-hd-inner{
+	background:#ebf3fd url(../images/calista/grid/grid3-hrow-over.gif) repeat-x left bottom;
+	border:1px solid #abc;
+}
+.x-tbar-page-first{
+	background-image:url(../images/calista/grid/page-first.gif)!important;
+}
+.x-tbar-page-last{
+	background-image:url(../images/calista/grid/page-last.gif)!important;
+}
+.x-tbar-page-next{
+	background-image:url(../images/calista/grid/page-next.gif)!important;
+}
+.x-tbar-page-prev{
+	background-image:url(../images/calista/grid/page-prev.gif)!important;
+}
+.x-paging-info {
+	color:#000000;
+}
+
+/* qtips */
+.x-tip .x-tip-top {
+	background-image:url(../images/calista/qtip/tip-sprite.gif);
+}
+.x-tip .x-tip-top-left {
+	background-image:url(../images/calista/qtip/tip-sprite.gif);
+}
+.x-tip .x-tip-top-right {
+	background-image:url(../images/calista/qtip/tip-sprite.gif);
+}
+.x-tip .x-tip-ft {
+	background-image:url(../images/calista/qtip/tip-sprite.gif);
+}
+.x-tip .x-tip-ft-left {
+	background-image:url(../images/calista/qtip/tip-sprite.gif);
+}
+.x-tip .x-tip-ft-right {
+	background-image:url(../images/calista/qtip/tip-sprite.gif);
+}
+.x-tip .x-tip-bd-left {
+	background-image:url(../images/calista/qtip/tip-sprite.gif);
+}
+.x-tip .x-tip-bd-right {
+	background-image:url(../images/calista/qtip/tip-sprite.gif);
+}
+
+/* Toolbars */
+
+.x-toolbar{
+	border-color:#d0d0d0;
+    background:#f0f4f5 url(../images/calista/toolbar/bg.gif) repeat-x top left;position:relative;zoom:1;
+}
+.x-toolbar button {
+    color:#444;
+}
+.x-toolbar .x-btn-menu-arrow-wrap .x-btn-center button {
+    background-image:url(../images/calista/toolbar/btn-arrow.gif);
+}
+.x-toolbar .x-btn-text-icon .x-btn-menu-arrow-wrap .x-btn-center button {
+    background-image:url(../images/calista/toolbar/btn-arrow.gif);
+}
+.x-toolbar .x-btn-over .x-btn-left{
+	background-image:url(../images/calista/toolbar/tb-btn-sprite.gif);
+}
+.x-toolbar .x-btn-over .x-btn-right{
+	background-image:url(../images/calista/toolbar/tb-btn-sprite.gif);
+}
+.x-toolbar .x-btn-over .x-btn-center{
+	background-image:url(../images/calista/toolbar/tb-btn-sprite.gif);
+}
+.x-toolbar .x-btn-over button {
+    color:#111;
+}
+.x-toolbar .x-btn-click .x-btn-left, .x-toolbar .x-btn-pressed .x-btn-left, .x-toolbar .x-btn-menu-active .x-btn-left{
+	background-image:url(../images/calista/toolbar/tb-btn-sprite.gif);
+}
+.x-toolbar .x-btn-click .x-btn-right, .x-toolbar .x-btn-pressed .x-btn-right, .x-toolbar .x-btn-menu-active .x-btn-right{
+	background-image:url(../images/calista/toolbar/tb-btn-sprite.gif);
+}
+
+.x-toolbar .x-btn-click .x-btn-center, .x-toolbar .x-btn-pressed .x-btn-center, .x-toolbar .x-btn-menu-active .x-btn-center{
+	background-image:url(../images/calista/toolbar/tb-btn-sprite.gif);
+}
+.x-toolbar .ytb-sep {
+	background-image: url(../images/calista/grid/grid-split.gif);
+}
+
+/* Tabs */
+
+.x-tab-panel-header, .x-tab-panel-footer {
+	background: #EAEAEA;
+	border-color:#d0d0d0;
+}
+
+
+.x-tab-panel-header {
+	border-color:#d0d0d0;
+	background-image: url(../images/calista/tabs/tab-strip-bg.gif);
+}
+
+.x-tab-panel-footer {
+	border-color:#d0d0d0;
+}
+
+ul.x-tab-strip-top{
+	background:#dbdbdb url(../images/calista/panel/white-top-bottom.gif) repeat-x left top;
+	border-color:#d0d0d0;
+    padding-top: 2px;
+}
+
+ul.x-tab-strip-bottom{
+	background-image:url(../images/calista/tabs/tab-strip-btm-bg.gif);
+	border-color:#d0d0d0;
+}
+
+.x-tab-strip span.x-tab-strip-text {
+	color:#333;
+}
+.x-tab-strip-over span.x-tab-strip-text {
+	color:#111;
+}
+
+.x-tab-strip-active span.x-tab-strip-text {
+	color:#333;
+}
+
+.x-tab-strip-disabled .x-tabs-text {
+	color:#aaaaaa;
+}
+
+.x-tab-strip-top .x-tab-right {
+	background-image:url(../images/calista/tabs/tabs-sprite.gif);
+}
+
+.x-tab-strip-top .x-tab-left {
+	background-image:url(../images/calista/tabs/tabs-sprite.gif);
+}
+.x-tab-strip-top .x-tab-strip-inner {
+	background-image:url(../images/calista/tabs/tabs-sprite.gif);
+}
+
+.x-tab-strip-bottom .x-tab-right {
+	background-image:url(../images/calista/tabs/tab-btm-inactive-right-bg.gif);
+}
+
+.x-tab-strip-bottom .x-tab-left {
+	background-image:url(../images/calista/tabs/tab-btm-inactive-left-bg.gif);
+}
+
+.x-tab-strip-bottom .x-tab-strip-active .x-tab-right {
+	background-image:url(../images/calista/tabs/tab-btm-right-bg.gif);
+}
+
+.x-tab-strip-bottom .x-tab-strip-active .x-tab-left {
+	background-image:url(../images/calista/tabs/tab-btm-left-bg.gif);
+}
+
+.x-tab-strip .x-tab-strip-closable a.x-tab-strip-close {
+	background-image:url(../images/calista/tabs/tab-close.gif);
+}
+.x-tab-strip .x-tab-strip-closable a.x-tab-strip-close:hover{
+	background-image:url(../images/calista/tabs/tab-close.gif);
+}
+
+.x-tab-panel-body {
+    border-color:#d0d0d0;
+    background:#fff;
+}
+.x-tab-panel-bbar .x-toolbar {
+    border-color: #d0d0d0;
+	background-image:url(../images/calista/panel/white-top-bottom.gif);
+}
+
+.x-tab-panel-tbar .x-toolbar {
+    border-color: #d0d0d0;
+}
+
+.x-tab-panel-header-plain .x-tab-strip-spacer {
+    border-color:#d0d0d0;
+    background: #eaeaea;
+}
+
+.x-tab-scroller-left {
+    background-image: url(../images/calista/tabs/scroll-left.gif);
+    border-color:#aeaeae;
+}
+.x-tab-scroller-right {
+    background-image: url(../images/calista/tabs/scroll-right.gif);
+    border-color:#aeaeae;
+}
+
+/* Menu */
+
+.x-menu{border:1px solid #718bb7;z-index:15000;zoom:1;background:#f0f0f0 url(../images/calista/menu/menu.gif) repeat-y;padding:2px;}
+.x-menu-item-active{background:#ebf3fd url(../images/calista/menu/item-over.gif) repeat-x left bottom;border:1px solid #aaccf6;padding:0;}
+
+/* Window */
+
+.x-window-proxy {
+    background:#FFFFCC;
+    border-color:#b0b0b0;
+}
+
+.x-window-tl .x-window-header {
+    color:#555;
+}
+.x-window-tc {
+	background-image:url(../images/calista/window/top-bottom.png);
+}
+.x-window-tl {
+	background-image:url(../images/calista/window/left-corners.png);
+}
+.x-window-tr {
+	background-image:url(../images/calista/window/right-corners.png);
+}
+.x-window-bc {
+	background-image:url(../images/calista/window/top-bottom.png);
+}
+.x-window-bl {
+	background-image:url(../images/calista/window/left-corners.png);
+}
+.x-window-br {
+	background-image:url(../images/calista/window/right-corners.png);
+}
+.x-window-mc{border:1px solid #FF9900; padding:0; margin:0; font:normal 11px tahoma,arial,helvetica,sans-serif; background:url(../images/calista/window/top-bottom.png);}
+
+.x-window-ml {
+	background-image:url(../images/calista/window/left-right.png);
+}
+.x-window-mr {
+	background-image:url(../images/calista/window/left-right.png);
+}
+.x-panel-ghost .x-window-tl {
+    border-color:#d0d0d0;
+}
+.x-panel-collapsed .x-window-tl {
+    border-color:#d0d0d0;
+}
+
+.x-window-plain .x-window-mc {
+    background:url(../images/calista/window/bgr.gif);
+    border-right:1px dotted #eee;
+    border-bottom:1px dotted #eee;
+    border-top:1px dotted #abc;
+    border-left:1px dotted #abc;
+}
+
+.x-window-plain .x-window-body {
+    border-left:1px dotted #ddd;
+    border-top:1px dotted #ddd;
+    border-bottom:1px dotted #abc;
+    border-right:1px dotted #abc;
+    background:transparent !important;
+}
+
+body.x-body-masked .x-window-mc, body.x-body-masked .x-window-plain .x-window-mc {
+    background-color: #FFFFCC;
+}
+
+/* misc */
+.x-html-editor-wrap {
+    border-color:#d0d0d0;
+}
+
+/* Borders go last for specificity */
+.x-panel-noborder .x-panel-body-noborder {
+    border-width:0;
+}
+
+.x-panel-noborder .x-panel-header-noborder {
+    border-width:0;
+    border-bottom:1px solid #d0d0d0;
+}
+
+.x-panel-noborder .x-panel-tbar-noborder .x-toolbar {
+    border-width:0;
+    border-bottom:1px solid #d0d0d0;
+}
+
+.x-panel-noborder .x-panel-bbar-noborder .x-toolbar {
+    border-width:0;
+    border-top:1px solid #d0d0d0;
+}
+
+.x-window-noborder .x-window-mc {
+    border-width:0;
+}
+.x-window-plain .x-window-body-noborder {
+    border-width:0;
+}
+
+.x-tab-panel-noborder .x-tab-panel-body-noborder {
+	border-width:0;
+}
+
+.x-tab-panel-noborder .x-tab-panel-header-noborder {
+	border-top-width:0;
+	border-left-width:0;
+	border-right-width:0;
+}
+
+.x-tab-panel-noborder .x-tab-panel-footer-noborder {
+	border-bottom-width:0;
+	border-left-width:0;
+	border-right-width:0;
+}
+
+
+.x-tab-panel-bbar-noborder .x-toolbar {
+    border-width:0;
+    border-top:1px solid #d0d0d0;
+}
+
+.x-tab-panel-tbar-noborder .x-toolbar {
+    border-width:0;
+    border-bottom:1px solid #d0d0d0;
+}

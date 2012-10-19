@@ -1,0 +1,21 @@
+body {
+	font-family: verdana,arial, tahoma, helvetica, sans-serif;
+	font-size: 12px;
+}
+
+#logo-table {
+	margin: auto auto 85px ;
+	text-align: left;
+}
+#login-win-div {
+	text-align: left;
+}
+#headerDiv {
+    font-size: 12px;
+    height: 40px;
+    line-height: 40px;
+}
+#headerDiv a:link {
+    color: #000000;
+    text-decoration: underline;
+}

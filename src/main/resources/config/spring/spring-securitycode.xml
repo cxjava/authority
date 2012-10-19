@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+	
+	<!-- 验证码 -->
+	<bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+		<property name="config">
+			<bean class="com.google.code.kaptcha.util.Config">
+				<constructor-arg>
+					<props>
+						<prop key="kaptcha.textproducer.font.color">blue</prop>
+						<prop key="kaptcha.noise.color">blue</prop>
+						<prop key="kaptcha.border">no</prop>
+						<prop key="kaptcha.textproducer.char.space">2</prop>
+						<prop key="kaptcha.textproducer.char.length">6</prop>
+						<prop key="kaptcha.textproducer.font.names">华文彩云,华文行楷,方正舒体,华文隶书,幼圆,华文琥珀</prop>
+					</props>
+				</constructor-arg>
+			</bean>
+		</property>
+	</bean>
+	<!-- <bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+		<property name="config">
+			<bean class="com.google.code.kaptcha.util.Config">
+				<constructor-arg>
+					<props>
+						<prop key="kaptcha.noise.impl">com.google.code.kaptcha.impl.NoNoise</prop>
+						<prop key="kaptcha.word.impl">com.google.code.kaptcha.text.impl.CxWordRenderer</prop>
+						<prop key="kaptcha.textproducer.font.color">54,36,12;46,14,35;58,39,45;151,0,140;48,71,65</prop>
+						<prop key="kaptcha.textproducer.font.color">blue</prop>
+						<prop key="kaptcha.noise.color">blue</prop>
+						<prop key="kaptcha.border">no</prop>
+						<prop key="kaptcha.textproducer.char.space">1</prop>
+						<prop key="kaptcha.textproducer.char.length">6</prop>
+						<prop key="kaptcha.textproducer.impl">com.google.code.kaptcha.text.impl.ChineseTextProducer</prop>
+						<prop key="kaptcha.textproducer.impl">com.google.code.kaptcha.text.impl.ChineseText</prop>
+						<prop key="kaptcha.textproducer.font.names">华文彩云,华文隶书,华文琥珀,微软雅黑</prop>
+						<prop key="kaptcha.textproducer.font.names">华文彩云</prop>
+					</props>
+				</constructor-arg>
+			</bean>
+		</property>
+	</bean> -->
+</beans>

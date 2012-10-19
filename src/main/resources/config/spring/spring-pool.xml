@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<!--  C3P0数据库配置 
+	<bean id="c3p0" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${oracle.jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${oracle.jdbc.url}" />
+		<property name="user" value="${oracle.jdbc.username}" />
+		<property name="password" value="${oracle.jdbc.password}" />
+		当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3
+		<property name="acquireIncrement" value="5" />
+		定义在从数据库获取新连接失败后重复尝试的次数。Default: 30
+		<property name="acquireRetryAttempts" value="30" />
+		两次连接中间隔时间，单位毫秒。Default: 1000
+		<property name="acquireRetryDelay" value="1000" />
+		连接关闭时默认将所有未提交的操作回滚。Default: false
+		<property name="autoCommitOnClose" value="false" />
+		当连接池用完时客户端调用getConnection()后等待获取新连接的时间，超时后将抛出 SQLException,如设为0则无限期等待。单位毫秒。Default: 0
+		<property name="checkoutTimeout" value="10000" />
+		每60秒检查所有连接池中的空闲连接。Default: 0
+		<property name="idleConnectionTestPeriod" value="60" />
+		初始化时获取的连接数，取值应在minPoolSize与maxPoolSize之间。Default: 3
+		<property name="initialPoolSize" value="10" />
+		连接池中保留的最小连接数
+		<property name="minPoolSize" value="5" />
+		连接池中保留的最大连接数。Default: 15
+		<property name="maxPoolSize" value="30" />
+		最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0
+		<property name="maxIdleTime" value="60" />
+		c3p0将建一张名为Test的空表，并使用其自带的查询语句进行测试。如果定义了这个参数那么 属性preferredTestQuery将被忽略。你不能在这张Test表上进行任何操作，它将只供c3p0测试 使用。Default: null
+		<property name="automaticTestTable" value="c3p0_TestTable" />
+		获取连接失败将会引起所有等待连接池来获取连接的线程抛出异常。但是数据源仍有效 保留，并在下次调用getConnection()的时候继续尝试获取连接。如果设为true，那么在尝试 获取连接失败后该数据源将申明已断开并永久关闭。Default: false
+		<property name="breakAfterAcquireFailure" value="false" />
+	</bean> -->
+
+
+	<!-- BoneCP配置 -->
+	<bean id="bonecp" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+		<property name="driverClass" value="${oracle.jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${oracle.jdbc.url}" />
+		<property name="username" value="${oracle.jdbc.username}" />
+		<property name="password" value="${oracle.jdbc.password}" />
+		<!-- 检查数据库连接池中空闲连接的间隔时间，单位是分，默认值：240，如果要取消则设置为0 -->
+		<property name="idleConnectionTestPeriodInMinutes" value="60" />
+		<!-- 连接池中未使用的链接最大存活时间，单位是分，默认值：60，如果要永远存活设置为0 -->
+		<property name="idleMaxAgeInMinutes" value="30" />
+		<!-- 每个分区最大的连接数 -->
+		<property name="maxConnectionsPerPartition" value="30" />
+		<!-- 每个分区最小的连接数 -->
+		<property name="minConnectionsPerPartition" value="10" />
+		<!-- 分区数 ，默认值2，最小1，推荐3-4，视应用而定 -->
+		<property name="partitionCount" value="3" />
+		<!-- 每次去拿数据库连接的时候一次性要拿几个,默认值：2 -->
+		<property name="acquireIncrement" value="5" />
+		<!-- 缓存prepared statements的大小，默认值：0 -->
+		<property name="statementsCacheSize" value="100" />
+		<!-- 每个分区释放链接助理进程的数量，默认值：3，除非你的一个数据库连接的时间内做了很多工作，不然过多的助理进程会影响你的性能 -->
+		<property name="releaseHelperThreads" value="3" />
+	</bean>
+
+	<!-- proxool配置 -->
+	<bean id="proxool" class="org.logicalcobwebs.proxool.ProxoolDataSource" >
+		<property name="driver" value="${oracle.jdbc.driverClassName}" />
+		<property name="driverUrl" value="${oracle.jdbc.url}" />
+		<property name="user" value="${oracle.jdbc.username}" />
+		<property name="password" value="${oracle.jdbc.password}" />
+		<!--数据源的别名 -->
+		<property name="alias" value="proxool_alias" />
+		<!-- 空闲连接个数 默认为0 -->
+		<property name="prototypeCount" value="4" />
+		<!--最小连接数(默认5个) -->
+		<property name="minimumConnectionCount" value="1" />
+		<!--最大连接数(默认15个),超过了这个连接数,再有请求时,就排在队列中等候,最大的等待请求数由maximum-new-connections决定 -->
+		<property name="maximumConnectionCount" value="30" />
+		<!-- 如果侦察线程发现闲置连接，则会使用这个SQL语句来对这些连接进行检查 -->
+		<property name="houseKeepingTestSql" value="select CURRENT_DATE" />
+	</bean>
+
+	<!-- dbcp配置 -->
+	<bean id="dbcp" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${oracle.jdbc.driverClassName}" />
+		<property name="url" value="${oracle.jdbc.url}" />
+		<property name="username" value="${oracle.jdbc.username}" />
+		<property name="password" value="${oracle.jdbc.password}" />
+		<!--连接池启动时的初始化 -->
+		<property name="initialSize" value="1" />
+		<!--连接池的最大值 -->
+		<property name="maxActive" value="30" />
+		<!-- 最大空闲值，当经过一个高峰时间后，连接池可以慢慢将已经用不到的链接慢慢释放一部分，一直减少到maxle为止 -->
+		<property name="maxIdle" value="2" />
+		<!-- 最小空闲值，当空闲的连接数少于阀值时，连接池就会预申请去一些链接，以免洪峰来时来不及申请 -->
+		<property name="minIdle" value="1" />
+		<!-- 运行判断连接超时任务的时间间隔，单位为毫秒，默认为-1，即不执行任务。 -->
+		<property name="timeBetweenEvictionRunsMillis" value="3600000" />
+		<!-- 连接的超时时间，默认为半小时。 -->
+		<property name="minEvictableIdleTimeMillis" value="3600000" />
+	</bean>
+
+</beans>

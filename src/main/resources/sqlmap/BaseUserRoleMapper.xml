@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chenxin.authority.dao.BaseUserRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.chenxin.authority.pojo.BaseUserRole" >
+    <id column="USER_ROLE_ID" property="userRoleId" jdbcType="VARCHAR" />
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.userId != null" >
+         and USER_ID = #{condition.userId}
+      </if>
+      <if test="condition.roleId != null" >
+         and ROLE_ID = #{condition.roleId}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    USER_ROLE_ID, USER_ID, ROLE_ID
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.chenxin.authority.pojo.Criteria" >
+    <include refid="common.Oracle_Pagination_Head" />
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from BASE_USER_ROLE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Oracle_Pagination_Tail" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from BASE_USER_ROLE
+    where USER_ROLE_ID = #{userRoleId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from BASE_USER_ROLE
+    where USER_ROLE_ID = #{userRoleId}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.chenxin.authority.pojo.Criteria" >
+    delete from BASE_USER_ROLE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.chenxin.authority.pojo.BaseUserRole" >
+    <selectKey resultType="java.lang.String" keyProperty="userRoleId" order="BEFORE" >
+      select sys_guid() from dual
+    </selectKey>
+    insert into BASE_USER_ROLE (USER_ROLE_ID, USER_ID, ROLE_ID)
+    values (#{userRoleId}, #{userId}, #{roleId})
+  </insert>
+  <insert id="insertSelective" parameterType="com.chenxin.authority.pojo.BaseUserRole" >
+    <selectKey resultType="java.lang.String" keyProperty="userRoleId" order="BEFORE" >
+      select sys_guid() from dual
+    </selectKey>
+    insert into BASE_USER_ROLE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      USER_ROLE_ID,
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="roleId != null" >
+        ROLE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{userRoleId},
+      <if test="userId != null" >
+        #{userId},
+      </if>
+      <if test="roleId != null" >
+        #{roleId},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.chenxin.authority.pojo.Criteria" resultType="java.lang.Integer" >
+    select count(*) from BASE_USER_ROLE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update BASE_USER_ROLE
+    <set >
+      <if test="record.userRoleId != null" >
+        USER_ROLE_ID = #{record.userRoleId},
+      </if>
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId},
+      </if>
+      <if test="record.roleId != null" >
+        ROLE_ID = #{record.roleId},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update BASE_USER_ROLE
+    set USER_ROLE_ID = #{record.userRoleId},
+      USER_ID = #{record.userId},
+      ROLE_ID = #{record.roleId}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.chenxin.authority.pojo.BaseUserRole" >
+    update BASE_USER_ROLE
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId},
+      </if>
+      <if test="roleId != null" >
+        ROLE_ID = #{roleId},
+      </if>
+    </set>
+    where USER_ROLE_ID = #{userRoleId}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.chenxin.authority.pojo.BaseUserRole" >
+    update BASE_USER_ROLE
+    set USER_ID = #{userId},
+      ROLE_ID = #{roleId}
+    where USER_ROLE_ID = #{userRoleId}
+  </update>
+</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="common" >
+  <sql id="Oracle_Pagination_Head" >
+    <if test="oracleStart != null and oracleEnd != null" >
+      <![CDATA[ select y.* from ( select z.*, rownum as oracleStart from ( ]]>
+    </if>
+  </sql>
+  <sql id="Oracle_Pagination_Tail" >
+    <if test="oracleStart != null and oracleEnd != null" >
+      <![CDATA[ ) z where rownum <= #{oracleEnd} ) y where y.oracleStart > #{oracleStart} ]]>
+    </if>
+  </sql>
+</mapper>

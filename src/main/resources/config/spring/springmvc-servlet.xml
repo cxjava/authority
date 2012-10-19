@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<!-- 只搜索@Controller 标注的类 不搜索其他标注的类 -->
+	<context:component-scan base-package="com.chenxin.authority" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<!-- controller层的属性和配置文件读入 ,多个用逗号隔开 <context:property-placeholder location="classpath:/config/others/config.properties" /> -->
+	<context:property-placeholder location="classpath:/config/mybatis/jdbc.properties,
+											classpath:/config/others/config.properties" />
+
+	<!-- 激活 @Required @Autowired,JSR 250's @PostConstruct, @PreDestroy and @Resource 等标注 -->
+	<context:annotation-config />
+
+
+	<!-- 对某些静态资源，如css,图片等进行过滤 ,有引用 "/resources/**" 的路径引用转到工程的/resources/目录取资源 -->
+	<!-- <mvc:resources mapping="/favicon.ico" location="/favicon.ico"/> -->
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+
+	<!-- 简单的地址映射 -->
+	<!-- Forwards requests to the "/" resource to the "welcome" view 
+	 <mvc:view-controller path="/admin" view-name="/admin/login" /> 
+	-->
+	
+	<mvc:annotation-driven />
+	<!-- Configures support for @Controllers <mvc:annotation-driven/>相当于注册了DefaultAnnotationHandlerMapping
+	和AnnotationMethodHandlerAdapter两个bean，配置一些messageconverter。即解决了@Controller注解的使用前提配置。
+	如果不用这个，则要声明下面2个bean
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+	            <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+	             	<property name="supportedMediaTypes" value="application/json"/>
+	            </bean>
+            </list>
+        </property>
+    </bean>
+	 -->
+		<!--
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		 拦截器注册 -->
+		<!-- <property name="interceptors">
+			<bean class="com.company.project.common.springmvc.interceptor.SharedRenderVariableInterceptor"/>
+		</property> 
+	</bean>
+		-->
+	
+	
+	<!-- jsp视图 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<!-- 针对类、方法级别的权限拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<!-- <mvc:mapping path="/fileupload" /> -->
+			<mvc:mapping path="/main*" />
+			<mvc:mapping path="/header*" />
+			<mvc:mapping path="/welcome*" />
+			<mvc:mapping path="/treeMenu*" />
+			<mvc:mapping path="/role**/**" />
+			<mvc:mapping path="/user**/**" />
+			<mvc:mapping path="/module**/**" />
+			<mvc:mapping path="/field**/**" />
+			<bean class="com.chenxin.authority.web.interseptor.LoginInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<!--开发期间注释掉，上线后启用 错误解析器 发生错误默认会跳转到/web-inf/views/timeout.jsp -->
+	<!-- <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> <property name="defaultErrorView" 
+		value="timeout" /> <property name="exceptionMappings"> <props> <prop key="java.sql.SQLException">timeout</prop> <prop key="java.lang.RuntimeException">timeout</prop> 
+		<prop key="org.springframework.transaction.TransactionException">timeout</prop> <prop key="org.springframework.dao.DataAccessException">timeout</prop> 
+		</props> </property> </bean> -->
+
+	<!-- 国际化,并且可以批定文件编码,可以使用classpath: 或者WEB-INF/ 前缀 -->
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>classpath:/config/others/messages</value>
+			</list>
+		</property>
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="cacheSeconds" value="60" />
+	</bean>
+
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+
+	<!-- 文件上传 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 解析request的编码 ，Default is ISO-8859-1 -->
+		<property name="defaultEncoding" value="UTF-8" />
+		<!-- 设置最大允许的大小(字节)。-1表示没有限制(默认) 1024*1024*10=10MB -->
+		<property name="maxUploadSize" value="1048576000" />
+		<!--被允许的最大的内存的大小，Default is 10240 bytes -->
+		<property name="maxInMemorySize" value="20480" />
+		<!-- 一个类似懒加载的属性.可以定义该属性.让解析文件的时候再抛异常,然后Controller中定义异常处理的方法 -->
+		<property name="resolveLazily" value="true" />
+	</bean>
+</beans>

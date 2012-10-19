@@ -1,0 +1,18 @@
+body {
+	width: 500px;
+	margin: 50px auto;
+	line-height: 1.5;
+}
+h1 {
+	line-height: 1;
+	margin-bottom: 1em;
+}
+p {
+	margin-bottom: 2em;
+}
+#myform {
+	width: 500px;
+}
+#submit {
+	margin-left: 170px;
+}

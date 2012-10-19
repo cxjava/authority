@@ -1,0 +1,986 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+缓存管理器(CacheManager)配置
+==========================
+一个ehcache.xml文件就对应一个缓存管理器.
+
+可以在此配置文件当中使用系统环境变量，当配置文件被装载时，它们会被加载。
+比如有这样一个系统环境变量叫做multicastGroupPort，它的属性值可以来自
+环境变量，或者是命令行中的一个变量，如-DmulticastGroupPort=4446。另
+一个例子是，Terracotta服务<terracottaConfig url=""/>，可以在命令行
+中添加-Dserver36:9510来给它赋值。
+
+<ehcache>标签的属性有：
+１.name 名称　－　可选，唯一。名字用于注解或区别Terracotta集群缓存。对于
+Terracotta集群缓存，缓存管理器的名字和缓存的名字的组合能够在Terracotta
+集群缓存中标志一个特定的缓存存储。
+２.updateCheck 更新检查　－　一个可选的布尔值标志符，用于标志缓存管理器是否应该通过
+网络检查Ehcache的新版本。默认为true。
+３.dynamicConfig 动态配置　－　可选。用于关闭与缓存管理器相关的缓存的动态配置。默认为
+true，即动态配置为开启状态。动态配置的缓存可以根据缓存对象在运行状态改
+变自己的TTI,TTL和最大磁盘空间和内在容量
+４.monitoring 监控　－　可选。决定缓存管理器是否应该自动注册SampledCacheMBean到
+系统MBean服务器上。
+
+目前为至，只有当Terracotta集群和使用Terracotta开发控制台时，监控才会有
+用。当对其赋值为autodetect，即自动侦测，Terracotta集群将会通过开发控制
+台被侦测和监控。其它允许的值为on，即打开和off，即关闭。默认值为autodetect。
+如果使用JMX监控，这样的设置将不会有任何作用。
+-->
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://www.ehcache.org/ehcache.xsd"
+         updateCheck="true" monitoring="autodetect"
+         dynamicConfig="true">
+
+    <!--
+    磁盘储存配置
+    =======================
+
+    diskStore元素是可选的。如果不想使用磁盘储存，可以注释或删除该配置元素。
+
+    如果你有overflowToDisk，该名称表示当缓存中的元素大小超过缓存配置大小时，
+    是否将其写入磁盘当中，或者diskPersistent，该名称表示将缓存元素持久化至
+    磁盘中，那么需要配置diskStore这个元素。
+
+    如果没有配置这个元素，当一个需要磁盘存储的缓存被创建时，会报告一个警告，并
+    且java.io.tmpdir临时文件夹会被自动使用。
+
+    diskStore只有一个属性，path。它表示.data和.index文件会在哪个目录下创建。
+
+    如果path是如下例举的java系统变量中的一个，那么在虚拟机运行时，会将这些值
+    赋予path。为了保证向后兼容性，系统变量应该被显示关闭。
+
+    java系统变量：
+    １.user.home　－　用户home目录
+    ２.user.dir　－　用户当前工作目录
+    ３.java.io.tmpdir　－　默认的临时文件目录
+    ４.ehcache.disk.store.dir　－　需要用户在命令行中声明的系统变量
+    比如 java -Dehcache.disk.store.dir=/u01/myapp/diskdir ...
+
+    子目录可以这样定义java.io.tmpdir/one
+    -->
+    <diskStore path="java.io.tmpdir"/>
+
+    <!--
+    事务管理查找配置
+    ======================================
+    ehcache使用transactionManagerLookup元素来查找JTA事务管理器。如果没有指定类，
+    那么ehcache将使用类DefaultTransactionManagerLookup来查找事务管理器
+
+     *GenericJNDI (例如，jboss服务器提供事务管理器对象的名称查询)
+
+    用户可以自定义一个实现net.sf.ehcache.transaction.manager.TransactionManagerLookup
+    接口的查询类
+    -->
+
+    <transactionManagerLookup class="net.sf.ehcache.transaction.manager.DefaultTransactionManagerLookup"
+                              properties="jndiName=java:/TransactionManager" propertySeparator=";"/>
+
+
+    <!--
+    事务管理器事件监听器
+    =========================
+    指定一个CacheManagerEventListenerFactory，用于当缓存管理器添加缓存或者删除缓存时
+    进行通知
+
+    CacheManagerEventListenerFactory的属性有：
+    １.类　－　一个工厂类的全限定名称
+    ２.属性　－　多个属性以逗号作为分隔符
+
+    全限定名称的类将被注册为事务管理器事件监听器
+
+    监听事件包括：
+    １.添加一个缓存
+    ２.删除一个缓存
+
+    如果没有指定元素，那么不会创建监听器。没有默认值。
+    -->
+    <cacheManagerEventListenerFactory class="" properties=""/>
+
+
+    <!--
+    CacheManagerPeerProvider
+    分布式缓存管理器提供者
+    ========================
+    (用于分布式操作)
+
+    指定一个CacheManagerPeerProviderFactory，它将用于创建一个CacheManagerPeerProvider，
+    侦测集群中的其它事务管理器。
+
+    可以配置一个或多个提供者。在ehcache.xml文件中的第一个提供者将是默认的，用于复制和引导。
+
+    cacheManagerPeerProviderFactory的属性有：
+    １.类　－　一个全限定名的类
+    ２.属性　－　多个属性以逗号作为分隔符
+
+    提供者对于RMI,JGroups和JMS可用。
+
+    RMICacheManagerPeerProvider
+	RMI缓存管理器提供者
+    +++++++++++++++++++++++++++
+
+    Ehcache comes with a built-in RMI-based distribution system with two means of discovery of
+    CacheManager peers participating in the cluster:
+    * automatic, 使用多点传送。自动侦测改变，如peers加入和离开组。
+    * manual, 手动配置rmiURL。在配置时需要提供一个peers的硬编码列表。
+
+    配置自动侦测:
+    <cacheManagerPeerProviderFactory
+                        class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
+                        properties="hostName=fully_qualified_hostname_or_ip,
+                                    peerDiscovery=automatic, multicastGroupAddress=230.0.0.1,
+                                    multicastGroupPort=4446, timeToLive=32"/>
+
+    有效属性有:
+    * peerDiscovery (必须) - 可指定值"automatic"
+    * multicastGroupAddress (必须) - 指定一个多点传送地址
+    * multicastGroupPort (必须) - 指定一个专用端口来控制多点传送
+    * timeToLive - 指定一个从0到255的值，用于决定数据包传送的时间
+
+      产生的冲突会有:
+      0   - 相同的host
+      1   - 相同的subnet
+      32  - 相同的site
+      64  - 相同的region
+      128 - 相同的continent
+      255 - 没有冲突
+
+     * hostName - 主机名或IP被用于传送或接收多点传送的数据包。
+
+    配置手动侦测：
+	手机侦测要求有一个唯一的主机，包含一个rmiURLs列表，不包含自身。所以如果有server1,
+	server2,server3，配置如下：
+
+    server1配置：
+    <cacheManagerPeerProviderFactory class=
+                          "net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
+                          properties="peerDiscovery=manual,
+                          rmiUrls=//server2:40000/sampleCache1|//server3:40000/sampleCache1
+                          | //server2:40000/sampleCache2|//server3:40000/sampleCache2"
+                          propertySeparator="," />
+
+    server2配置：
+    <cacheManagerPeerProviderFactory class=
+                          "net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
+                          properties="peerDiscovery=manual,
+                          rmiUrls=//server1:40000/sampleCache1|//server3:40000/sampleCache1
+                          | //server1:40000/sampleCache2|//server3:40000/sampleCache2"
+                          propertySeparator="," />
+
+    server3配置：
+    <cacheManagerPeerProviderFactory class=
+                          "net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
+                          properties="peerDiscovery=manual,
+                          rmiUrls=//server1:40000/sampleCache1|//server2:40000/sampleCache1
+                          | //server1:40000/sampleCache2|//server2:40000/sampleCache2"
+                          propertySeparator="," />
+
+
+    有效属性如下：
+    * peerDiscovery (必须) - specify "manual"
+    * rmiUrls (必须) - specify a pipe separated list of rmiUrls, in the form //hostname:port
+    * hostname (可选) - 远程缓存管理器peer主机名称，该商品就是RMICacheManagerPeerListener的商品。
+
+    JGroupsCacheManagerPeerProvider
+    +++++++++++++++++++++++++++++++
+    <cacheManagerPeerProviderFactory
+         class="net.sf.ehcache.distribution.jgroups.JGroupsCacheManagerPeerProviderFactory"
+         properties="channel=ehcache^connect=UDP(mcast_addr=231.12.21.132;mcast_port=45566;ip_ttl=32;
+         mcast_send_buf_size=150000;mcast_recv_buf_size=80000):
+         PING(timeout=2000;num_initial_members=6):
+         MERGE2(min_interval=5000;max_interval=10000):
+         FD_SOCK:VERIFY_SUSPECT(timeout=1500):
+         pbcast.NAKACK(gc_lag=10;retransmit_timeout=3000):
+         UNICAST(timeout=5000):
+         pbcast.STABLE(desired_avg_gossip=20000):
+         FRAG:
+         pbcast.GMS(join_timeout=5000;join_retry_timeout=2000;shun=false;print_local_addr=false)"
+         propertySeparator="^"
+     />
+     JGroups configuration is done by providing a connect string using connect= as in the above example which uses
+     multicast, or since version 1.4, a file= to specify the location of a JGroups configuration file.
+
+     If neither a connect or file property is specified, the default JGroups JChannel will be used.
+
+     Multiple JGroups clusters may be run on the same network by specifying a different CacheManager name. The name
+     is used as the cluster name.
+
+     Since version 1.4 you can specify a channelName to avoid conflicts.
+
+
+    JMSCacheManagerPeerProviderFactory
+    ++++++++++++++++++++++++++++++++++
+    <cacheManagerPeerProviderFactory
+            class="net.sf.ehcache.distribution.jms.JMSCacheManagerPeerProviderFactory"
+            properties="..."
+            propertySeparator=","
+            />
+
+    JMS PeerProviderFactory使用JNDI来保持消息队列的独立。
+
+    有效属性如下：
+    * initialContextFactoryName (必须) - 用来创建消息队列初始上下文的工厂名称。
+    * providerURL (必须) - 服务提供者使用的JNDI配置信息。
+    * topicConnectionFactoryBindingName (必须) - 绑定TopicConnectionFactory的JNDI名称
+    * topicBindingName (必须) - JNDI绑定的主题名称
+    * getQueueBindingName (必须 只有在使用jmsCacheLoader情况下) - JNDI绑定的队列名称
+    * securityPrincipalName - the JNDI java.naming.security.principal
+    * securityCredentials - the JNDI java.naming.security.credentials
+    * urlPkgPrefixes - the JNDI java.naming.factory.url.pkgs
+    * userName - 创建TopicConnection到消息队列的用户名。
+    * password - 创建TopicConnection到消息队列的密码。
+    * acknowledgementMode - 默认为AUTO_ACKNOWLEDGE，用于发布者和订阅者的JMS Acknowledgement模式，可选值有：
+                            AUTO_ACKNOWLEDGE, DUPS_OK_ACKNOWLEDGE and SESSION_TRANSACTED。
+    -->
+    <cacheManagerPeerProviderFactory
+            class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
+            properties="peerDiscovery=automatic,
+                        multicastGroupAddress=230.0.0.1,
+                        multicastGroupPort=4446, timeToLive=1"
+            propertySeparator=","
+            />
+
+
+    <!--
+    CacheManagerPeerListener
+    ========================
+    (对分布式操作有效)
+
+	指定一个CacheManagerPeerListenerFactory，用于创建一个CacheManagerPeerListener，
+	监听集群中的缓存复制信息。
+	
+	cacheManagerPeerListenerFactory的属性有：
+    1。class - 全限定类名
+    2。properties - 多个属性以逗号作为分隔符。
+	
+	如果Ehcache是基本RMI创建的分布式系统，监听组件就是RMICacheManagerPeerListener，使用
+	RMICacheManagerPeerListenerFactory配置。如下：
+    <cacheManagerPeerListenerFactory
+        class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"
+        properties="hostName=fully_qualified_hostname_or_ip,
+                    port=40001,
+                    remoteObjectPort=40002,
+                    socketTimeoutMillis=120000"
+                    propertySeparator="," />
+
+	有以下可选属性：
+    * hostName - 监听器运行的主机名称。
+    * port - RMI注册监听器的端口。没有指定的话就是一个任意空闲端口。
+    * remoteObjectPort - 绑定远程对象在注册器上的端口号，没有指定的话就是一个任意空闲端口。
+    * socketTimeoutMillis - 当发送一条消息给监听器时，客户套接字保持打开状态的时间，以毫秒计。默认为120000ms。
+
+    -->
+    <cacheManagerPeerListenerFactory
+            class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"/>
+
+    <!--
+    Terracotta配置
+    ========================
+    (配置Terracotta集群操作)
+
+    注意: 如果你要使用Terracotta集群，需要安装和运行一个或多个Terracotta服务器。
+    从http://www.terracotta.org/web/display/orgsite/Download上可以下载。
+
+    为缓存管理器配置一个将用于Terracotta运行时的TerracottaConfig。
+
+    有两种主要的配置方式：一是指向一个配置源，二是使用内置的Terracotta配置文件。
+
+    为了指向一个配置源，使用url属性。属性url必须包含一个以逗号作为分隔符的列表：
+    １.path　指向一个Terracotta配置文件
+    ２.URL　Terracotta配置文件
+    ３.<server host>:<port>　处于运行状态的Terracotta服务器实例
+
+    一个最简单的指向Terracotta服务器的例子：
+    <terracottaConfig url="localhost:9510"/>
+
+    rejoin属性可以取值true或false，默认为true
+    <terracottaConfig rejoin="true" url="localhost:9510" />
+
+    如果rejoin为true，所有Terracotta集群缓存必须配置为nostop.
+    没有rejoin属性，如果Terracotta服务器重启了，那客户就不能再连接至服务器。
+    当启用时，就允许用户连接至新的集群，而不用重新启动那个节点。
+    If rejoin is true, all Terracotta Clustered caches have to be configured with nonstop.
+    Without rejoin, if the Terracotta Server is restarted the client cannot connect back to the
+    server. When enabled, this allows the client to connect to the new cluster without the
+    need to restart the node.
+
+    一个使用path指向Terracotta配置文件的例子：
+    <terracottaConfig url="/app/config/tc-config.xml"/>
+
+    一个使用URL指向Terracotta配置文件的例子：
+    <terracottaConfig url="http://internal/ehcache/app/tc-config.xml"/>
+
+    一个使用多个URL来指向多个Terracotta服务器实例的例子：
+    <terracottaConfig url="host1:9510,host2:9510,host3:9510"/>
+
+    在ehcache配置中内置一个Terracotta配置文件，只需要使用<terracottaConfig>元素来定位
+    一个正常的Terracotta XML配置。
+
+    例如：
+    <terracottaConfig>
+        <tc-config>
+            <servers>
+                <server host="server1" name="s1"/>
+                <server host="server2" name="s2"/>
+            </servers>
+            <clients>
+                <logs>app/logs-%i</logs>
+            </clients>
+        </tc-config>
+    </terracottaConfig>
+
+    想要获取更多关于Terracotta配置的信息，请参见Terracotta文档。
+    -->
+
+    <!--
+    缓存配置
+    ===================
+
+    如下属性是必须的。
+
+    name　名称:
+    设置缓存的名称，用来指定一个缓存，必须是唯一的。
+
+    maxElementsInMemory　内存中能容纳元素的个数的最大值:
+    设置在内存当中最多能容纳元素的个数。０表示没有限制。实际当中，没有限制意味着
+    个数为Integer.MAX_SIZE (2147483647)，除非缓存在Terracotta服务器中是分布式的。
+
+    maxElementsOnDisk 磁盘上允许容纳的最大元素个数:
+	默认为零，意味没有限制。
+	
+    eternal 永久性:
+	设置元素是否是永久性的。如果元素是永久性的，超时将会被忽略，元素永远不会过期。
+
+    overflowToDisk 元素溢出时写到磁盘:
+	当内存中允许的容纳最大元素超出时，是否将溢出元素写到磁盘上。
+
+	如下的属性和元素都是可选的：
+	
+    overflowToOffHeap:
+    (布尔值) 该特性仅在企业级的Ehcache中可用。
+	当值为true时，表明缓存将使用off-heap内存来提高速度。off-heap不受Java GC控制。默认
+	为false。
+	
+    maxMemoryOffHeap off-heap最大内存空间:
+    (字符串) 该特性仅在企业级的Ehcache中可用。
+	设置缓存中off-heap内存最大可用空间大小。可以这些形式设置该值：<number>k|K|m|M|g|G|t|T
+	kilobytes (k|K), megabytes (m|M), gigabytes (g|G), 或者 terabytes (t|T)。
+	比如：maxMemoryOffHeap="2g" 表明将开辟2G的off-heap空间。
+
+	该设置只有当overflowToOffHeap为true时才有效。
+	
+	注意，当使用off-heap存储时，建议将maxElementsInMemory最少设置为100个元素，否则会严重影响
+	速度，并会报告一个警告。
+	
+	最小值为128MB，没有最大值。
+	
+    timeToIdleSeconds 元素空闲时间 可选的:
+	在一个元素过期前，设置它的空闲时间。只对非永久性元素有效。值为零，意味空闲时间为无穷，默认为零。
+
+    timeToLiveSeconds 存活时间 可选的:
+	在一个元素过期前，设置它的存活时间。只对非永久性元素有效。值为零，意味存活时间为无穷，默认为零。
+
+    diskPersistent:
+	虚拟机重启时，是否持久化磁盘的存储。默认为false。
+
+    diskExpiryThreadIntervalSeconds:
+    The number of seconds between runs of the disk expiry thread. The default value
+    is 120 seconds.
+
+    diskSpoolBufferSizeMB:
+    This is the size to allocate the DiskStore for a spool buffer. Writes are made
+    to this area and then asynchronously written to disk. The default size is 30MB.
+    Each spool buffer is used only by its cache. If you get OutOfMemory errors consider
+    lowering this value. To improve DiskStore performance consider increasing it. Trace level
+    logging in the DiskStore will show if put back ups are occurring.
+
+    clearOnFlush:
+	当在缓存上调用flush方法时，是否清除内存存储中的内容。默认为true。
+
+    statistics:
+    Whether to collect statistics. Note that this should be turned on if you are using
+    the Ehcache Monitor. By default statistics is turned off to favour raw performance.
+    To enable set statistics="true"
+
+    memoryStoreEvictionPolicy 内存存储元素冲突解决策略：
+	当内存允许容纳最大元素个数达到上限时，使用内存存储元素冲突解决策略。默认的是
+	Least Recently Used(LRU)，其它可用策略是First In First Out (FIFO)，Less Frequently Used(LFU)。
+
+    copyOnRead 读取复制:
+	当从缓存中读取一个元素时，该元素是否是复制的。默认为false。
+
+    copyOnWrite 写复制:
+	当向缓存中添加一个元素时，该元素是否是复制的。默认为false。
+	
+	缓存中的元素也可以包含子元素，定义如下：
+    * cacheEventListenerFactory - 为缓存事件注册监听器，如存放，删除，更新和过期。
+
+    * bootstrapCacheLoaderFactory - 指定一个BootstrapCacheLoader,用于在缓存初始化预填充自身时调用。
+
+    * cacheExtensionFactory - 指定一个CacheExtension,这是一个通用的方法来将持有一个缓存引用的类绑定到
+	缓存的生命周期上。
+	
+    * cacheExceptionHandlerFactory - 指定一个CacheExceptionHandler, 当缓存扩展发生时调用。
+
+    * cacheLoaderFactory - 指定一个CacheLoader,当需要异步或同步装载对象到缓存时使用。可以添加多个
+	cacheLoaderFactory元素，装载器形成一个链条，顺序执行。如果一个装载器返回空，链条中的下一个会被调用。
+
+    * copyStrategy - 指定一个实现net.sf.ehcache.store.compound.CopyStrategy接口的全限定名称的类.该策略用
+	于copyOnRead和copyOnWrite。
+
+
+    缓存事件监听器
+    +++++++++++++++++++++
+
+    所有cacheEventListenerFactory元素都有一个可选的属性listenFor，用于决定事件是否会在一个集群环境中传递。
+	该属性有如下值：
+    * all - 默认值。传递所有本地和远程事件。
+    * local - 只传递当前节点的事件。
+    * remote - 只传递其他节点的事件。
+
+    如下为一个本地缓存事件设置一个日志监听器：
+    <cacheEventListenerFactory class="my.company.log.CacheLogger"
+        listenFor="local" />
+
+
+    搜索
+    ++++++
+
+    通过添加一个<searchable/>子元素，一个<cache>可以被设置为可搜索的。
+    <cache>
+        <searchable/>
+    </cache>
+
+	缓存元素中的一个属性也可以被定义为可搜索的。例如如下一个名为age的属性在查询时是可用的。age属性的
+	值将会通过调用getAge()来赋予。详见net.sf.ehcache.search.attribute.ReflectionAttributeExtractor对
+	于属性表达式的规范。属性值也要遵守net.sf.ehcache.search.attribute.AttributeExtractor接口中的定义
+	的类型集合。
+    <cache>
+        <searchable>
+            <searchAttribute name="age" expression="value.getAge()"/>
+        </searchable>
+    </cache>
+
+
+	也可以通过使用JavaBean风格来定义属性。如下申明了一个公有方法getAge()。
+    <cache>
+        <searchable>
+            <searchAttribute name="age"/>
+        </searchable>
+    </cache>
+
+	更复杂的情况是，你要创建自己的属性提取器，需要实现AttributeExtractor接口。举例如下：
+    <cache>
+        <searchable>
+            <searchAttribute name="age" class="com.example.MyAttributeExtractor"/>
+        </searchable>
+    </cache>
+
+	必要时使用propterties来传递参数到自定义的属性提取器。自定义的属性提取器必须提供一个
+	公有的，带有一个java.util.Properties实例参数的构造方法。
+    <cache>
+        <searchable>
+            <searchAttribute name="age" class="com.example.MyAttributeExtractor" properties="foo=1,bar=2"/>
+        </searchable>
+    </cache>
+
+
+    RMI Cache Replication
+	RMI缓存复制
+    +++++++++++++++++++++
+
+	每个分布式缓存需要设置一个缓存事件监听器用来复制消息到其它缓存管理器节点。
+
+    <cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
+         properties="replicateAsynchronously=true,
+         replicatePuts=true,
+         replicatePutsViaCopy=false,
+         replicateUpdates=true,
+         replicateUpdatesViaCopy=true,
+         replicateRemovals=true
+         asynchronousReplicationIntervalMillis=<number of milliseconds"
+         propertySeparator="," />
+
+    RMICacheReplicatorFactory有如下属性：
+
+    * replicatePuts=true|false - 默认为true。新加入的缓存中的元素是否要复制到其它节点中去。
+
+    * replicatePutsViaCopy=true|false - 默认为true。新加入的缓存中的元素是否要复制到其它
+	缓存中，或者一条删除消息是否发送。
+	
+    * replicateUpdates=true|false - 默认为true。当新加入的元素与已存在的元素键值出现冲突时，
+	是否要覆盖已存在元素。
+	
+    * replicateRemovals=true - 默认为true。被移去的元素是否要复制。
+
+    * replicateAsynchronously=true | false - 默认为true。true表示复制是异步的，false表示复制
+	是同步的。
+	
+    * replicateUpdatesViaCopy=true | false - 默认为true。
+
+    * asynchronousReplicationIntervalMillis=<number of milliseconds> - 默认值为1000，最小值为10。
+	只有在replicateAsynchronously=true，该属性才适用。
+
+
+    JGroups Replication
+    +++++++++++++++++++
+
+    <cacheEventListenerFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"
+                            properties="replicateAsynchronously=true, replicatePuts=true,
+               replicateUpdates=true, replicateUpdatesViaCopy=false,
+               replicateRemovals=true,asynchronousReplicationIntervalMillis=1000"/>
+
+
+    JMS Replication
+    +++++++++++++++
+
+    <cacheEventListenerFactory
+          class="net.sf.ehcache.distribution.jms.JMSCacheReplicatorFactory"
+          properties="replicateAsynchronously=true,
+                       replicatePuts=true,
+                       replicateUpdates=true,
+                       replicateUpdatesViaCopy=true,
+                       replicateRemovals=true,
+                       asynchronousReplicationIntervalMillis=1000"
+           propertySeparator=","/>
+
+    Cluster Bootstrapping
+    +++++++++++++++++++++
+
+    Bootstrapping a cluster may use a different mechanism to replication. e.g you can mix
+    JMS replication with bootstrap via RMI - just make sure you have the cacheManagerPeerProviderFactory
+    and cacheManagerPeerListenerFactory configured.
+
+    There are two bootstrapping mechanisms: RMI and JGroups.
+
+    RMI Bootstrap
+
+    The RMIBootstrapCacheLoader bootstraps caches in clusters where RMICacheReplicators are
+    used. It is configured as per the following example:
+
+    <bootstrapCacheLoaderFactory
+        class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"
+        properties="bootstrapAsynchronously=true, maximumChunkSizeBytes=5000000"
+        propertySeparator="," />
+
+    The RMIBootstrapCacheLoaderFactory recognises the following optional properties:
+
+    * bootstrapAsynchronously=true|false - whether the bootstrap happens in the background
+      after the cache has started. If false, bootstrapping must complete before the cache is
+      made available. The default value is true.
+
+    * maximumChunkSizeBytes=<integer> - Caches can potentially be very large, larger than the
+      memory limits of the VM. This property allows the bootstraper to fetched elements in
+      chunks. The default chunk size is 5000000 (5MB).
+
+    JGroups Bootstrap
+
+    Here is an example of bootstrap configuration using JGroups boostrap:
+
+    <bootstrapCacheLoaderFactory class="net.sf.ehcache.distribution.jgroups.JGroupsBootstrapCacheLoaderFactory"
+                                    properties="bootstrapAsynchronously=true"/>
+
+    The configuration properties are the same as for RMI above. Note that JGroups bootstrap only supports
+    asynchronous bootstrap mode.
+
+
+    Cache Exception Handling
+    ++++++++++++++++++++++++
+
+    By default, most cache operations will propagate a runtime CacheException on failure. An
+    interceptor, using a dynamic proxy, may be configured so that a CacheExceptionHandler can
+    be configured to intercept Exceptions. Errors are not intercepted.
+
+    It is configured as per the following example:
+
+      <cacheExceptionHandlerFactory class="com.example.ExampleExceptionHandlerFactory"
+                                      properties="logLevel=FINE"/>
+
+    Caches with ExceptionHandling configured are not of type Cache, but are of type Ehcache only,
+    and are not available using CacheManager.getCache(), but using CacheManager.getEhcache().
+
+
+    Cache Loader
+    ++++++++++++
+
+    A default CacheLoader may be set which loads objects into the cache through asynchronous and
+    synchronous methods on Cache. This is different to the bootstrap cache loader, which is used
+    only in distributed caching.
+
+    It is configured as per the following example:
+
+        <cacheLoaderFactory class="com.example.ExampleCacheLoaderFactory"
+                                      properties="type=int,startCounter=10"/>
+
+    Element value comparator
+    ++++++++++++++++++++++++
+
+    These two cache atomic methods:
+      removeElement(Element e)
+      replace(Element old, Element element)
+
+    rely on comparison of cached elements value. The default implementation relies on Object.equals()
+    but that can be changed in case you want to use a different way to compute equality of two elements.
+
+    This is configured as per the following example:
+
+    <elementValueComparator class="com.company.xyz.MyElementComparator"/>
+
+    The MyElementComparator class must implement the is net.sf.ehcache.store.ElementValueComparator
+    interface. The default implementation is net.sf.ehcache.store.DefaultElementValueComparator.
+
+    Transactions
+    ++++++++++++
+
+    To enable an ehcache as transactions, set the transactionalMode
+
+    transactionalMode="xa" - high performance JTA/XA implementation
+    transactionalMode="xa_strict" - canonically correct JTA/XA implementation
+    transactionMode="local" - high performance local transactions involving caches only
+    transactionalMode="off" - the default, no transactions
+
+    If set, all cache operations will need to be done through transactions.
+
+    To prevent users keeping references on stored elements and modifying them outside of any transaction's control,
+    transactions also require the cache to be configured copyOnRead and copyOnWrite.
+
+    CacheWriter
+    ++++++++++++
+
+    A CacheWriter can be set to write to an underlying resource. Only one CacheWriter can be
+    configured per cache.
+
+    The following is an example of how to configure CacheWriter for write-through:
+
+        <cacheWriter writeMode="write-through" notifyListenersOnException="true">
+            <cacheWriterFactory class="net.sf.ehcache.writer.TestCacheWriterFactory"
+                                properties="type=int,startCounter=10"/>
+        </cacheWriter>
+
+    The following is an example of how to configure CacheWriter for write-behind:
+
+        <cacheWriter writeMode="write-behind" minWriteDelay="1" maxWriteDelay="5"
+                     rateLimitPerSecond="5" writeCoalescing="true" writeBatching="true" writeBatchSize="1"
+                     retryAttempts="2" retryAttemptDelaySeconds="1">
+            <cacheWriterFactory class="net.sf.ehcache.writer.TestCacheWriterFactory"
+                                properties="type=int,startCounter=10"/>
+        </cacheWriter>
+
+    The cacheWriter element has the following attributes:
+    * writeMode: the write mode, write-through or write-behind
+
+    These attributes only apply to write-through mode:
+    * notifyListenersOnException: Sets whether to notify listeners when an exception occurs on a writer operation.
+
+    These attributes only apply to write-behind mode:
+    * minWriteDelay: Set the minimum number of seconds to wait before writing behind. If set to a value greater than 0,
+      it permits operations to build up in the queue. This is different from the maximum write delay in that by waiting
+      a minimum amount of time, work is always being built up. If the minimum write delay is set to zero and the
+      CacheWriter performs its work very quickly, the overhead of processing the write behind queue items becomes very
+      noticeable in a cluster since all the operations might be done for individual items instead of for a collection
+      of them.
+    * maxWriteDelay: Set the maximum number of seconds to wait before writing behind. If set to a value greater than 0,
+      it permits operations to build up in the queue to enable effective coalescing and batching optimisations.
+    * writeBatching: Sets whether to batch write operations. If set to true, writeAll and deleteAll will be called on
+      the CacheWriter rather than write and delete being called for each key. Resources such as databases can perform
+      more efficiently if updates are batched, thus reducing load.
+    * writeBatchSize: Sets the number of operations to include in each batch when writeBatching is enabled. If there are
+      less entries in the write-behind queue than the batch size, the queue length size is used.
+    * rateLimitPerSecond: Sets the maximum number of write operations to allow per second when writeBatching is enabled.
+    * writeCoalescing: Sets whether to use write coalescing. If set to true and multiple operations on the same key are
+      present in the write-behind queue, only the latest write is done, as the others are redundant.
+    * retryAttempts: Sets the number of times the operation is retried in the CacheWriter, this happens after the
+      original operation.
+    * retryAttemptDelaySeconds: Sets the number of seconds to wait before retrying an failed operation.
+
+    Cache Extension
+    +++++++++++++++
+
+    CacheExtensions are a general purpose mechanism to allow generic extensions to a Cache.
+    CacheExtensions are tied into the Cache lifecycle.
+
+    CacheExtensions are created using the CacheExtensionFactory which has a
+    <code>createCacheCacheExtension()</code> method which takes as a parameter a
+    Cache and properties. It can thus call back into any public method on Cache, including, of
+    course, the load methods.
+
+    Extensions are added as per the following example:
+
+         <cacheExtensionFactory class="com.example.FileWatchingCacheRefresherExtensionFactory"
+                             properties="refreshIntervalMillis=18000, loaderTimeout=3000,
+                                         flushPeriod=whatever, someOtherProperty=someValue ..."/>
+
+    Cache Decorator Factory
+    +++++++++++++++++++++++
+
+    Cache decorators can be configured directly in ehcache.xml. The decorators will be created and added to the CacheManager.
+    It accepts the name of a concrete class that extends net.sf.ehcache.constructs.CacheDecoratorFactory
+    The properties will be parsed according to the delimiter (default is comma ',') and passed to the concrete factory's
+    <code>createDecoratedEhcache(Ehcache cache, Properties properties)</code> method along with the reference to the owning cache.
+
+    It is configured as per the following example:
+
+        <cacheDecoratorFactory
+      class="com.company.DecoratedCacheFactory"
+      properties="property1=true ..." />
+
+    Distributed Caching with Terracotta
+	Terracotta分布式缓存
+    +++++++++++++++++++++++++++++++++++
+
+    Distributed Caches connect to a Terracotta Server Array. They are configured with the <terracotta> sub-element.
+
+    The <terracotta> sub-element has the following attributes:
+
+    * clustered=true|false - indicates whether this cache should be clustered (distributed) with Terracotta. By
+      default, if the <terracotta> element is included, clustered=true.
+
+    * valueMode=serialization|identity - 默认值为serialization
+
+      Indicates whether cache Elements are distributed with serialized copies or whether a single copy
+      in identity mode is distributed.
+
+      The implications of Identity mode should be clearly understood with reference to the Terracotta
+      documentation before use.
+
+    * copyOnRead=true|false - 指明在每一次读操作时，缓存中的值是否是反序列化的。
+
+      默认为false。
+
+      注意：该设置只在valueMode=serialization时可用。 
+
+    * consistency=strong|eventual - 默认值为eventual。指明缓存一致性。
+	
+    * synchronousWrites=true|false
+
+      同步写(synchronousWrites="true")  通过阻塞客户线程直至写操作被写入Terracotta服务器数组来最大限度保证数据安全。
+
+      该选项只有在consistency=strong的情况下可用。默认为false。
+
+    * concurrency - the number of segments that will be used by the map underneath the Terracotta Store.
+      Its optional and has default value of 0, which means will use default values based on the internal
+      Map being used underneath the store.
+
+	一旦缓存初始化后，这个值就不能通过编程的方式改变。
+	  
+    * storageStrategy=classic|DCV2 - 使用哪种存储实现。从Ehcache 2.4开始，默认值为DCV2(Distributed Cache Version 2).
+	不同之处在于DCV2不会使用本地内存来存储键值。
+
+    <terracotta>有一个<nonstop>子元素，允许配置缓存行为。指明一个分布式缓存操作是否能在指定时间或一个clusterOffline消息
+	事件里完成，如果没有出现该元素，nonstop行为将关闭。
+    <nonstop>有如下属性：
+
+    *  enabled="true" - 默认为true。
+
+    *  timeoutMillis - 一个SLA设置，一个缓存的操作时间超过允许的最大值时，将超时。
+
+    *  immediateTimeout="true|false" - 当接收到一个ClusterOffline事件时，应该做什么。
+
+    <nonstop>有一个子元素<timeoutBehavior>，有以下属性：
+
+    *  type="noop|exception|localReads" - 当超时时应该做什么，默认值为exception。
+
+    指明集群的最简化例子:
+        <terracotta/>
+
+	指明缓存不应该集群，也可以直接删除<terracotta>元素。
+        <terracotta clustered="false"/>
+
+    指明缓存应该使用identity模式集群：
+        <terracotta clustered="true" valueMode="identity"/>
+
+	指明缓存应该使用eventual一致性模式集群，以保证更快的速度：
+        <terracotta clustered="true" consistency="eventual"/>
+
+    指明缓存应该使用synchronous-write locking级别集群：
+        <terracotta clustered="true" synchronousWrites="true"/>
+    -->
+
+    <!--
+    默认缓存配置。缓存设置可以使用CacheManager.add(String cacheName)编程的方式来创建。
+    该元素是可选的。使用CacheManager.add(String cacheName)时，如果cacheName不存在，那
+    么会抛出CacheException。
+
+    默认缓存有一个隐含的名称default，一个保留的缓存名称。
+    -->
+    <defaultCache
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            overflowToDisk="true"
+            diskSpoolBufferSizeMB="30"
+            maxElementsOnDisk="10000000"
+            diskPersistent="false"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU"
+            statistics="false"
+            />
+
+    <!--
+    简单缓存。使用之前删除这些。
+    -->
+
+    <!--
+    名称为sampleCache1的缓存。
+    这个缓存在内存中可以包含最多10000个元素，并且如果一个元素的空闲时间超过五分钟、存活
+    时间超过十分钟，那么该元素将会过期。
+
+    如果元素个数超过10000个，超过的元素将会被保存在磁盘缓存当中，该磁盘缓存的路径配置为
+    java.io.tmp。如果是一个标准Linux系统，将是/tmp。
+    -->
+    <cache name="sampleCache1"
+           maxElementsInMemory="10000"
+           maxElementsOnDisk="1000"
+           eternal="false"
+           overflowToDisk="true"
+           diskSpoolBufferSizeMB="20"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off"
+            />
+
+
+    <!--
+    名称为sampleCache2的缓存
+    这个缓存的内存中的元素最大个数为1000.没有设置溢出时磁盘的缓存路径，所以1000就是
+    该缓存的最多容纳的元素个数。注意，当缓存是外部的，不能使用timeToLive和timeToIdle，
+    或指定其值。
+    -->
+    <cache name="sampleCache2"
+           maxElementsInMemory="1000"
+           eternal="true"
+           overflowToDisk="false"
+           memoryStoreEvictionPolicy="FIFO"
+            />
+
+
+    <!--
+    名称为sampleCache3的缓存. 该缓存元素溢出时，将使用保存溢出元素至磁盘。溢出元素将
+    在缓存和虚拟机重启之间被保存至磁盘。磁盘过期的线程时间被设定为十分钟，覆盖默认的两
+    分钟。
+    -->
+    <cache name="sampleCache3"
+           maxElementsInMemory="500"
+           eternal="false"
+           overflowToDisk="true"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           diskPersistent="true"
+           diskExpiryThreadIntervalSeconds="1"
+           memoryStoreEvictionPolicy="LFU"
+            />
+
+
+    <!--
+   　名称为sampleReplicatedCache1的分布式缓存.
+     它将从集群中使用默认的属性值创建。
+    -->
+    <cache name="sampleReplicatedCache1"
+           maxElementsInMemory="10"
+           eternal="false"
+           timeToIdleSeconds="100"
+           timeToLiveSeconds="100"
+           overflowToDisk="false">
+
+        <cacheEventListenerFactory
+                class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"/>
+        <bootstrapCacheLoaderFactory
+                class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"/>
+    </cache>
+
+
+    <!--
+    名称为sampleReplicatedCache2的分布式缓存.
+    -->
+    <cache name="sampleRepicatedCache2"
+           maxElementsInMemory="10"
+           eternal="false"
+           timeToIdleSeconds="100"
+           timeToLiveSeconds="100"
+           overflowToDisk="false">
+        <cacheEventListenerFactory
+                class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
+                properties="replicateAsynchronously=false, replicatePuts=false,
+                            replicatePutsViaCopy=false, replicateUpdates=true,
+                            replicateUpdatesViaCopy=true, replicateRemovals=false"/>
+    </cache>
+
+    <!--
+    名为sampleReplicatedCache3的分布式缓存。
+    在ehcache 1.5中包含/和#是非法的。
+    -->
+    <cache name="sampleReplicatedCache3"
+           maxElementsInMemory="10"
+           eternal="false"
+           timeToIdleSeconds="100"
+           timeToLiveSeconds="100"
+           overflowToDisk="true">
+        <cacheEventListenerFactory
+                class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
+                properties="asynchronousReplicationIntervalMillis=200"/>
+    </cache>
+
+    <!--
+    名为sampleTerracottaCache的Terracotta集群式缓存。
+	这个缓存使用Terracotta来集群缓存的内容。
+	-->
+    <!--
+    <cache name="sampleTerracottaCache"
+           maxElementsInMemory="1000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="1800"
+           overflowToDisk="false">
+        <terracotta/>
+    </cache>
+    -->
+
+    <!--
+      名为xaCache的xa缓存
+    <cache name="xaCache"
+           maxElementsInMemory="500"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           overflowToDisk="false"
+           diskPersistent="false"
+           diskExpiryThreadIntervalSeconds="1"
+           transactionalMode="xa_strict">
+  </cache>
+    -->
+
+    <!--
+      名为copyCache的读写缓存
+      类ReadWriteSerializationCopyStrategy可以是net.sf.ehcache.store.compound.CopyStrategy
+	  的任意实现
+    <cache name="copyCache"
+           maxElementsInMemory="500"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           overflowToDisk="false"
+           diskPersistent="false"
+           diskExpiryThreadIntervalSeconds="1"
+           copyOnRead="true"
+           copyOnWrite="true">
+        <copyStrategy class="net.sf.ehcache.store.compound.ReadWriteSerializationCopyStrategy" />
+  </cache>
+    -->
+    <!--
+	  仅对企业级Ehcache适用，申明一个包含in-memory,off-heap和diskStore的分层式缓存。在如下的例子中，
+	  in-memory允许容纳的最大元素个数为10,000，off-heap存储空间被限制为4GB，disk存储空间没有限制。
+	  <cache name="tieredCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           timeToLiveSeconds="600"
+           overflowToOffHeap="true"
+           maxMemoryOffHeap="4g"
+           overflowToDisk="true"
+           diskPersistent="false"
+           diskExpiryThreadIntervalSeconds="1"
+     </cache>
+-->
+</ehcache>

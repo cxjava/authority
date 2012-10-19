@@ -1,0 +1,5 @@
+.swf-add{background-image:url(add.png)!important;background-repeat:no-repeat;}
+.swf-upload{background-image:url(upload.png)!important;background-repeat:no-repeat;}
+.swf-stop{background-image:url(stop.png)!important;background-repeat:no-repeat;}
+.swf-removeall{background-image:url(delete.png)!important;background-repeat:no-repeat;}
+.swf-cancel{background-image:url(cancel.png)!important;background-repeat:no-repeat;text-decoration:none;background-position: 0 center;height: 16px;width:16px;}

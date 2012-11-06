@@ -13,7 +13,7 @@
 			load : [ //extjs
 			         "${ctx}/resources/extjs/resources/css/ext-all.css",
 			         "${ctx}/resources/extjs/adapter/ext/ext-base.js",
-					 "${ctx}/resources/extjs/ext-all.js", 
+					 "timeout=90000!${ctx}/resources/extjs/ext-all.js", 
 					 "${ctx}/resources/extjs/ext-lang-zh_CN.js", 
 					 "${ctx}/resources/extjs/ux/ExtMD5.js", 
 					 "${ctx}/resources/extjs/ux/TabCloseMenu.js",
@@ -23,17 +23,18 @@
 					 "${ctx}/resources/js/Ext.ux.override.js",
 					 "${ctx}/resources/js/share.js",
 					 //jquery
-					 "${ctx}/resources/jquery/jquery-1.7.2.min.js", 
+					 "timeout=30000!${ctx}/resources/jquery/jquery-1.7.2.min.js", 
 					 "${ctx}/resources/jquery/jquery.json-2.2-min.js", 
 					 "${ctx}/resources/jquery/jquery.center-min.js",
-			         "${ctx}/resources/css/default.css"
+			         "${ctx}/resources/css/default.css",
+			         "preload!${ctx}/resources/js/login.js"
 					 ],
 			complete : function() {
 				Ext.QuickTips.init();
 				Ext.form.Field.prototype.msgTarget = 'title';//qtip,title,under,side
 				Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 				Ext.BLANK_IMAGE_URL = '${ctx}/resources/extjs/resources/images/default/s.gif';
-				yepnope("${ctx}/resources/js/login.js");
+				yepnope.injectJs("${ctx}/resources/js/login.js");
 				$("#logo-table a").html('<img src="${ctx}/resources/images/login.gif"></img>');
 				}
 			});

@@ -6,8 +6,6 @@
 
 	<!-- properties配置文件 -->
 	<import resource="classpath:/config/spring/spring-properties.xml" />
-	<!-- 数据库连接池 -->
-	<import resource="classpath:/config/spring/spring-pool.xml" />
 	<!-- 通用配置 -->
 	<import resource="classpath:/config/spring/spring-common.xml" />
 	<!-- 验证码配置 -->

@@ -16,7 +16,7 @@
 			<list>
 				<!-- 标准配置 -->
 				<value>classpath:/config/others/config.properties</value>
-				<value>classpath:/config/mybatis/jdbc.properties</value>
+				<value>classpath:/config/others/jdbc.h2.properties</value>
 			</list>
 		</property>
 	</bean>

@@ -1,70 +1,46 @@
 package com.chenxin.authority.pojo;
 
-import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
- * 用户角色表
+ * role info and user info table
  */
-public class BaseUserRole implements Serializable {
-	private static final long serialVersionUID = 1L;
+@Entity
+@Table(name = "t_base_user_role")
+public class BaseUserRole extends IdEntity {
+
+	private Long roleId;
+	private Long userId;
 
 	/**
-	 * 用户角色ID
+	 * @return the roleId
 	 */
-	private String userRoleId;
-
-	/**
-	 * 用户ID
-	 */
-	private String userId;
-
-	/**
-	 * 角色ID
-	 */
-	private String roleId;
-
-	/**
-	 * @return 用户角色ID
-	 */
-	public String getUserRoleId() {
-		return userRoleId;
-	}
-
-	/**
-	 * @param userRoleId
-	 *            用户角色ID
-	 */
-	public void setUserRoleId(String userRoleId) {
-		this.userRoleId = userRoleId;
-	}
-
-	/**
-	 * @return 用户ID
-	 */
-	public String getUserId() {
-		return userId;
-	}
-
-	/**
-	 * @param userId
-	 *            用户ID
-	 */
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	/**
-	 * @return 角色ID
-	 */
-	public String getRoleId() {
+	public Long getRoleId() {
 		return roleId;
 	}
 
 	/**
 	 * @param roleId
-	 *            角色ID
+	 *            the roleId to set
 	 */
-	public void setRoleId(String roleId) {
+	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
 	}
+
+	/**
+	 * @return the userId
+	 */
+	public Long getUserId() {
+		return userId;
+	}
+
+	/**
+	 * @param userId
+	 *            the userId to set
+	 */
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
 }

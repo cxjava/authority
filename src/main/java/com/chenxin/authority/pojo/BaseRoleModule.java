@@ -1,70 +1,46 @@
 package com.chenxin.authority.pojo;
 
-import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
- * 角色模块表
+ * role info and module info table
  */
-public class BaseRoleModule implements Serializable {
-	private static final long serialVersionUID = 1L;
+@Entity
+@Table(name = "t_base_role_module")
+public class BaseRoleModule extends IdEntity {
+
+	private Long roleId;
+	private Long moduleId;
 
 	/**
-	 * 角色模块ID
+	 * @return the roleId
 	 */
-	private String roleModuleId;
-
-	/**
-	 * 角色ID
-	 */
-	private String roleId;
-
-	/**
-	 * 模块ID
-	 */
-	private Integer moduleId;
-
-	/**
-	 * @return 角色模块ID
-	 */
-	public String getRoleModuleId() {
-		return roleModuleId;
-	}
-
-	/**
-	 * @param roleModuleId
-	 *            角色模块ID
-	 */
-	public void setRoleModuleId(String roleModuleId) {
-		this.roleModuleId = roleModuleId;
-	}
-
-	/**
-	 * @return 角色ID
-	 */
-	public String getRoleId() {
+	public Long getRoleId() {
 		return roleId;
 	}
 
 	/**
 	 * @param roleId
-	 *            角色ID
+	 *            the roleId to set
 	 */
-	public void setRoleId(String roleId) {
+	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
 	}
 
 	/**
-	 * @return 模块ID
+	 * @return the moduleId
 	 */
-	public Integer getModuleId() {
+	public Long getModuleId() {
 		return moduleId;
 	}
 
 	/**
 	 * @param moduleId
-	 *            模块ID
+	 *            the moduleId to set
 	 */
-	public void setModuleId(Integer moduleId) {
+	public void setModuleId(Long moduleId) {
 		this.moduleId = moduleId;
 	}
+
 }

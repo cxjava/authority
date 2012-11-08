@@ -16,7 +16,7 @@ public class BaseRoleModule extends IdEntity {
 	/**
 	 * @return the roleId
 	 */
-	public Long getRoleId() {
+	public Long getId() {
 		return roleId;
 	}
 

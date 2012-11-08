@@ -1,17 +1,14 @@
 package com.chenxin.authority.pojo;
 
-import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * 系统字段设置表
  */
-public class BaseFields implements Serializable {
-	private static final long serialVersionUID = 1L;
-
-	/**
-	 * 字段ID
-	 */
-	private String fieldId;
+@Entity
+@Table(name = "t_base_field")
+public class BaseField extends IdEntity {
 
 	/**
 	 * 字段
@@ -42,21 +39,6 @@ public class BaseFields implements Serializable {
 	 * 排序
 	 */
 	private Short sort;
-
-	/**
-	 * @return 字段ID
-	 */
-	public String getFieldId() {
-		return fieldId;
-	}
-
-	/**
-	 * @param fieldId
-	 *            字段ID
-	 */
-	public void setFieldId(String fieldId) {
-		this.fieldId = fieldId;
-	}
 
 	/**
 	 * @return 字段

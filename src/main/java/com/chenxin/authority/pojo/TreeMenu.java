@@ -13,12 +13,12 @@ import java.util.List;
  */
 public class TreeMenu implements Serializable {
 	private static final long serialVersionUID = -1837699104579478927L;
-	private List<BaseModules> list;
-	private BaseModules root;
+	private List<BaseModule> list;
+	private BaseModule root;
 
-	public TreeMenu(List<BaseModules> list) {
+	public TreeMenu(List<BaseModule> list) {
 		this.list = list;
-		this.root = new BaseModules();
+		this.root = new BaseModule();
 	}
 
 	/**
@@ -27,9 +27,9 @@ public class TreeMenu implements Serializable {
 	 * @param list
 	 * @param node
 	 */
-	private Tree getNodeJson(List<BaseModules> list, BaseModules node) {
+	private Tree getNodeJson(List<BaseModule> list, BaseModule node) {
 		Tree tree = new Tree();
-		tree.setId("_authority_" + node.getModuleId());
+		tree.setId("_authority_" + node.getId());
 		tree.setText(node.getModuleName());
 		tree.setIconCls(node.getIconCss());
 		tree.setChildren(new ArrayList<Tree>());
@@ -42,10 +42,10 @@ public class TreeMenu implements Serializable {
 			tree.setUrl("");
 			tree.setLeaf(node.getLeaf() == 1 ? true : false);
 			tree.setExpanded(node.getExpanded() == 1 ? true : false);
-			List<BaseModules> childList = getChildList(list, node);
-			Iterator<BaseModules> it = childList.iterator();
+			List<BaseModule> childList = getChildList(list, node);
+			Iterator<BaseModule> it = childList.iterator();
 			while (it.hasNext()) {
-				BaseModules modules = it.next();
+				BaseModule modules = it.next();
 				// 递归
 				lt.add(getNodeJson(list, modules));
 			}
@@ -67,19 +67,19 @@ public class TreeMenu implements Serializable {
 	/**
 	 * 判断是否有子节点
 	 */
-	private boolean hasChild(List<BaseModules> list, BaseModules node) {
+	private boolean hasChild(List<BaseModule> list, BaseModule node) {
 		return getChildList(list, node).size() > 0 ? true : false;
 	}
 
 	/**
 	 * 得到子节点列表
 	 */
-	private List<BaseModules> getChildList(List<BaseModules> list, BaseModules modules) {
-		List<BaseModules> li = new ArrayList<BaseModules>();
-		Iterator<BaseModules> it = list.iterator();
+	private List<BaseModule> getChildList(List<BaseModule> list, BaseModule modules) {
+		List<BaseModule> li = new ArrayList<BaseModule>();
+		Iterator<BaseModule> it = list.iterator();
 		while (it.hasNext()) {
-			BaseModules temp = it.next();
-			if (modules.getModuleId().equals(temp.getParentId())) {
+			BaseModule temp = it.next();
+			if (modules.getId().equals(temp.getParentUrl())) {
 				li.add(temp);
 			}
 		}
@@ -88,9 +88,9 @@ public class TreeMenu implements Serializable {
 
 	public Tree getTreeJson() {
 		// 父菜单的id为0
-		this.root.setModuleId(0);
-		this.root.setLeaf((short) 0);
-		this.root.setExpanded((short) 0);
+		this.root.setId(0L);
+		this.root.setLeaf(0);
+		this.root.setExpanded(0);
 		return this.getNodeJson(this.list, this.root);
 	}
 }

@@ -27,13 +27,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chenxin.authority.common.springmvc.DateConvertEditor;
-import com.chenxin.authority.pojo.BaseUsers;
+import com.chenxin.authority.pojo.BaseUser;
 import com.chenxin.authority.pojo.Criteria;
 import com.chenxin.authority.pojo.ExceptionReturn;
 import com.chenxin.authority.pojo.ExtReturn;
 import com.chenxin.authority.pojo.Tree;
-import com.chenxin.authority.service.BaseModulesService;
-import com.chenxin.authority.service.BaseUsersService;
+import com.chenxin.authority.service.BaseModuleService;
+import com.chenxin.authority.service.BaseUserService;
 import com.chenxin.authority.web.interseptor.WebConstants;
 import com.google.code.kaptcha.Constants;
 
@@ -48,14 +48,13 @@ public class LoginController {
 
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	@Autowired
-	private BaseUsersService baseUsersService;
+	private BaseUserService baseUsersService;
 	@Autowired
-	private BaseModulesService baseModulesService;
+	private BaseModuleService baseModulesService;
 	/** 限制时间 */
 	@Value("${limit.millis:3600000}")
 	private Long millis;
 
-	@SuppressWarnings("unused")
 	@Autowired
 	private MessageSource messageSource;
 
@@ -90,7 +89,7 @@ public class LoginController {
 	@ResponseBody
 	public Object treeMenu(HttpSession session, HttpServletResponse response) {
 		try {
-			BaseUsers user = (BaseUsers) session.getAttribute(WebConstants.CURRENT_USER);
+			BaseUser user = (BaseUser) session.getAttribute(WebConstants.CURRENT_USER);
 			// 得到的是根菜单
 			Tree tree = this.baseModulesService.selectModulesByUser(user);
 			// 返回根菜单下面的子菜单
@@ -120,7 +119,7 @@ public class LoginController {
 			criteria.put("loginip", this.getIpAddr(request));
 			String result = this.baseUsersService.selectByBaseUser(criteria);
 			if ("01".equals(result)) {
-				BaseUsers baseUser = (BaseUsers) criteria.get("baseUser");
+				BaseUser baseUser = (BaseUser) criteria.get("baseUser");
 				session.setAttribute(WebConstants.CURRENT_USER, baseUser);
 				logger.info("{}登陆成功", baseUser.getRealName());
 				return new ExtReturn(true, "success");
@@ -181,7 +180,7 @@ public class LoginController {
 	 */
 	@RequestMapping(value = "/findpwd", method = RequestMethod.POST)
 	@ResponseBody
-	public Object saveFindpwd(BaseUsers user,@RequestParam String captcha,HttpSession session) {
+	public Object saveFindpwd(BaseUser user,@RequestParam String captcha,HttpSession session) {
 		try {
 			if (StringUtils.isBlank(captcha)) {
 				return new ExtReturn(false, "验证码不能为空！");
@@ -225,7 +224,7 @@ public class LoginController {
 	 */
 	@RequestMapping(value = "/resetpwd/{token}/{userId}", method = RequestMethod.GET)
 	public String resetpwd(@PathVariable String token, @PathVariable String userId, Model model) {
-		BaseUsers user = this.baseUsersService.selectByPrimaryKey(userId);
+		BaseUser user = this.baseUsersService.selectByPrimaryKey(userId);
 		if (user == null || !user.getPassword().equals(token.toLowerCase()) || compareTo(user.getLastLoginTime())) {
 			model.addAttribute("error", "链接已经失效！");
 			return "user/resetpwd";

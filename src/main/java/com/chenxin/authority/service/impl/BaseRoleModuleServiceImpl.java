@@ -1,6 +1,6 @@
 package com.chenxin.authority.service.impl;
 
-import com.chenxin.authority.dao.BaseRoleModuleMapper;
+import com.chenxin.authority.dao.BaseRoleModuleRepository;
 import com.chenxin.authority.pojo.BaseRoleModule;
 import com.chenxin.authority.pojo.Criteria;
 import com.chenxin.authority.service.BaseRoleModuleService;
@@ -13,24 +13,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class BaseRoleModuleServiceImpl implements BaseRoleModuleService {
 	@Autowired
-	private BaseRoleModuleMapper baseRoleModuleMapper;
+	private BaseRoleModuleRepository repository;
 
 	private static final Logger logger = LoggerFactory.getLogger(BaseRoleModuleServiceImpl.class);
 
 	@Override
 	public int countByExample(Criteria example) {
-		int count = this.baseRoleModuleMapper.countByExample(example);
+		int count = this.repository.countByExample(example);
 		logger.debug("count: {}", count);
 		return count;
 	}
 
 	@Override
 	public BaseRoleModule selectByPrimaryKey(String roleModuleId) {
-		return this.baseRoleModuleMapper.selectByPrimaryKey(roleModuleId);
+		return this.repository.selectByPrimaryKey(roleModuleId);
 	}
 
 	@Override
 	public List<BaseRoleModule> selectByExample(Criteria example) {
-		return this.baseRoleModuleMapper.selectByExample(example);
+		return this.repository.selectByExample(example);
 	}
 }

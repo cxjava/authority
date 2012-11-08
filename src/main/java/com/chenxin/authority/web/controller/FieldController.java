@@ -21,13 +21,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chenxin.authority.common.springmvc.DateConvertEditor;
-import com.chenxin.authority.pojo.BaseFields;
+import com.chenxin.authority.pojo.BaseField;
 import com.chenxin.authority.pojo.Criteria;
 import com.chenxin.authority.pojo.ExceptionReturn;
 import com.chenxin.authority.pojo.ExtGridReturn;
 import com.chenxin.authority.pojo.ExtPager;
 import com.chenxin.authority.pojo.ExtReturn;
-import com.chenxin.authority.service.BaseFieldsService;
+import com.chenxin.authority.service.BaseFieldService;
 
 /**
  * 系统字段设置
@@ -41,7 +41,7 @@ public class FieldController {
 	private static final Logger logger = LoggerFactory.getLogger(FieldController.class);
 
 	@Autowired
-	private BaseFieldsService baseFieldsService;
+	private BaseFieldService baseFieldsService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -79,7 +79,7 @@ public class FieldController {
 			if (StringUtils.isNotBlank(fieldName)) {
 				criteria.put("fieldNameLike", fieldName);
 			}
-			List<BaseFields> list = this.baseFieldsService.selectByExample(criteria);
+			List<BaseField> list = this.baseFieldsService.selectByExample(criteria);
 			int total = this.baseFieldsService.countByExample(criteria);
 			logger.debug("total:{}", total);
 			return new ExtGridReturn(total, list);
@@ -94,7 +94,7 @@ public class FieldController {
 	 */
 	@RequestMapping("/save")
 	@ResponseBody
-	public Object save(BaseFields fields) {
+	public Object save(BaseField fields) {
 		try {
 			if (fields == null) {
 				return new ExtReturn(false, "系统字段不能为空！");

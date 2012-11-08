@@ -6,7 +6,7 @@ import javax.servlet.ServletContextListener;
 
 import com.chenxin.authority.common.springmvc.SpringContextHolder;
 import com.chenxin.authority.pojo.Criteria;
-import com.chenxin.authority.service.BaseFieldsService;
+import com.chenxin.authority.service.BaseFieldService;
 
 /**
  * 系统初始化监听器
@@ -19,7 +19,7 @@ public class SystemInitListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		ServletContext servletContext = sce.getServletContext();
-		BaseFieldsService baseFieldsService = SpringContextHolder.getBean("baseFieldsServiceImpl");
+		BaseFieldService baseFieldsService = SpringContextHolder.getBean("baseFieldsServiceImpl");
 		Criteria criteria = new Criteria();
 		criteria.setOrderByClause(" field desc ,sort asc ");
 		criteria.put("enabled", "1");

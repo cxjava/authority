@@ -22,14 +22,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chenxin.authority.common.springmvc.DateConvertEditor;
 import com.chenxin.authority.pojo.BaseUserRole;
-import com.chenxin.authority.pojo.BaseUsers;
+import com.chenxin.authority.pojo.BaseUser;
 import com.chenxin.authority.pojo.Criteria;
 import com.chenxin.authority.pojo.ExceptionReturn;
 import com.chenxin.authority.pojo.ExtGridReturn;
 import com.chenxin.authority.pojo.ExtPager;
 import com.chenxin.authority.pojo.ExtReturn;
 import com.chenxin.authority.service.BaseUserRoleService;
-import com.chenxin.authority.service.BaseUsersService;
+import com.chenxin.authority.service.BaseUserService;
 import com.chenxin.authority.web.interseptor.WebConstants;
 
 /**
@@ -44,7 +44,7 @@ public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
-	private BaseUsersService baseUsersService;
+	private BaseUserService baseUsersService;
 	@Autowired
 	private BaseUserRoleService baseUserRoleService;
 
@@ -81,7 +81,7 @@ public class UserController {
 		if (StringUtils.isNotBlank(realName)) {
 			criteria.put("realNameLike", realName);
 		}
-		List<BaseUsers> list = this.baseUsersService.selectByExample(criteria);
+		List<BaseUser> list = this.baseUsersService.selectByExample(criteria);
 		int total = this.baseUsersService.countByExample(criteria);
 		return new ExtGridReturn(total, list);
 	}
@@ -117,7 +117,7 @@ public class UserController {
 			if (!comparePassword.equals(newPassword)) {
 				return new ExtReturn(false, "两次输入的密码不一致！");
 			}
-			BaseUsers user = (BaseUsers) session.getAttribute(WebConstants.CURRENT_USER);
+			BaseUser user = (BaseUser) session.getAttribute(WebConstants.CURRENT_USER);
 			Criteria criteria = new Criteria();
 			criteria.put("user", user);
 			criteria.put("userId", userId);
@@ -196,8 +196,8 @@ public class UserController {
 				return new ExtReturn(false, "用户主键不能为空！");
 			}
 			// 不能删除自己
-			BaseUsers user = (BaseUsers) session.getAttribute(WebConstants.CURRENT_USER);
-			if (userId.equals(user.getUserId())) {
+			BaseUser user = (BaseUser) session.getAttribute(WebConstants.CURRENT_USER);
+			if (userId.equals(user.getId())) {
 				return new ExtReturn(false, "不能删除自己的帐号！");
 			}
 			Criteria criteria = new Criteria();
@@ -250,7 +250,7 @@ public class UserController {
 	 */
 	@RequestMapping("/save")
 	@ResponseBody
-	public Object save(BaseUsers user, @RequestParam Collection<String> roleIds) {
+	public Object save(BaseUser user, @RequestParam Collection<String> roleIds) {
 		try {
 			if (roleIds == null || roleIds.size() == 0) {
 				return new ExtReturn(false, "请至少选择一个角色！");
@@ -288,12 +288,12 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/myinfo", method = RequestMethod.POST)
 	@ResponseBody
-	public Object saveMyinfo(BaseUsers user) {
+	public Object saveMyinfo(BaseUser user) {
 		try {
 			if (user == null) {
 				return new ExtReturn(false, "用户不能为空！");
 			}
-			if (StringUtils.isBlank(user.getUserId())) {
+			if (user.getId()==null) {
 				return new ExtReturn(false, "用户ID不能为空！");
 			}
 			String result = this.baseUsersService.updateByPrimaryKeySelective(user);

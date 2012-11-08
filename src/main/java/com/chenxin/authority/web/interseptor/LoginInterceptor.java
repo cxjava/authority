@@ -35,7 +35,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			}
 			return false;
 		} else {
-			// BaseUsers users=(BaseUsers)user;
+			// BaseUser users=(BaseUser)user;
 			// Object[] args=new
 			// Object[]{users.getAccount(),users.getRealName(),request.getRequestURI(),request.getRequestURL()};
 			// logger.debug("start");

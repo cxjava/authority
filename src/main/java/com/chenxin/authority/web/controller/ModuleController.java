@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chenxin.authority.common.jackjson.Jackson;
 import com.chenxin.authority.common.springmvc.DateConvertEditor;
-import com.chenxin.authority.pojo.BaseModules;
+import com.chenxin.authority.pojo.BaseModule;
 import com.chenxin.authority.pojo.BaseRoleModule;
 import com.chenxin.authority.pojo.Criteria;
 import com.chenxin.authority.pojo.ExceptionReturn;
@@ -32,7 +32,7 @@ import com.chenxin.authority.pojo.ExtGridReturn;
 import com.chenxin.authority.pojo.ExtPager;
 import com.chenxin.authority.pojo.ExtReturn;
 import com.chenxin.authority.pojo.Tree;
-import com.chenxin.authority.service.BaseModulesService;
+import com.chenxin.authority.service.BaseModuleService;
 import com.chenxin.authority.service.BaseRoleModuleService;
 
 /**
@@ -47,7 +47,7 @@ public class ModuleController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ModuleController.class);
 	@Autowired
-	private BaseModulesService baseModulesService;
+	private BaseModuleService baseModulesService;
 	@Autowired
 	private BaseRoleModuleService baseRoleModuleService;
 
@@ -110,7 +110,7 @@ public class ModuleController {
 			if (StringUtils.isNotBlank(moduleName)) {
 				criteria.put("moduleNameLike", moduleName);
 			}
-			List<BaseModules> list = this.baseModulesService.selectByExample(criteria);
+			List<BaseModule> list = this.baseModulesService.selectByExample(criteria);
 			int total = this.baseModulesService.countByExample(criteria);
 			logger.debug("total:{}", total);
 			return new ExtGridReturn(total, list);
@@ -186,7 +186,7 @@ public class ModuleController {
 	 */
 	@RequestMapping("/save")
 	@ResponseBody
-	public Object save(BaseModules modules) {
+	public Object save(BaseModule modules) {
 		try {
 			if (modules == null) {
 				return new ExtReturn(false, "模块不能为空！");

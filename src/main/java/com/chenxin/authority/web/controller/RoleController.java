@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chenxin.authority.common.springmvc.DateConvertEditor;
-import com.chenxin.authority.pojo.BaseRoles;
+import com.chenxin.authority.pojo.BaseRole;
 import com.chenxin.authority.pojo.Criteria;
 import com.chenxin.authority.pojo.ExceptionReturn;
 import com.chenxin.authority.pojo.ExtGridReturn;
 import com.chenxin.authority.pojo.ExtPager;
 import com.chenxin.authority.pojo.ExtReturn;
-import com.chenxin.authority.service.BaseRolesService;
+import com.chenxin.authority.service.BaseRoleService;
 
 /**
  * 角色
@@ -38,7 +38,7 @@ public class RoleController {
 
 	private static final Logger logger = LoggerFactory.getLogger(RoleController.class);
 	@Autowired
-	private BaseRolesService baseRolesService;
+	private BaseRoleService baseRolesService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -73,7 +73,7 @@ public class RoleController {
 		if (StringUtils.isNotBlank(roleName)) {
 			criteria.put("roleNameLike", roleName);
 		}
-		List<BaseRoles> list = this.baseRolesService.selectByExample(criteria);
+		List<BaseRole> list = this.baseRolesService.selectByExample(criteria);
 		int total = this.baseRolesService.countByExample(criteria);
 		logger.debug("total:{}", total);
 		return new ExtGridReturn(total, list);
@@ -84,7 +84,7 @@ public class RoleController {
 	 */
 	@RequestMapping("/save")
 	@ResponseBody
-	public Object save(BaseRoles role) {
+	public Object save(BaseRole role) {
 		try {
 			if (role == null) {
 				return new ExtReturn(false, "角色不能为空!");

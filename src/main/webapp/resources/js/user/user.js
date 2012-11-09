@@ -45,7 +45,7 @@ user.store = new Ext.data.Store({
 			reader : new Ext.data.JsonReader({// 数据读取器
 				totalProperty : 'results', // 记录总数
 				root : 'rows' // Json中的列表数据根节点
-			}, ['userId', 'account', 'realName', 'sex', 'email', 'mobile',
+			}, ['id', 'account', 'realName', 'sex', 'email', 'mobile',
 					'officePhone', 'lastLoginTime', 'lastLoginIp', 'remark']),
 			listeners : {
 				'load' : function(store, records, options) {
@@ -79,7 +79,7 @@ user.colModel = new Ext.grid.ColumnModel({
 	columns : [user.selModel, {
 				hidden : true,
 				header : '用户ID',
-				dataIndex : 'userId'
+				dataIndex : 'id'
 			}, {
 				header : '账号',
 				dataIndex : 'account'
@@ -161,7 +161,7 @@ user.editAction = new Ext.Action({
 				// 发送请求
 				// 查找当前用户的角色
 				Share.AjaxRequest({
-							url : user.myRole + record.data.userId,
+							url : user.myRole + record.data.id,
 							callback : function(json) {
 								Ext.each(json, function(role) {
 											// 当前用户的角色
@@ -258,7 +258,7 @@ user.formPanel = new Ext.form.FormPanel({
 	items : [{
 				xtype : 'hidden',
 				fieldLabel : 'ID',
-				name : 'userId'
+				name : 'id'
 			}, {
 				fieldLabel : '账号',
 				maxLength : 64,
@@ -388,11 +388,11 @@ user.addWindow = new Ext.Window({
 						handler : function() {
 							Share.resetGrid(user.roleGrid);
 							var form = user.formPanel.getForm();
-							var id = form.findField("userId").getValue();
+							var id = form.findField("id").getValue();
 							var account = form.findField("account").getValue();
 							form.reset();
 							if (id != '')
-								form.findField("userId").setValue(id);
+								form.findField("id").setValue(id);
 							if (account != '')
 								form.findField("account").setValue(account);
 						}
@@ -453,7 +453,7 @@ user.resetPwdFun = function() {
 				if (btn == 'yes') {
 					// 发送请求
 					Share.AjaxRequest({
-								url : user.reset + record.data.userId,
+								url : user.reset + record.data.id,
 								callback : function(json) {
 									user.alwaysFun();
 									user.store.reload();
@@ -468,7 +468,7 @@ user.delFun = function() {
 				if (btn == 'yes') {
 					// 发送请求
 					Share.AjaxRequest({
-								url : user.del + record.data.userId,
+								url : user.del + record.data.id,
 								callback : function(json) {
 									user.alwaysFun();
 									user.store.reload();

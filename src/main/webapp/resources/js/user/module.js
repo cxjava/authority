@@ -41,7 +41,7 @@ module.store = new Ext.data.Store({
 			reader : new Ext.data.JsonReader({// 数据读取器
 				totalProperty : 'results', // 记录总数
 				root : 'rows' // Json中的列表数据根节点
-			}, ['moduleId', 'moduleName', 'moduleUrl', 'parentId', 'leaf',
+			}, ['id', 'moduleName', 'moduleUrl', 'parentId', 'leaf',
 					'expanded', 'displayIndex', 'isDisplay', 'iconCss',
 					'information']),
 			listeners : {
@@ -89,7 +89,7 @@ module.colModel = new Ext.grid.ColumnModel({
 			columns : [module.selModel, {
 						hidden : true,
 						header : '模块编号',
-						dataIndex : 'moduleId'
+						dataIndex : 'id'
 					}, {
 						header : '模块名称',
 						dataIndex : 'moduleName'
@@ -265,7 +265,7 @@ module.formPanel = new Ext.form.FormPanel({
 			items : [{
 						xtype : 'hidden',
 						fieldLabel : 'ID',
-						name : 'moduleId',
+						name : 'id',
 						anchor : '99%'
 					}, {
 						fieldLabel : '模块名称',
@@ -321,10 +321,10 @@ module.addWindow = new Ext.Window({
 						text : '重置',
 						handler : function() {
 							var form = module.formPanel.getForm();
-							var id = form.findField("moduleId").getValue();
+							var id = form.findField("id").getValue();
 							form.reset();
 							if (id != '')
-								form.findField("moduleId").setValue(id);
+								form.findField("id").setValue(id);
 						}
 					}]
 		});
@@ -355,7 +355,7 @@ module.delFun = function() {
 				if (btn == 'yes') {
 					// 发送请求
 					Share.AjaxRequest({
-								url : module.del + record.data.moduleId,
+								url : module.del + record.data.id,
 								callback : function(json) {
 									module.alwaysFun();
 									module.store.reload();

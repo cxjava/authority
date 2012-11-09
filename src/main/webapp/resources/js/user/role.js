@@ -41,7 +41,7 @@ role.store = new Ext.data.Store({
 			reader : new Ext.data.JsonReader({// 数据读取器
 				totalProperty : 'results', // 记录总数
 				root : 'rows' // Json中的列表数据根节点
-			}, ['roleId', 'roleName', 'roleDesc']),
+			}, ['id', 'roleName', 'roleDesc']),
 			listeners : {
 				'load' : function(store, records, options) {
 					role.alwaysFun();
@@ -70,7 +70,7 @@ role.colModel = new Ext.grid.ColumnModel({
 			columns : [role.selModel, {
 						hidden : true,
 						header : '角色ID',
-						dataIndex : 'roleId'
+						dataIndex : 'id'
 					}, {
 						header : '角色名称',
 						dataIndex : 'roleName'
@@ -154,7 +154,7 @@ role.grid = new Ext.grid.GridPanel({
 				role.clearTreeNodeCheckFun(role.treePanel.root, false);
 				// 当前选择用户的资源信息
 				Share.AjaxRequest({
-							url : role.myModules + record.data.roleId,
+							url : role.myModules + record.data.id,
 							callback : function(json) {
 								// 勾选资源树的checkbox
 								if (json.length > 0) {
@@ -184,7 +184,7 @@ role.formPanel = new Ext.form.FormPanel({
 			items : [{
 						xtype : 'hidden',
 						fieldLabel : 'ID',
-						name : 'roleId',
+						name : 'id',
 						anchor : '99%'
 					}, {
 						fieldLabel : '角色名称',
@@ -220,10 +220,10 @@ role.addWindow = new Ext.Window({
 						text : '重置',
 						handler : function() {
 							var form = role.formPanel.getForm();
-							var id = form.findField("roleId").getValue();
+							var id = form.findField("id").getValue();
 							form.reset();
 							if (id != '')
-								form.findField("roleId").setValue(id);
+								form.findField("id").setValue(id);
 						}
 					}]
 		});
@@ -257,7 +257,7 @@ role.delFun = function() {
 				if (btn == 'yes') {
 					// 发送请求
 					Share.AjaxRequest({
-								url : role.del + record.data.roleId,
+								url : role.del + record.data.id,
 								callback : function(json) {
 									role.alwaysFun();
 									role.store.reload();
@@ -338,7 +338,7 @@ role.saveMudulesAction = new Ext.Action({
 				var record = role.grid.getSelectionModel().getSelected();
 				var params = {
 					'moduleIds' : role.childNodes,
-					'roleId' : record.data.roleId
+					'roleId' : record.data.id
 				};
 				// 发送请求
 				Share.AjaxRequest({

@@ -14,18 +14,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.chenxin.authority.common.utils.JpaTools;
 import com.chenxin.authority.dao.BaseModuleRepository;
 import com.chenxin.authority.dao.BaseRoleModuleRepository;
 import com.chenxin.authority.dao.BaseUserRepository;
-import com.chenxin.authority.pojo.BaseField;
 import com.chenxin.authority.pojo.BaseModule;
 import com.chenxin.authority.pojo.BaseRoleModule;
 import com.chenxin.authority.pojo.BaseUser;
-import com.chenxin.authority.pojo.Combo;
 import com.chenxin.authority.pojo.ExtPager;
 import com.chenxin.authority.pojo.Tree;
 import com.chenxin.authority.pojo.TreeMenu;
@@ -65,6 +61,7 @@ public class BaseModuleServiceImpl implements BaseModuleService {
 		Specification<BaseModule> spec = JpaTools.getSpecification(parameters, BaseModule.class);
 		Sort sort = JpaTools.getSort(null, " displayIndex ASC ");
 		List<BaseModule> list = this.baseModulesRepository.findAll(spec, sort);
+		logger.info("list.size():{}",list.size());
 		TreeMenu menu = new TreeMenu(list);
 		return menu.getTreeJson();
 	}
@@ -84,6 +81,7 @@ public class BaseModuleServiceImpl implements BaseModuleService {
 			Sort sort = JpaTools.getSort(null, " displayIndex ASC ");
 			Specification<BaseModule> spec = JpaTools.getSpecification(parameters, BaseModule.class);
 			list = this.baseModulesRepository.findAll(spec, sort);
+			logger.info("list.size():{}",list.size());
 //		} else {
 //			// 显示当前用户权限模块，从配置表中获取
 //			parameters = Maps.newHashMap();

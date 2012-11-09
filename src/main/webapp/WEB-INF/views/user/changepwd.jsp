@@ -6,6 +6,6 @@
 </div>
 
 <script type="text/javascript">
-	var userId='${user.userId}';
+	var userId='${user.id}';
 	yepnope("${ctx}/resources/js/user/changepwd.js");
 </script>

@@ -18,7 +18,7 @@ public class SystemInitListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		ServletContext servletContext = sce.getServletContext();
-		BaseFieldService baseFieldsService = SpringContextHolder.getBean("baseFieldsServiceImpl");
+		BaseFieldService baseFieldsService = SpringContextHolder.getBean("baseFieldServiceImpl");
 		servletContext.setAttribute("fields", baseFieldsService.selectAll());
 	}
 

@@ -63,10 +63,10 @@
 		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
 	</listener>
 	<!-- 系统初始化监听器 
+	-->
 	<listener>
 		<listener-class>com.chenxin.authority.web.listener.SystemInitListener</listener-class>
 	</listener>
-	-->
 	<!-- Error Page定义 -->
 	<error-page>
 		<error-code>500</error-code>

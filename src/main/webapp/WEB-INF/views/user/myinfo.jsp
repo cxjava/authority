@@ -85,8 +85,8 @@
 		items : [ {
 			xtype : 'hidden',
 			fieldLabel : 'ID',
-			value : '${user.userId}',
-			name : 'userId'
+			value : '${user.id}',
+			name : 'id'
 		}, {
 			fieldLabel : '用户姓名',
 			maxLength : 64,

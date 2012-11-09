@@ -12,6 +12,6 @@ public interface BaseModuleRepository extends PagingAndSortingRepository<BaseMod
 		BaseModuleRepositoryDao {
 
 	@Modifying
-	@Query("delete BaseModule u where u.parentUrl = ?1")
-	Integer deleteByParentUrl(Long parentUrl);
+	@Query("delete BaseModule u where u.parentId = ?1")
+	Integer deleteByParentUrl(Long parentId);
 }

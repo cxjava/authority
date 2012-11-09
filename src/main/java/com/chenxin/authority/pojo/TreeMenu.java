@@ -79,7 +79,7 @@ public class TreeMenu implements Serializable {
 		Iterator<BaseModule> it = list.iterator();
 		while (it.hasNext()) {
 			BaseModule temp = it.next();
-			if (modules.getId().equals(temp.getParentUrl())) {
+			if (modules.getId().equals(temp.getParentId())) {
 				li.add(temp);
 			}
 		}

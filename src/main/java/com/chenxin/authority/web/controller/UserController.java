@@ -1,5 +1,6 @@
 package com.chenxin.authority.web.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -24,8 +25,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chenxin.authority.common.springmvc.DateConvertEditor;
 import com.chenxin.authority.common.utils.EncryptUtil;
-import com.chenxin.authority.pojo.BaseUserRole;
 import com.chenxin.authority.pojo.BaseUser;
+import com.chenxin.authority.pojo.BaseUserRole;
 import com.chenxin.authority.pojo.ExceptionReturn;
 import com.chenxin.authority.pojo.ExtGridReturn;
 import com.chenxin.authority.pojo.ExtPager;
@@ -67,14 +68,21 @@ public class UserController {
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public Object all(ExtPager pager, @RequestParam(required = false, defaultValue = "") String realName) {
+	public Object all(HttpSession session,ExtPager pager, @RequestParam(required = false, defaultValue = "") String realName) {
+		try {
 		Map<String, Object> parameters = Maps.newHashMap();
 		if (StringUtils.isNotBlank(realName)) {
 			parameters.put("LIKE_realName", realName);
 		}
 		Page<BaseUser> page = this.baseUsersService.selectByParameters(pager, parameters);
-		return new ExtGridReturn(page.getTotalElements(), page.getContent());
-		
+		List<BaseUser> list=new ArrayList<BaseUser>();
+		BaseUser user = (BaseUser) session.getAttribute(WebConstants.CURRENT_USER);
+		list.add(user);
+		return new ExtGridReturn(20L, list);
+		} catch (Exception e) {
+			logger.error("Exception: ", e);
+			return new ExceptionReturn(e);
+		}
 	}
 
 	/**

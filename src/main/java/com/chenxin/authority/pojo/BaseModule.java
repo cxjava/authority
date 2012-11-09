@@ -17,7 +17,7 @@ public class BaseModule extends IdEntity {
 	private String moduleName;
 	/** role's description */
 	private String moduleUrl;
-	private Long parentUrl;
+	private Long parentId;
 	private Integer leaf;
 	private Integer expanded;
 	private Integer displayIndex;
@@ -56,19 +56,14 @@ public class BaseModule extends IdEntity {
 		this.moduleUrl = moduleUrl;
 	}
 
-	/**
-	 * @return the parentUrl
-	 */
-	public Long getParentUrl() {
-		return parentUrl;
+	
+
+	public Long getParentId() {
+		return parentId;
 	}
 
-	/**
-	 * @param parentUrl
-	 *            the parentUrl to set
-	 */
-	public void setParentUrl(Long parentUrl) {
-		this.parentUrl = parentUrl;
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
 	}
 
 	/**

@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chenxin.authority.common.jackjson.Jackson;
 import com.chenxin.authority.common.springmvc.DateConvertEditor;
+import com.chenxin.authority.pojo.BaseField;
 import com.chenxin.authority.pojo.BaseModule;
 import com.chenxin.authority.pojo.BaseRoleModule;
 import com.chenxin.authority.pojo.Criteria;
@@ -34,6 +36,7 @@ import com.chenxin.authority.pojo.ExtReturn;
 import com.chenxin.authority.pojo.Tree;
 import com.chenxin.authority.service.BaseModuleService;
 import com.chenxin.authority.service.BaseRoleModuleService;
+import com.google.common.collect.Maps;
 
 /**
  * 后台资源、系统菜单相关
@@ -79,8 +82,7 @@ public class ModuleController {
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public void all(PrintWriter writer) throws IOException {
-		Criteria criteria = new Criteria();
-		Tree tree = this.baseModulesService.selectAllModules(criteria);
+		Tree tree = this.baseModulesService.selectAllModules();
 		String json = Jackson.objToJson(tree.getChildren());
 		// 加入check
 		writer.write(json.replaceAll("\"leaf", "\"checked\":false,\"leaf"));
@@ -95,25 +97,12 @@ public class ModuleController {
 	@ResponseBody
 	public Object all(ExtPager pager, @RequestParam(required = false) String moduleName) {
 		try {
-			Criteria criteria = new Criteria();
-			// 设置分页信息
-			if (pager.getLimit() != null && pager.getStart() != null) {
-				criteria.setOracleEnd(pager.getLimit() + pager.getStart());
-				criteria.setOracleStart(pager.getStart());
-			}
-			// 排序信息
-			if (StringUtils.isNotBlank(pager.getDir()) && StringUtils.isNotBlank(pager.getSort())) {
-				criteria.setOrderByClause(pager.getSort() + " " + pager.getDir());
-			} else {
-				criteria.setOrderByClause(" PARENT_ID asc,DISPLAY_INDEX asc ");
-			}
+			Map<String, Object> parameters = Maps.newHashMap();
 			if (StringUtils.isNotBlank(moduleName)) {
-				criteria.put("moduleNameLike", moduleName);
+				parameters.put("LIKE_moduleName", moduleName);
 			}
-			List<BaseModule> list = this.baseModulesService.selectByExample(criteria);
-			int total = this.baseModulesService.countByExample(criteria);
-			logger.debug("total:{}", total);
-			return new ExtGridReturn(total, list);
+			Page<BaseModule> page = this.baseModulesService.selectByParameters(pager, parameters);
+			return new ExtGridReturn(page.getTotalElements(), page.getContent());
 		} catch (Exception e) {
 			logger.error("Exception: ", e);
 			return new ExceptionReturn(e);
@@ -125,9 +114,9 @@ public class ModuleController {
 	 */
 	@RequestMapping("/{roleId}")
 	@ResponseBody
-	public Object selectModulesByRoleId(@PathVariable String roleId) {
+	public Object selectModulesByRoleId(@PathVariable Long roleId) {
 		try {
-			if (StringUtils.isBlank(roleId)) {
+			if (null == roleId) {
 				return new ExtReturn(false, "角色ID不能为空！");
 			}
 			Criteria criteria = new Criteria();

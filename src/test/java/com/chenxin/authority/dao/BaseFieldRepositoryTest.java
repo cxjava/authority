@@ -16,6 +16,8 @@ public class BaseFieldRepositoryTest extends Dao {
 	private static final Logger logger = LoggerFactory.getLogger(BaseFieldRepositoryTest.class);
 	@Autowired
 	private BaseFieldRepository repository;
+	@Autowired
+	private BaseModuleRepository repository2;
 
 	private BaseField baseField;
 
@@ -36,5 +38,7 @@ public class BaseFieldRepositoryTest extends Dao {
 		List<BaseField> list = repository.findByEnabled(1);
 		assertNotNull(list);
 		assertEquals(list.size(), 1);
+		
+		assertNotNull(repository2.selectAllModules(null));
 	}
 }

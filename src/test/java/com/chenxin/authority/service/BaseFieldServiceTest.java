@@ -67,7 +67,7 @@ public class BaseFieldServiceTest extends Services {
 		pager.setSort("id");
 		Map<String, Object> parameters = Maps.newHashMap();
 		parameters.put("", "");
-		Page<BaseField> pages = this.service.getBaseField(pager, parameters);
+		Page<BaseField> pages = this.service.selectByParameters(pager, parameters);
 		assertNotNull(pages);
 		//assertEquals(pages.getTotalElements(), 1);
 	}

@@ -3,6 +3,7 @@ package com.chenxin.authority.web.controller;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -31,6 +33,7 @@ import com.chenxin.authority.pojo.ExtReturn;
 import com.chenxin.authority.service.BaseUserRoleService;
 import com.chenxin.authority.service.BaseUserService;
 import com.chenxin.authority.web.interseptor.WebConstants;
+import com.google.common.collect.Maps;
 
 /**
  * 用户相关
@@ -68,22 +71,13 @@ public class UserController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	public Object all(ExtPager pager, @RequestParam(required = false, defaultValue = "") String realName) {
-		Criteria criteria = new Criteria();
-		// 设置分页信息
-		if (pager.getLimit() != null && pager.getStart() != null) {
-			criteria.setOracleEnd(pager.getLimit() + pager.getStart());
-			criteria.setOracleStart(pager.getStart());
-		}
-		// 排序信息
-		if (StringUtils.isNotBlank(pager.getDir()) && StringUtils.isNotBlank(pager.getSort())) {
-			criteria.setOrderByClause(pager.getSort() + " " + pager.getDir());
-		}
+		Map<String, Object> parameters = Maps.newHashMap();
 		if (StringUtils.isNotBlank(realName)) {
-			criteria.put("realNameLike", realName);
+			parameters.put("LIKE_realName", realName);
 		}
-		List<BaseUser> list = this.baseUsersService.selectByExample(criteria);
-		int total = this.baseUsersService.countByExample(criteria);
-		return new ExtGridReturn(total, list);
+		Page<BaseUser> page = this.baseUsersService.selectByParameters(pager, parameters);
+		return new ExtGridReturn(page.getTotalElements(), page.getContent());
+		
 	}
 
 	/**

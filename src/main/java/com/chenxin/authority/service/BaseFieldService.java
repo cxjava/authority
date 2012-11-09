@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 
 public interface BaseFieldService {
 
-	Page<BaseField> getBaseField(ExtPager pager, Map<String, Object> parameters);
+	Page<BaseField> selectByParameters(ExtPager pager, Map<String, Object> parameters);
 
 	HashMap<String, String> selectAll();
 

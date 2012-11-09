@@ -34,6 +34,7 @@ import com.chenxin.authority.pojo.ExtReturn;
 import com.chenxin.authority.pojo.Tree;
 import com.chenxin.authority.service.BaseModuleService;
 import com.chenxin.authority.service.BaseUserService;
+import com.chenxin.authority.service.ServiceException;
 import com.chenxin.authority.web.interseptor.WebConstants;
 import com.google.code.kaptcha.Constants;
 
@@ -117,20 +118,17 @@ public class LoginController {
 			criteria.put("account", account);
 			criteria.put("passwordIn", password);
 			criteria.put("loginip", this.getIpAddr(request));
-			String result = this.baseUsersService.selectByBaseUser(criteria);
-			if ("01".equals(result)) {
-				BaseUser baseUser = (BaseUser) criteria.get("baseUser");
-				session.setAttribute(WebConstants.CURRENT_USER, baseUser);
-				logger.info("{}登陆成功", baseUser.getRealName());
-				return new ExtReturn(true, "success");
-			} else if ("00".equals(result)) {
-				return new ExtReturn(false, "用户名或者密码错误!");
-			} else {
-				return new ExtReturn(false, result);
-			}
-		} catch (Exception e) {
+			BaseUser baseUser = this.baseUsersService.selectByBaseUser(criteria);
+			session.setAttribute(WebConstants.CURRENT_USER, baseUser);
+			logger.info("{}登陆成功", baseUser.getRealName());
+			return new ExtReturn(true, "success");
+		} catch (ServiceException e) {
 			logger.error("Exception: ", e);
-			return new ExceptionReturn(e);
+			if (StringUtils.isNotBlank(e.getErrorCode())) {
+				return new ExtReturn(false, e.getMessage());
+			} else {
+				return new ExceptionReturn(e);
+			}
 		}
 	}
 
@@ -224,7 +222,8 @@ public class LoginController {
 	 */
 	@RequestMapping(value = "/resetpwd/{token}/{userId}", method = RequestMethod.GET)
 	public String resetpwd(@PathVariable String token, @PathVariable String userId, Model model) {
-		BaseUser user = this.baseUsersService.selectByPrimaryKey(userId);
+		// TODO:add
+		BaseUser user = null;// this.baseUsersService.selectByPrimaryKey(userId);
 		if (user == null || !user.getPassword().equals(token.toLowerCase()) || compareTo(user.getLastLoginTime())) {
 			model.addAttribute("error", "链接已经失效！");
 			return "user/resetpwd";

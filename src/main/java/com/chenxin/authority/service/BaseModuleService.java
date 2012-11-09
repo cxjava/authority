@@ -4,18 +4,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+
 import com.chenxin.authority.pojo.BaseModule;
 import com.chenxin.authority.pojo.BaseUser;
 import com.chenxin.authority.pojo.Combo;
 import com.chenxin.authority.pojo.Criteria;
+import com.chenxin.authority.pojo.ExtPager;
 import com.chenxin.authority.pojo.Tree;
 
 public interface BaseModuleService {
-	int countByExample(Criteria example);
 
-	BaseModule selectByPrimaryKey(Integer moduleId);
-
-	List<BaseModule> selectByExample(Criteria example);
+	Page<BaseModule> selectByParameters(ExtPager pager, Map<String, Object> parameters);
 
 	/**
 	 * 查找用户的模块
@@ -31,7 +31,7 @@ public interface BaseModuleService {
 	 * @param example
 	 * @return 00：失败，01：成功 ,其他情况
 	 */
-	Tree selectAllModules(Criteria example);
+	Tree selectAllModules();
 
 	/**
 	 * 保存角色的系统菜单

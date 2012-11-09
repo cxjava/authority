@@ -70,7 +70,7 @@ public class FieldController {
 			if (StringUtils.isNotBlank(fieldName)) {
 				parameters.put("LIKE_fieldName", fieldName);
 			}
-			Page<BaseField> page = this.baseFieldsService.getBaseField(pager, parameters);
+			Page<BaseField> page = this.baseFieldsService.selectByParameters(pager, parameters);
 			return new ExtGridReturn(page.getTotalElements(), page.getContent());
 		} catch (ServiceException e) {
 			logger.error("Exception: ", e);

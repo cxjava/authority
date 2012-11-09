@@ -2,6 +2,7 @@ package com.chenxin.authority.common.utils;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -63,7 +64,7 @@ public class JpaTools {
 		} else if (StringUtils.isNotBlank(pager.getDir()) && StringUtils.isNotBlank(pager.getSort())) {
 			sort = new Sort(Direction.fromString(pager.getDir()), pager.getSort());
 		} else {
-			sort = new Sort(Direction.DESC, "id");
+			sort = new Sort(Direction.ASC, "id");
 		}
 		return sort;
 	}
@@ -81,15 +82,20 @@ public class JpaTools {
 		for (Entry<String, Object> entry : searchParams.entrySet()) {
 			// 过滤掉空值
 			Object value = entry.getValue();
-			if (value==null||StringUtils.isBlank(value.toString())) {
+			if (value == null || StringUtils.isBlank(value.toString())) {
 				continue;
 			}
 			String[] names = StringUtils.split(entry.getKey(), "_");
 			SearchFilter filter = null;
 			if (names.length == 2) {
-				filter = new SearchFilter(names[1], SearchFilter.Operator.valueOf(names[0]), value);
+				filter = new SearchFilter(names[1], SearchFilter.Operator.valueOf(names[0].toUpperCase(Locale.US)), value);
 			} else if (names.length == 1) {
-				filter = new SearchFilter(names[0], value);
+				//deal with this condition:parameters.put("DIStINCT", Any Object);
+				if ("DISTINCT".equalsIgnoreCase(names[0])) {
+					filter = new SearchFilter(names[0], SearchFilter.Operator.DISTINCT, names[0]);
+				} else {
+					filter = new SearchFilter(names[0], value);
+				}
 			} else if (names.length == 0 || names.length > 2) {
 				throw new IllegalArgumentException(entry.getKey() + " is not a valid search filter name");
 			}
@@ -112,6 +118,11 @@ public class JpaTools {
 
 					List<Predicate> predicates = Lists.newArrayList();
 					for (SearchFilter filter : filters) {
+						//deal with this condition:parameters.put("DIStINCT", Any Object);
+						if (filter.operator.equals(SearchFilter.Operator.DISTINCT)) {
+							query.distinct(true);
+							continue;
+						}
 						// nested path translate, 如Task的名为"user.name"的filedName,
 						// 转换为Task.user.name属性
 						String[] names = StringUtils.split(filter.fieldName, ".");
@@ -146,6 +157,9 @@ public class JpaTools {
 							break;
 						case LTE:
 							predicates.add(builder.lessThanOrEqualTo(expression, (Comparable) filter.value));
+							break;
+						case DISTINCT:
+							query.distinct(true);
 							break;
 						}
 					}

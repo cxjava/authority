@@ -3,7 +3,7 @@ package com.chenxin.authority.pojo;
 public class SearchFilter {
 
 	public enum Operator {
-		EQ, LIKE, GT, LT, GTE, LTE
+		EQ, LIKE, GT, LT, GTE, LTE, DISTINCT
 	}
 
 	public String fieldName;

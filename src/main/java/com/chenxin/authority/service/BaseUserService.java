@@ -2,15 +2,15 @@ package com.chenxin.authority.service;
 
 import com.chenxin.authority.pojo.BaseUser;
 import com.chenxin.authority.pojo.Criteria;
+import com.chenxin.authority.pojo.ExtPager;
 
-import java.util.List;
+import java.util.Map;
+
+import org.springframework.data.domain.Page;
 
 public interface BaseUserService {
-	int countByExample(Criteria example);
 
-	BaseUser selectByPrimaryKey(String userId);
-
-	List<BaseUser> selectByExample(Criteria example);
+	Page<BaseUser> selectByParameters(ExtPager pager, Map<String, Object> parameters);
 
 	/**
 	 * 更新用户的密码

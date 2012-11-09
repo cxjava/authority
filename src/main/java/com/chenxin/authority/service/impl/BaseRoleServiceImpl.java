@@ -1,22 +1,31 @@
 package com.chenxin.authority.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.chenxin.authority.common.utils.JpaTools;
 import com.chenxin.authority.dao.BaseRoleModuleRepository;
 import com.chenxin.authority.dao.BaseRoleRepository;
 import com.chenxin.authority.dao.BaseUserRoleRepository;
 import com.chenxin.authority.pojo.BaseRole;
-import com.chenxin.authority.pojo.Criteria;
+import com.chenxin.authority.pojo.BaseRoleModule;
+import com.chenxin.authority.pojo.BaseUserRole;
+import com.chenxin.authority.pojo.ExtPager;
 import com.chenxin.authority.service.BaseRoleService;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import com.chenxin.authority.service.ServiceException;
+import com.google.common.collect.Maps;
 
 @Service
+@Transactional
 public class BaseRoleServiceImpl implements BaseRoleService {
 	@Autowired
 	private BaseRoleRepository baseRolesRepository;
@@ -28,46 +37,31 @@ public class BaseRoleServiceImpl implements BaseRoleService {
 	private static final Logger logger = LoggerFactory.getLogger(BaseRoleServiceImpl.class);
 
 	@Override
-	public int countByExample(Criteria example) {
-		int count = this.baseRolesRepository.countByExample(example);
-		logger.debug("count: {}", count);
-		return count;
+	public BaseRole saveRole(BaseRole role) {
+		return this.baseRolesRepository.save(role);
 	}
 
 	@Override
-	public BaseRole selectByPrimaryKey(String roleId) {
-		return this.baseRolesRepository.selectByPrimaryKey(roleId);
-	}
-
-	@Override
-	public List<BaseRole> selectByExample(Criteria example) {
-		return this.baseRolesRepository.selectByExample(example);
-	}
-
-	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
-	public String saveRole(BaseRole role) {
-		int result = 0;
-		if (StringUtils.isBlank(role.getId())) {
-			result = this.baseRolesRepository.insertSelective(role);
-		} else {
-			result = this.baseRolesRepository.updateByPrimaryKeySelective(role);
-		}
-		return result > 0 ? "01" : "00";
-	}
-
-	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
-	public String deleteByPrimaryKey(Criteria criteria) {
-		String roleId = criteria.getString("roleId");
-		int result = 0;
-		// TODO 其他用户拥有该角色，还不能删除
-		int count = this.baseUserRoleRepository.countByExample(criteria);
+	public void deleteByPrimaryKey(Long roleId) {
+		Map<String, Object> parameters = Maps.newHashMap();
+		parameters.put("roleId", roleId);
+		Specification<BaseUserRole> spec = JpaTools.getSpecification(parameters, BaseUserRole.class);
+		Long count = this.baseUserRoleRepository.count(spec);
 		if (count > 0) {
-			return "其他用户拥有该角色，还不能删除";
+			logger.error("其他用户拥有该角色，还不能删除!");
+			throw new ServiceException("其他用户拥有该角色，还不能删除!", "");
 		}
-		this.baseRoleModuleRepository.deleteByExample(criteria);
-		result = this.baseRolesRepository.deleteByPrimaryKey(roleId);
-		return result > 0 ? "01" : "00";
+		Specification<BaseRoleModule> specRoleModule = JpaTools.getSpecification(parameters, BaseRoleModule.class);
+		List<BaseRoleModule> olds = this.baseRoleModuleRepository.findAll(specRoleModule);
+		if (null != olds)
+			this.baseRoleModuleRepository.delete(olds);
+		this.baseRolesRepository.delete(roleId);
+	}
+
+	@Override
+	public Page<BaseRole> selectByParameters(ExtPager pager, Map<String, Object> parameters) {
+		PageRequest pageable = JpaTools.getPageRequest(pager, "");
+		Specification<BaseRole> spec = JpaTools.getSpecification(parameters, BaseRole.class);
+		return this.baseRolesRepository.findAll(spec, pageable);
 	}
 }

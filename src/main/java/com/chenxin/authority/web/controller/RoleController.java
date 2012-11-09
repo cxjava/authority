@@ -1,13 +1,14 @@
 package com.chenxin.authority.web.controller;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -19,12 +20,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chenxin.authority.common.springmvc.DateConvertEditor;
 import com.chenxin.authority.pojo.BaseRole;
-import com.chenxin.authority.pojo.Criteria;
 import com.chenxin.authority.pojo.ExceptionReturn;
 import com.chenxin.authority.pojo.ExtGridReturn;
 import com.chenxin.authority.pojo.ExtPager;
 import com.chenxin.authority.pojo.ExtReturn;
 import com.chenxin.authority.service.BaseRoleService;
+import com.google.common.collect.Maps;
 
 /**
  * 角色
@@ -60,23 +61,12 @@ public class RoleController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	public Object all(ExtPager pager, @RequestParam(required = false) String roleName) {
-		Criteria criteria = new Criteria();
-		// 设置分页信息
-		if (pager.getLimit() != null && pager.getStart() != null) {
-			criteria.setOracleEnd(pager.getLimit() + pager.getStart());
-			criteria.setOracleStart(pager.getStart());
-		}
-		// 排序信息
-		if (StringUtils.isNotBlank(pager.getDir()) && StringUtils.isNotBlank(pager.getSort())) {
-			criteria.setOrderByClause(pager.getSort() + " " + pager.getDir());
-		}
+		Map<String, Object> parameters = Maps.newHashMap();
 		if (StringUtils.isNotBlank(roleName)) {
-			criteria.put("roleNameLike", roleName);
+			parameters.put("LIKE_roleName", roleName);
 		}
-		List<BaseRole> list = this.baseRolesService.selectByExample(criteria);
-		int total = this.baseRolesService.countByExample(criteria);
-		logger.debug("total:{}", total);
-		return new ExtGridReturn(total, list);
+		Page<BaseRole> page = this.baseRolesService.selectByParameters(pager, parameters);
+		return new ExtGridReturn(page.getTotalElements(), page.getContent());
 	}
 
 	/**
@@ -92,14 +82,8 @@ public class RoleController {
 			if (StringUtils.isBlank(role.getRoleName())) {
 				return new ExtReturn(false, "角色名称不能为空!");
 			}
-			String result = this.baseRolesService.saveRole(role);
-			if ("01".equals(result)) {
-				return new ExtReturn(true, "保存成功！");
-			} else if ("00".equals(result)) {
-				return new ExtReturn(false, "保存失败！");
-			} else {
-				return new ExtReturn(false, result);
-			}
+			this.baseRolesService.saveRole(role);
+			return new ExtReturn(true, "保存成功！");
 		} catch (Exception e) {
 			logger.error("Exception: ", e);
 			return new ExceptionReturn(e);
@@ -111,21 +95,13 @@ public class RoleController {
 	 */
 	@RequestMapping("/del/{roleId}")
 	@ResponseBody
-	public Object delete(@PathVariable String roleId) {
+	public Object delete(@PathVariable Long roleId) {
 		try {
-			if (StringUtils.isBlank(roleId)) {
+			if (null == roleId) {
 				return new ExtReturn(false, "角色主键不能为空！");
 			}
-			Criteria criteria = new Criteria();
-			criteria.put("roleId", roleId);
-			String result = this.baseRolesService.deleteByPrimaryKey(criteria);
-			if ("01".equals(result)) {
-				return new ExtReturn(true, "删除成功！");
-			} else if ("00".equals(result)) {
-				return new ExtReturn(false, "删除失败！");
-			} else {
-				return new ExtReturn(false, result);
-			}
+			this.baseRolesService.deleteByPrimaryKey(roleId);
+			return new ExtReturn(true, "删除成功！");
 		} catch (Exception e) {
 			logger.error("Exception: ", e);
 			return new ExceptionReturn(e);

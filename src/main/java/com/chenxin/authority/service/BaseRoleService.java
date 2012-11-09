@@ -1,15 +1,15 @@
 package com.chenxin.authority.service;
 
 import com.chenxin.authority.pojo.BaseRole;
-import com.chenxin.authority.pojo.Criteria;
-import java.util.List;
+import com.chenxin.authority.pojo.ExtPager;
+
+import java.util.Map;
+
+import org.springframework.data.domain.Page;
 
 public interface BaseRoleService {
-	int countByExample(Criteria example);
 
-	BaseRole selectByPrimaryKey(String roleId);
-
-	List<BaseRole> selectByExample(Criteria example);
+	Page<BaseRole> selectByParameters(ExtPager pager, Map<String, Object> parameters);
 
 	/**
 	 * 保存角色
@@ -17,7 +17,7 @@ public interface BaseRoleService {
 	 * @param role
 	 * @return 00：失败，01：成功 ,其他情况
 	 */
-	String saveRole(BaseRole role);
+	BaseRole saveRole(BaseRole role);
 
 	/**
 	 * 根据主键删除
@@ -25,5 +25,5 @@ public interface BaseRoleService {
 	 * @param criteria
 	 * @return 00：失败，01：成功 ,其他情况
 	 */
-	String deleteByPrimaryKey(Criteria criteria);
+	void deleteByPrimaryKey(Long roleId);
 }

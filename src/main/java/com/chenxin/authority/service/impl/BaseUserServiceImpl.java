@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -24,17 +25,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.chenxin.authority.common.utils.EncryptUtil;
-import com.chenxin.authority.dao.BaseUserRoleRepository;
+import com.chenxin.authority.common.utils.JpaTools;
 import com.chenxin.authority.dao.BaseUserRepository;
-import com.chenxin.authority.pojo.BaseUserRole;
+import com.chenxin.authority.dao.BaseUserRoleRepository;
 import com.chenxin.authority.pojo.BaseUser;
+import com.chenxin.authority.pojo.BaseUserRole;
 import com.chenxin.authority.pojo.Criteria;
+import com.chenxin.authority.pojo.ExtPager;
 import com.chenxin.authority.service.BaseUserService;
+import com.google.common.collect.Maps;
 
 //import org.apache.commons.codec.digest.DigestUtils;
 @Service
@@ -66,6 +73,7 @@ public class BaseUserServiceImpl implements BaseUserService {
 
 	@Override
 	public String selectByBaseUser(Criteria criteria) {
+		Map<String, Object> parameters = Maps.newHashMap();
 		// 条件查询
 		List<BaseUser> list = this.baseUsersRepository.selectByExample(criteria);
 		if (null == list || list.size() != 1) {
@@ -93,23 +101,6 @@ public class BaseUserServiceImpl implements BaseUserService {
 		// controller中取出放到session中
 		criteria.put("baseUser", dataBaseUser);
 		return "01";
-	}
-
-	@Override
-	public int countByExample(Criteria example) {
-		int count = this.baseUsersRepository.countByExample(example);
-		logger.debug("count: {}", count);
-		return count;
-	}
-
-	@Override
-	public BaseUser selectByPrimaryKey(String userId) {
-		return this.baseUsersRepository.selectByPrimaryKey(userId);
-	}
-
-	@Override
-	public List<BaseUser> selectByExample(Criteria example) {
-		return this.baseUsersRepository.selectByExample(example);
 	}
 
 	@Override
@@ -353,6 +344,13 @@ public class BaseUserServiceImpl implements BaseUserService {
 		Transport.send(message);
 		logger.info("向邮件地址:{}发送邮件成功！", address);
 		return true;
+	}
+
+	@Override
+	public Page<BaseUser> selectByParameters(ExtPager pager, Map<String, Object> parameters) {
+		PageRequest pageable = JpaTools.getPageRequest(pager, "");
+		Specification<BaseUser> spec = JpaTools.getSpecification(parameters, BaseUser.class);
+		return this.baseUsersRepository.findAll(spec, pageable);
 	}
 
 }

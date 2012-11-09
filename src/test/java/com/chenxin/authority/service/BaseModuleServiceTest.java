@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.chenxin.authority.pojo.BaseModule;
-import com.chenxin.authority.pojo.Criteria;
 import com.chenxin.authority.pojo.Tree;
 import com.chenxin.authority.service.BaseModuleService;
 
@@ -34,8 +33,7 @@ public class BaseModuleServiceTest extends Services {
 
 	@Test
 	public void selectAllModules() {
-		Criteria criteria = new Criteria();
-		Tree tree = service.selectAllModules(criteria);
+		Tree tree = service.selectAllModules();
 		assertNotNull(tree);
 	}
 }

@@ -83,7 +83,7 @@ public class BaseFieldServiceImpl implements BaseFieldService {
 	}
 
 	@Override
-	public Page<BaseField> getBaseField(ExtPager pager, Map<String, Object> parameters) {
+	public Page<BaseField> selectByParameters(ExtPager pager, Map<String, Object> parameters) {
 		PageRequest pageable = JpaTools.getPageRequest(pager, " field desc ,sort asc ");
 		Specification<BaseField> spec = JpaTools.getSpecification(parameters, BaseField.class);
 		return this.repository.findAll(spec, pageable);

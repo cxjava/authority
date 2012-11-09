@@ -43,18 +43,12 @@ public class BaseRoleServiceImpl implements BaseRoleService {
 
 	@Override
 	public void deleteByPrimaryKey(Long roleId) {
-		Map<String, Object> parameters = Maps.newHashMap();
-		parameters.put("roleId", roleId);
-		Specification<BaseUserRole> spec = JpaTools.getSpecification(parameters, BaseUserRole.class);
-		Long count = this.baseUserRoleRepository.count(spec);
+		Long count = this.baseUserRoleRepository.findByRoleId(roleId);
 		if (count > 0) {
 			logger.error("其他用户拥有该角色，还不能删除!");
 			throw new ServiceException("其他用户拥有该角色，还不能删除!", "");
 		}
-		Specification<BaseRoleModule> specRoleModule = JpaTools.getSpecification(parameters, BaseRoleModule.class);
-		List<BaseRoleModule> olds = this.baseRoleModuleRepository.findAll(specRoleModule);
-		if (null != olds)
-			this.baseRoleModuleRepository.delete(olds);
+		this.baseRoleModuleRepository.deleteByRoleId(roleId);
 		this.baseRolesRepository.delete(roleId);
 	}
 

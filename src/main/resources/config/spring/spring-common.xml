@@ -47,7 +47,7 @@
 	</bean>
 
 	<!-- 使用annotation定义事务 -->
-	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<!-- production环境 -->
 	<context:property-placeholder ignore-unresolvable="true"

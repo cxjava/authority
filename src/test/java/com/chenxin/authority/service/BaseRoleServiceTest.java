@@ -40,7 +40,7 @@ public class BaseRoleServiceTest extends Services {
 		try {
 			this.service.deleteByPrimaryKey(1L);
 		} catch (ServiceException e) {
-			assertEquals("其他用户拥有该角色，还不能删除", e.getMessage());
+			assertEquals("其他用户拥有该角色，还不能删除!", e.getMessage());
 		}
 		this.service.saveRole(base);
 		this.service.deleteByPrimaryKey(base.getId());

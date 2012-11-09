@@ -26,7 +26,6 @@ import com.chenxin.authority.pojo.BaseModule;
 import com.chenxin.authority.pojo.BaseRoleModule;
 import com.chenxin.authority.pojo.BaseUser;
 import com.chenxin.authority.pojo.Combo;
-import com.chenxin.authority.pojo.Criteria;
 import com.chenxin.authority.pojo.ExtPager;
 import com.chenxin.authority.pojo.Tree;
 import com.chenxin.authority.pojo.TreeMenu;
@@ -95,72 +94,53 @@ public class BaseModuleServiceImpl implements BaseModuleService {
 		TreeMenu menu = new TreeMenu(list);
 		return menu.getTreeJson();
 	}
-
-	@SuppressWarnings("unchecked")
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
-	public String saveModule(Criteria criteria) {
-		String roleId = criteria.getString("roleId");
-		ArrayList<Integer> modulesIds = (ArrayList<Integer>) criteria.get("modulesIdList");
+	public String saveModule(Long roleId,ArrayList<Long> modulesIdList) {
 		// 删除以前的资源
-		this.baseRoleModuleRepository.deleteByExample(criteria);
-		for (Integer moduleId : modulesIds) {
+		this.baseRoleModuleRepository.deleteByRoleId(roleId);
+		for (Long moduleId : modulesIdList) {
 			if (moduleId != null) {
 				BaseRoleModule roleModule = new BaseRoleModule();
 				roleModule.setModuleId(moduleId);
 				roleModule.setRoleId(roleId);
-				this.baseRoleModuleRepository.insert(roleModule);
+				this.baseRoleModuleRepository.save(roleModule);
 			}
 		}
 		return "01";
 	}
 
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
-	public String saveModules(Criteria example) {
-		BaseModule modules = (BaseModule) example.get("modules");
-		int result = 0;
-		if (modules.getModuleId() == null) {
-			result = this.baseModulesRepository.insertSelective(modules);
-		} else {
-			result = this.baseModulesRepository.updateByPrimaryKeySelective(modules);
-		}
-		return result > 0 ? "01" : "00";
+	public void saveModules(BaseModule modules) {
+			this.baseModulesRepository.save(modules);
 	}
 
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = { Exception.class })
-	public String delete(Criteria example) {
-		Integer moduleId = example.getInteger("moduleId");
-		int result = 0;
+	public void delete(Long moduleId) {
 		// 删除这个模块下面的菜单
-		example.clear();
-		example.put("parentId", moduleId);
-		this.baseModulesRepository.deleteByExample(example);
+		this.baseModulesRepository.deleteByParentUrl(moduleId);
 		// 删除自己
-		result = this.baseModulesRepository.deleteByPrimaryKey(moduleId);
-		return result > 0 ? "01" : "00";
+		this.baseModulesRepository.delete(moduleId);
 	}
 
-	@Override
-	public List<HashMap<String, Object>> selectByDynamicSql(Criteria example) {
-		return this.baseModulesRepository.selectByDynamicSql(example);
-	}
-
-	@Override
-	public List<Combo> selectComboBySql(Criteria example) {
-		return this.baseModulesRepository.selectComboBySql(example);
-	}
+//	@Override
+//	public List<HashMap<String, Object>> selectByDynamicSql(Criteria example) {
+//		return this.baseModulesRepository.selectByDynamicSql(example);
+//	}
+//
+//	@Override
+//	public List<Combo> selectComboBySql(Criteria example) {
+//		return this.baseModulesRepository.selectComboBySql(example);
+//	}
 
 	@Override
 	public Map<Object, Object> selectComboBySql(String sql) {
-		Criteria criteria = new Criteria();
-		criteria.put("comboSql", sql);
-		List<Combo> list = this.baseModulesRepository.selectComboBySql(criteria);
+//		Criteria criteria = new Criteria();
+//		criteria.put("comboSql", sql);
+//		List<Combo> list = this.baseModulesRepository.selectComboBySql(criteria);
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
-		for (Combo combo : list) {
-			map.put(combo.getK(), combo.getV());
-		}
+//		for (Combo combo : list) {
+//			map.put(combo.getK(), combo.getV());
+//		}
 		return map;
 	}
 
@@ -169,6 +149,10 @@ public class BaseModuleServiceImpl implements BaseModuleService {
 		PageRequest pageable = JpaTools.getPageRequest(pager, "");
 		Specification<BaseModule> spec = JpaTools.getSpecification(parameters, BaseModule.class);
 		return this.baseModulesRepository.findAll(spec, pageable);
+	}
+	@Override
+	public List<BaseRoleModule> selectModuleByRoleId(Long roleId) {
+		return this.baseRoleModuleRepository.findByRoleId(roleId);
 	}
 
 }

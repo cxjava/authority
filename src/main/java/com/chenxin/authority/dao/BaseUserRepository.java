@@ -9,12 +9,8 @@ import com.chenxin.authority.pojo.BaseUser;
 
 public interface BaseUserRepository extends PagingAndSortingRepository<BaseUser, Long>, JpaSpecificationExecutor<BaseUser> {
 
-	public List<BaseUser> findByAccount(String account);
-
-	List<BaseUser> findByAccountAndRealName(String account, String realName);
-
-	List<BaseUser> findByAccountIgnoreCaseAndRealName(String account, String realName);
-
-	List<BaseUser> findByAccountAndRealNameOrPassword(String account, String realName, String password);
+	List<BaseUser> findByAccount(String account);
+	
+	List<BaseUser> findByAccountAndEmail(String account,String email);
 
 }

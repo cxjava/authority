@@ -28,14 +28,12 @@ import com.chenxin.authority.common.springmvc.DateConvertEditor;
 import com.chenxin.authority.pojo.BaseField;
 import com.chenxin.authority.pojo.BaseModule;
 import com.chenxin.authority.pojo.BaseRoleModule;
-import com.chenxin.authority.pojo.Criteria;
 import com.chenxin.authority.pojo.ExceptionReturn;
 import com.chenxin.authority.pojo.ExtGridReturn;
 import com.chenxin.authority.pojo.ExtPager;
 import com.chenxin.authority.pojo.ExtReturn;
 import com.chenxin.authority.pojo.Tree;
 import com.chenxin.authority.service.BaseModuleService;
-import com.chenxin.authority.service.BaseRoleModuleService;
 import com.google.common.collect.Maps;
 
 /**
@@ -51,8 +49,6 @@ public class ModuleController {
 	private static final Logger logger = LoggerFactory.getLogger(ModuleController.class);
 	@Autowired
 	private BaseModuleService baseModulesService;
-	@Autowired
-	private BaseRoleModuleService baseRoleModuleService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -119,9 +115,7 @@ public class ModuleController {
 			if (null == roleId) {
 				return new ExtReturn(false, "角色ID不能为空！");
 			}
-			Criteria criteria = new Criteria();
-			criteria.put("roleId", roleId);
-			List<BaseRoleModule> list = this.baseRoleModuleService.selectByExample(criteria);
+			List<BaseRoleModule> list = this.baseModulesService.selectModuleByRoleId(roleId);
 			return list;
 		} catch (Exception e) {
 			logger.error("Exception: ", e);
@@ -134,10 +128,10 @@ public class ModuleController {
 	 */
 	@RequestMapping("/saverole")
 	@ResponseBody
-	public Object save(@RequestParam String roleId, @RequestParam String moduleIds) {
+	public Object save(@RequestParam Long roleId, @RequestParam String moduleIds) {
 		try {
-			ArrayList<Integer> modulesIdList = new ArrayList<Integer>();
-			if (StringUtils.isBlank(roleId)) {
+			ArrayList<Long> modulesIdList = new ArrayList<Long>();
+			if (null==roleId) {
 				return new ExtReturn(false, "角色不能为空！");
 			}
 			if (StringUtils.isBlank(moduleIds)) {
@@ -148,15 +142,12 @@ public class ModuleController {
 					return new ExtReturn(false, "选择的资源不能为空！");
 				}
 				for (int i = 0; i < modules.length; i++) {
-					modulesIdList.add(new Integer(modules[i]));
+					modulesIdList.add(new Long(modules[i]));
 				}
 			}
 			logger.debug("save() - String roleId={}", roleId);
 			logger.debug("save() - String moduleIds={}", moduleIds);
-			Criteria criteria = new Criteria();
-			criteria.put("modulesIdList", modulesIdList);
-			criteria.put("roleId", roleId);
-			String result = this.baseModulesService.saveModule(criteria);
+			String result = this.baseModulesService.saveModule(roleId,modulesIdList);
 			if ("01".equals(result)) {
 				return new ExtReturn(true, "保存成功！");
 			} else if ("00".equals(result)) {
@@ -183,16 +174,8 @@ public class ModuleController {
 			if (StringUtils.isBlank(modules.getModuleName())) {
 				return new ExtReturn(false, "模块名称不能为空！");
 			}
-			Criteria criteria = new Criteria();
-			criteria.put("modules", modules);
-			String result = this.baseModulesService.saveModules(criteria);
-			if ("01".equals(result)) {
-				return new ExtReturn(true, "保存成功！");
-			} else if ("00".equals(result)) {
-				return new ExtReturn(false, "保存失败！");
-			} else {
-				return new ExtReturn(false, result);
-			}
+			this.baseModulesService.saveModules(modules);
+			return new ExtReturn(true, "保存成功！");
 		} catch (Exception e) {
 			logger.error("Exception: ", e);
 			return new ExceptionReturn(e);
@@ -204,21 +187,13 @@ public class ModuleController {
 	 */
 	@RequestMapping("/del/{moduleId}")
 	@ResponseBody
-	public Object delete(@PathVariable String moduleId) {
+	public Object delete(@PathVariable Long moduleId) {
 		try {
-			if (StringUtils.isBlank(moduleId)) {
+			if (null==moduleId) {
 				return new ExtReturn(false, "模块主键不能为空！");
 			}
-			Criteria criteria = new Criteria();
-			criteria.put("moduleId", moduleId);
-			String result = this.baseModulesService.delete(criteria);
-			if ("01".equals(result)) {
-				return new ExtReturn(true, "删除成功！");
-			} else if ("00".equals(result)) {
-				return new ExtReturn(false, "删除失败！");
-			} else {
-				return new ExtReturn(false, result);
-			}
+			this.baseModulesService.delete(moduleId);
+			return new ExtReturn(true, "删除成功！");
 		} catch (Exception e) {
 			logger.error("Exception: ", e);
 			return new ExceptionReturn(e);

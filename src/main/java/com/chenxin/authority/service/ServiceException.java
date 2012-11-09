@@ -30,7 +30,7 @@ public class ServiceException extends RuntimeException {
 		this.errorCode = errorCode;
 	}
 
-	public ServiceException(String message, Throwable cause, String errorCode) {
+	public ServiceException(Throwable cause,String message, String errorCode) {
 		super(message, cause);
 		this.errorCode = errorCode;
 	}

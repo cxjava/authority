@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +29,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chenxin.authority.common.springmvc.DateConvertEditor;
 import com.chenxin.authority.pojo.BaseUser;
-import com.chenxin.authority.pojo.Criteria;
 import com.chenxin.authority.pojo.ExceptionReturn;
 import com.chenxin.authority.pojo.ExtReturn;
 import com.chenxin.authority.pojo.Tree;
@@ -37,6 +37,7 @@ import com.chenxin.authority.service.BaseUserService;
 import com.chenxin.authority.service.ServiceException;
 import com.chenxin.authority.web.interseptor.WebConstants;
 import com.google.code.kaptcha.Constants;
+import com.google.common.collect.Maps;
 
 /**
  * 用户登录相关
@@ -114,14 +115,21 @@ public class LoginController {
 			if (StringUtils.isBlank(password)) {
 				return new ExtReturn(false, "密码不能为空！");
 			}
-			Criteria criteria = new Criteria();
-			criteria.put("account", account);
-			criteria.put("passwordIn", password);
-			criteria.put("loginip", this.getIpAddr(request));
-			BaseUser baseUser = this.baseUsersService.selectByBaseUser(criteria);
-			session.setAttribute(WebConstants.CURRENT_USER, baseUser);
-			logger.info("{}登陆成功", baseUser.getRealName());
-			return new ExtReturn(true, "success");
+			Map<String, Object> parameters = Maps.newHashMap();
+			parameters.put("account", account);
+			parameters.put("passwordIn", password);
+			parameters.put("loginIp", this.getIpAddr(request));
+			String result =this.baseUsersService.selectByAccount(parameters);
+			if ("01".equals(result)) {
+				BaseUser baseUser = (BaseUser) parameters.get("baseUser");
+				session.setAttribute(WebConstants.CURRENT_USER, baseUser);
+				logger.info("{}登陆成功", baseUser.getRealName());
+				return new ExtReturn(true, "success");
+			} else if ("00".equals(result)) {
+				return new ExtReturn(false, "用户名或者密码错误!");
+			} else {
+				return new ExtReturn(false, result);
+			}
 		} catch (ServiceException e) {
 			logger.error("Exception: ", e);
 			if (StringUtils.isNotBlank(e.getErrorCode())) {
@@ -201,9 +209,7 @@ public class LoginController {
 			if (StringUtils.isBlank(user.getEmail())) {
 				return new ExtReturn(false, "注册邮箱不能为空！");
 			}
-			Criteria criteria = new Criteria();
-			criteria.put("user", user);
-			String result = this.baseUsersService.findPassword(criteria);
+			String result = this.baseUsersService.findPassword(user);
 			if ("01".equals(result)) {
 				return new ExtReturn(true, "邮件发送成功！请登录注册邮箱查收！");
 			} else if ("00".equals(result)) {
@@ -221,9 +227,8 @@ public class LoginController {
 	 * 找回用户密码时的重新设置密码的页面
 	 */
 	@RequestMapping(value = "/resetpwd/{token}/{userId}", method = RequestMethod.GET)
-	public String resetpwd(@PathVariable String token, @PathVariable String userId, Model model) {
-		// TODO:add
-		BaseUser user = null;// this.baseUsersService.selectByPrimaryKey(userId);
+	public String resetpwd(@PathVariable String token, @PathVariable Long userId, Model model) {
+		BaseUser user = this.baseUsersService.findOne(userId);
 		if (user == null || !user.getPassword().equals(token.toLowerCase()) || compareTo(user.getLastLoginTime())) {
 			model.addAttribute("error", "链接已经失效！");
 			return "user/resetpwd";
@@ -262,11 +267,11 @@ public class LoginController {
 				model.addAttribute("msg", "新密码和确认密码输入不一致！");
 				return "user/resetpwd";
 			}
-			Criteria criteria = new Criteria();
-			criteria.put("token", t);
-			criteria.put("userId", u);
-			criteria.put("password", newpwd);
-			String result = this.baseUsersService.updatePassword(criteria);
+			Map<String, Object> parameters = Maps.newHashMap();
+			parameters.put("token", t);
+			parameters.put("userId", u);
+			parameters.put("password", newpwd);
+			String result = this.baseUsersService.updatePassword(parameters);
 			if ("01".equals(result)) {
 				model.addAttribute("msg", "密码修改成功！请重新登录");
 			} else if ("00".equals(result)) {

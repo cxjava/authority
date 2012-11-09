@@ -6,15 +6,15 @@ import java.util.List;
 /**
  * Ext Grid返回对象
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-3-10 下午09:43:35
  */
-public class ExtGridReturn implements Serializable{
+public class ExtGridReturn implements Serializable {
 	private static final long serialVersionUID = -8009510606594225281L;
 	/**
 	 * 总共条数
 	 */
-	private int results;
+	private Long results;
 	/**
 	 * 所有数据
 	 */
@@ -23,16 +23,16 @@ public class ExtGridReturn implements Serializable{
 	public ExtGridReturn() {
 	}
 
-	public ExtGridReturn(int results, List<?> rows) {
+	public ExtGridReturn(Long results, List<?> rows) {
 		this.results = results;
 		this.rows = rows;
 	}
 
-	public int getResults() {
+	public Long getResults() {
 		return results;
 	}
 
-	public void setResults(int results) {
+	public void setResults(Long results) {
 		this.results = results;
 	}
 

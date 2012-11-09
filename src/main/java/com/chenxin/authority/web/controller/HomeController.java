@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * 主页面
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-11-2 下午2:03:20
  */
 @Controller

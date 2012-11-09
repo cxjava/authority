@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAda
 /**
  * controller基本测试类
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-12-7 下午4:17:51
  */
 @ContextConfiguration(locations = { "classpath:/config/spring/spring*.xml" })

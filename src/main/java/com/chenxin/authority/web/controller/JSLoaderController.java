@@ -30,7 +30,7 @@ public class JSLoaderController {
 	 */
 	@RequestMapping(value = "/yepnope", method = RequestMethod.GET)
 	public String yepnope(Locale locale, Model model) {
-//		return "loader/yepnope";
+		// return "loader/yepnope";
 		return "user/resetpwd";
 	}
 
@@ -65,6 +65,7 @@ public class JSLoaderController {
 	public String loginyepnope() {
 		return "loader/login.yepnope";
 	}
+
 	/**
 	 * bootstrap
 	 */

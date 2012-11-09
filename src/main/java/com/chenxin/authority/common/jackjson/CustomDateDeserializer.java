@@ -23,7 +23,7 @@ import org.codehaus.jackson.map.JsonDeserializer;
  * }
  * </pre>
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2010-6-28 下午01:08:23
  */
 public class CustomDateDeserializer extends JsonDeserializer<Date> {

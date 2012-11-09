@@ -4,13 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -22,17 +23,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chenxin.authority.common.springmvc.DateConvertEditor;
 import com.chenxin.authority.pojo.BaseField;
-import com.chenxin.authority.pojo.Criteria;
 import com.chenxin.authority.pojo.ExceptionReturn;
 import com.chenxin.authority.pojo.ExtGridReturn;
 import com.chenxin.authority.pojo.ExtPager;
 import com.chenxin.authority.pojo.ExtReturn;
 import com.chenxin.authority.service.BaseFieldService;
+import com.chenxin.authority.service.ServiceException;
+import com.google.common.collect.Maps;
 
 /**
  * 系统字段设置
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-12-19 下午1:48:19
  */
 @Controller
@@ -64,26 +66,13 @@ public class FieldController {
 	@ResponseBody
 	public Object all(ExtPager pager, @RequestParam(required = false) String fieldName) {
 		try {
-			Criteria criteria = new Criteria();
-			// 设置分页信息
-			if (pager.getLimit() != null && pager.getStart() != null) {
-				criteria.setOracleEnd(pager.getLimit() + pager.getStart());
-				criteria.setOracleStart(pager.getStart());
-			}
-			// 排序信息
-			if (StringUtils.isNotBlank(pager.getDir()) && StringUtils.isNotBlank(pager.getSort())) {
-				criteria.setOrderByClause(pager.getSort() + " " + pager.getDir());
-			} else {
-				criteria.setOrderByClause(" field desc ,sort asc ");
-			}
+			Map<String, Object> parameters = Maps.newHashMap();
 			if (StringUtils.isNotBlank(fieldName)) {
-				criteria.put("fieldNameLike", fieldName);
+				parameters.put("LIKE_fieldName", fieldName);
 			}
-			List<BaseField> list = this.baseFieldsService.selectByExample(criteria);
-			int total = this.baseFieldsService.countByExample(criteria);
-			logger.debug("total:{}", total);
-			return new ExtGridReturn(total, list);
-		} catch (Exception e) {
+			Page<BaseField> page = this.baseFieldsService.getBaseField(pager, parameters);
+			return new ExtGridReturn(page.getTotalElements(), page.getContent());
+		} catch (ServiceException e) {
 			logger.error("Exception: ", e);
 			return new ExceptionReturn(e);
 		}
@@ -111,17 +100,9 @@ public class FieldController {
 			if (StringUtils.isBlank(fields.getDisplayField())) {
 				return new ExtReturn(false, "字段显示值不能为空！");
 			}
-			Criteria criteria = new Criteria();
-			criteria.put("fields", fields);
-			String result = this.baseFieldsService.saveFields(criteria);
-			if ("01".equals(result)) {
-				return new ExtReturn(true, "保存成功！");
-			} else if ("00".equals(result)) {
-				return new ExtReturn(false, "保存失败！");
-			} else {
-				return new ExtReturn(false, result);
-			}
-		} catch (Exception e) {
+			this.baseFieldsService.saveField(fields);
+			return new ExtReturn(true, "保存成功！");
+		} catch (ServiceException e) {
 			logger.error("Exception: ", e);
 			return new ExceptionReturn(e);
 		}
@@ -132,22 +113,14 @@ public class FieldController {
 	 */
 	@RequestMapping("/del/{fieldId}")
 	@ResponseBody
-	public Object delete(@PathVariable String fieldId) {
+	public Object delete(@PathVariable Long fieldId) {
 		try {
-			if (StringUtils.isBlank(fieldId)) {
+			if (fieldId == null) {
 				return new ExtReturn(false, "主键不能为空！");
 			}
-			Criteria criteria = new Criteria();
-			criteria.put("fieldId", fieldId);
-			String result = this.baseFieldsService.delete(criteria);
-			if ("01".equals(result)) {
-				return new ExtReturn(true, "删除成功！");
-			} else if ("00".equals(result)) {
-				return new ExtReturn(false, "删除失败！");
-			} else {
-				return new ExtReturn(false, result);
-			}
-		} catch (Exception e) {
+			this.baseFieldsService.delete(fieldId);
+			return new ExtReturn(true, "删除成功！");
+		} catch (ServiceException e) {
 			logger.error("Exception: ", e);
 			return new ExceptionReturn(e);
 		}
@@ -160,13 +133,10 @@ public class FieldController {
 	@ResponseBody
 	public Object synchro(HttpSession session) {
 		try {
-			Criteria criteria = new Criteria();
-			criteria.setOrderByClause(" field desc ,sort asc ");
-			criteria.put("enabled", "1");
 			session.getServletContext().removeAttribute("fields");
-			session.getServletContext().setAttribute("fields", baseFieldsService.selectAllByExample(criteria));
+			session.getServletContext().setAttribute("fields", baseFieldsService.selectAll());
 			return new ExtReturn(true, "同步成功！");
-		} catch (Exception e) {
+		} catch (ServiceException e) {
 			logger.error("Exception: ", e);
 			return new ExceptionReturn(e);
 		}

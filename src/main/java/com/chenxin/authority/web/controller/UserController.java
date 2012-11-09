@@ -35,7 +35,7 @@ import com.chenxin.authority.web.interseptor.WebConstants;
 /**
  * 用户相关
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-10-20 上午11:45:06
  */
 @Controller
@@ -293,7 +293,7 @@ public class UserController {
 			if (user == null) {
 				return new ExtReturn(false, "用户不能为空！");
 			}
-			if (user.getId()==null) {
+			if (user.getId() == null) {
 				return new ExtReturn(false, "用户ID不能为空！");
 			}
 			String result = this.baseUsersService.updateByPrimaryKeySelective(user);
@@ -310,5 +310,4 @@ public class UserController {
 		}
 	}
 
-	
 }

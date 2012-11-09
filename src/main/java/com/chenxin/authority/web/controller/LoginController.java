@@ -40,7 +40,7 @@ import com.google.code.kaptcha.Constants;
 /**
  * 用户登录相关
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-10-20 上午11:45:00
  */
 @Controller
@@ -180,19 +180,19 @@ public class LoginController {
 	 */
 	@RequestMapping(value = "/findpwd", method = RequestMethod.POST)
 	@ResponseBody
-	public Object saveFindpwd(BaseUser user,@RequestParam String captcha,HttpSession session) {
+	public Object saveFindpwd(BaseUser user, @RequestParam String captcha, HttpSession session) {
 		try {
 			if (StringUtils.isBlank(captcha)) {
 				return new ExtReturn(false, "验证码不能为空！");
 			}
-			Object sessionCaptcha =  session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
-			if(null==sessionCaptcha){
+			Object sessionCaptcha = session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
+			if (null == sessionCaptcha) {
 				return new ExtReturn(false, "验证码已经失效!请重新输入新的验证码！");
 			}
-			if (!captcha.equalsIgnoreCase((String)sessionCaptcha)) {
+			if (!captcha.equalsIgnoreCase((String) sessionCaptcha)) {
 				return new ExtReturn(false, "验证码输入不正确,请重新输入！");
 			}
-			//移除验证码，不能用同一个验证码重复提交来试探密码等，不要想铁道部的网站那样
+			// 移除验证码，不能用同一个验证码重复提交来试探密码等，不要想铁道部的网站那样
 			session.removeAttribute(Constants.KAPTCHA_SESSION_KEY);
 			if (user == null) {
 				return new ExtReturn(false, "用户不能为空！");

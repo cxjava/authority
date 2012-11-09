@@ -18,7 +18,7 @@ import com.google.code.kaptcha.Producer;
 /**
  * 验证码
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-3-10 下午12:47:37
  */
 @Controller

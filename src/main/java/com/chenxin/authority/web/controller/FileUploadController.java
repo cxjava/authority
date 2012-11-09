@@ -35,9 +35,9 @@ public class FileUploadController {
 	public void processUpload2(@RequestParam MultipartFile file, HttpServletRequest request, HttpServletResponse response,
 			PrintWriter writer) {
 		try {
-			//文件的MD5
+			// 文件的MD5
 			logger.info("start");
-			String fileMD5=FileDigest.getFileMD5(file.getInputStream());
+			String fileMD5 = FileDigest.getFileMD5(file.getInputStream());
 			logger.info(fileMD5);
 			// 保存的地址
 			String savePath = request.getSession().getServletContext().getRealPath("/upload");
@@ -45,8 +45,10 @@ public class FileUploadController {
 			String uploadFileName = file.getOriginalFilename();
 			// 获取文件后缀名 //需要保存
 			String fileType = StringUtils.substringAfterLast(uploadFileName, ".");
-			logger.debug("文件的MD5：{},上传的文件名：{},文件后缀名：{},文件大小：{}",
-					new Object[] {fileMD5, org.springframework.util.StringUtils.getFilenameExtension(uploadFileName), fileType, file.getSize() });
+			logger.debug(
+					"文件的MD5：{},上传的文件名：{},文件后缀名：{},文件大小：{}",
+					new Object[] { fileMD5, org.springframework.util.StringUtils.getFilenameExtension(uploadFileName), fileType,
+							file.getSize() });
 			// 以年月/天的格式来存放
 			String dataPath = DateFormatUtils.format(new Date(), "yyyy-MM" + File.separator + "dd");
 			// uuid来保存不会重复

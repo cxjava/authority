@@ -3,7 +3,7 @@ package com.chenxin.authority.pojo;
 /**
  * 
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-8-2 下午3:20:49
  */
 public class Table {

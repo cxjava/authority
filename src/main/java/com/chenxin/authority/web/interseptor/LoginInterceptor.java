@@ -11,7 +11,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 /**
  * 验证用户登陆拦截器
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-3-13 下午09:02:00
  */
 public class LoginInterceptor extends HandlerInterceptorAdapter {

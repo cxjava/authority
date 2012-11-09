@@ -19,7 +19,7 @@ import org.codehaus.jackson.map.SerializerProvider;
  * }
  * </pre>
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2010-7-20 下午02:51:10
  */
 public class CustomDateTimeSerializer extends JsonSerializer<Date> {

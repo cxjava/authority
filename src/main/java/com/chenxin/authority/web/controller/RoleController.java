@@ -29,7 +29,7 @@ import com.chenxin.authority.service.BaseRoleService;
 /**
  * 角色
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-10-21 下午2:49:31
  */
 @Controller

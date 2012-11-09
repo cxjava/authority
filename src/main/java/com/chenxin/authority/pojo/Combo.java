@@ -11,15 +11,16 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author cx
  * @date 2012-2-27 上午9:32:31
  */
-public class Combo implements Serializable{
+public class Combo implements Serializable {
 	private static final long serialVersionUID = 6720784189359113848L;
 	private String k;
 	private String v;
+
 	@Override
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE, true, false);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE, true, false);
 	}
+
 	public Combo() {
 		super();
 	}

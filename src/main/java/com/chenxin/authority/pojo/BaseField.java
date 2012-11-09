@@ -33,12 +33,12 @@ public class BaseField extends IdEntity {
 	/**
 	 * 是否启用
 	 */
-	private Short enabled;
+	private Integer enabled;
 
 	/**
 	 * 排序
 	 */
-	private Short sort;
+	private Integer sort;
 
 	/**
 	 * @return 字段
@@ -103,7 +103,7 @@ public class BaseField extends IdEntity {
 	/**
 	 * @return 是否启用
 	 */
-	public Short getEnabled() {
+	public Integer getEnabled() {
 		return enabled;
 	}
 
@@ -111,14 +111,14 @@ public class BaseField extends IdEntity {
 	 * @param enabled
 	 *            是否启用
 	 */
-	public void setEnabled(Short enabled) {
+	public void setEnabled(Integer enabled) {
 		this.enabled = enabled;
 	}
 
 	/**
 	 * @return 排序
 	 */
-	public Short getSort() {
+	public Integer getSort() {
 		return sort;
 	}
 
@@ -126,7 +126,7 @@ public class BaseField extends IdEntity {
 	 * @param sort
 	 *            排序
 	 */
-	public void setSort(Short sort) {
+	public void setSort(Integer sort) {
 		this.sort = sort;
 	}
 }

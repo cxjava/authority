@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Web层相关的实用工具类
  * 
- * @author 
+ * @author
  * @date 2011-12-1 下午3:14:59
  */
 public class WebUtils {

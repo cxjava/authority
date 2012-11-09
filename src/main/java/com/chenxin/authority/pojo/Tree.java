@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * ext树菜单
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-10-19 下午10:04:45
  */
 public class Tree implements Serializable {

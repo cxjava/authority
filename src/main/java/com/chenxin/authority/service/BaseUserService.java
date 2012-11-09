@@ -19,13 +19,15 @@ public interface BaseUserService {
 	 * @return 00：失败，01：成功 ,其他情况
 	 */
 	String updatePassword(Criteria example);
+
 	/**
 	 * 找回用户的密码
 	 * 
 	 * @param example
 	 * @return 00：失败，01：成功 ,其他情况
 	 */
-	String findPassword(Criteria example)throws Exception;
+	String findPassword(Criteria example) throws Exception;
+
 	/**
 	 * 重置用户的密码
 	 * 

@@ -14,7 +14,7 @@ import com.chenxin.authority.web.controller.UserController;
 /**
  * controller基本测试类
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-12-7 下午4:17:51
  */
 public class SimpleControllerTest extends ControllerTest {
@@ -48,10 +48,11 @@ public class SimpleControllerTest extends ControllerTest {
 		request.setRequestURI("/user/");
 		request.setParameter("limit", "10");
 		request.setParameter("start", "1");
-		
+
 		handlerAdapter.handle(request, response, controller);
 		assertNotNull(response.getContentAsString());
 	}
+
 	@Test
 	public void testEasyMock() throws Exception {
 		request.setMethod("POST");

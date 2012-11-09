@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 菜单类1.1
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-10-25 下午9:53:59
  */
 public class TreeMenu implements Serializable {

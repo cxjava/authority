@@ -21,7 +21,7 @@ import org.apache.commons.lang3.StringUtils;
  * </pre>
  * 
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-8-10 下午1:48:37
  */
 public class DateConvertEditor extends PropertyEditorSupport {

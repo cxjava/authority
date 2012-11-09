@@ -3,7 +3,7 @@ package com.chenxin.authority.web.interseptor;
 /**
  * web中使用的常量
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-6-16 下午01:55:19
  */
 public interface WebConstants {

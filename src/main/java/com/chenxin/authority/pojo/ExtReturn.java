@@ -5,10 +5,10 @@ import java.io.Serializable;
 /**
  * Ext Ajax返回对象
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-3-10 下午09:43:35
  */
-public class ExtReturn implements Serializable{
+public class ExtReturn implements Serializable {
 
 	private static final long serialVersionUID = 4434330175390793196L;
 
@@ -26,7 +26,7 @@ public class ExtReturn implements Serializable{
 	public ExtReturn(boolean success, Object msg) {
 		this.success = success;
 		this.msg = msg;
-		this.o="";
+		this.o = "";
 	}
 
 	/**

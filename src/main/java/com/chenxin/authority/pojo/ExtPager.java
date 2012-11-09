@@ -5,10 +5,10 @@ import java.io.Serializable;
 /**
  * Ext的分页请求对象
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-3-17 上午10:37:27
  */
-public class ExtPager implements Serializable{
+public class ExtPager implements Serializable {
 	private static final long serialVersionUID = 8298962642187346187L;
 	private Integer limit;
 	private Integer start;

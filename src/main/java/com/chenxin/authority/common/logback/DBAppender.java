@@ -125,8 +125,8 @@ public class DBAppender extends DBAppenderBase<ILoggingEvent> {
 	}
 
 	void bindLoggingEventWithInsertStatement(PreparedStatement stmt, ILoggingEvent event) throws SQLException {
-//		stmt.setLong(TIMESTMP_INDEX, event.getTimeStamp());
-//		stmt.setDate(TIMESTMP_INDEX, new Date(event.getTimeStamp()));
+		// stmt.setLong(TIMESTMP_INDEX, event.getTimeStamp());
+		// stmt.setDate(TIMESTMP_INDEX, new Date(event.getTimeStamp()));
 		stmt.setString(TIMESTMP_INDEX, DateFormatUtils.format(new Date(event.getTimeStamp()), "yyyy-MM-dd HH:mm:ss"));
 		stmt.setString(FORMATTED_MESSAGE_INDEX, event.getFormattedMessage());
 		stmt.setString(LOGGER_NAME_INDEX, event.getLoggerName());
@@ -204,7 +204,7 @@ public class DBAppender extends DBAppenderBase<ILoggingEvent> {
 	@SuppressWarnings("rawtypes")
 	protected void insertProperties(Map<String, String> mergedMap, Connection connection, long eventId) throws SQLException {
 		Set propertiesKeys = mergedMap.keySet();
-		// TODO:add chenxin 不让它写入logging_event_property 
+		// TODO:add chenxin 不让它写入logging_event_property
 		if (propertiesKeys.size() < -1) {
 			// if (propertiesKeys.size() >0) {
 			PreparedStatement insertPropertiesStatement = connection.prepareStatement(insertPropertiesSQL);

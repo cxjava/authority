@@ -13,7 +13,7 @@ import java.net.URL;
  * MainTest.class); if (null != is) { reader = new InputStreamReader(is,
  * "UTF-8"); }
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2010-11-17 下午04:36:20
  */
 public class ClassLoaderUtil {

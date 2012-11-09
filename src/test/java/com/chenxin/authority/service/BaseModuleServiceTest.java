@@ -2,9 +2,11 @@ package com.chenxin.authority.service;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.chenxin.authority.pojo.BaseModule;
 import com.chenxin.authority.pojo.Criteria;
 import com.chenxin.authority.pojo.Tree;
 import com.chenxin.authority.service.BaseModuleService;
@@ -12,18 +14,28 @@ import com.chenxin.authority.service.BaseModuleService;
 /**
  * 
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-12-7 下午2:27:04
  */
-public class BaseModuleServiceTest extends ServicesTest {
+public class BaseModuleServiceTest extends Services {
 
 	@Autowired
-	private BaseModuleService baseModulesService;
+	private BaseModuleService service;
+
+	private BaseModule base;
+
+	@Before
+	public void before() {
+		base = new BaseModule();
+		base.setModuleName("aaa");
+		base.setModuleUrl("url");
+		base.setExpanded(1);
+	}
 
 	@Test
 	public void selectAllModules() {
 		Criteria criteria = new Criteria();
-		Tree tree = baseModulesService.selectAllModules(criteria);
+		Tree tree = service.selectAllModules(criteria);
 		assertNotNull(tree);
 	}
 }

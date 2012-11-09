@@ -38,7 +38,7 @@ import com.chenxin.authority.service.BaseRoleModuleService;
 /**
  * 后台资源、系统菜单相关
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-10-31 下午10:16:24
  */
 @Controller

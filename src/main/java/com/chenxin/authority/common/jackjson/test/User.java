@@ -5,7 +5,7 @@ import org.codehaus.jackson.map.annotate.JsonFilter;
 /**
  * 
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2011-5-12 下午02:30:10
  */
 @JsonFilter("myFilter")

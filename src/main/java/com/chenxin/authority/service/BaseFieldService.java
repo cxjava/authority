@@ -1,19 +1,18 @@
 package com.chenxin.authority.service;
 
 import com.chenxin.authority.pojo.BaseField;
-import com.chenxin.authority.pojo.Criteria;
+import com.chenxin.authority.pojo.ExtPager;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
+
+import org.springframework.data.domain.Page;
 
 public interface BaseFieldService {
-	int countByExample(Criteria example);
 
-	BaseField selectByPrimaryKey(String fieldId);
+	Page<BaseField> getBaseField(ExtPager pager, Map<String, Object> parameters);
 
-	List<BaseField> selectByExample(Criteria example);
-
-	HashMap<String, String> selectAllByExample(Criteria example);
+	HashMap<String, String> selectAll();
 
 	/**
 	 * 保存系统字段设置
@@ -21,7 +20,7 @@ public interface BaseFieldService {
 	 * @param example
 	 * @return 00：失败，01：成功 ,其他情况
 	 */
-	String saveFields(Criteria example);
+	BaseField saveField(BaseField field);
 
 	/**
 	 * 删除系统字段设置
@@ -29,5 +28,5 @@ public interface BaseFieldService {
 	 * @param example
 	 * @return 00：失败，01：成功 ,其他情况
 	 */
-	String delete(Criteria example);
+	void delete(Long fieldId);
 }

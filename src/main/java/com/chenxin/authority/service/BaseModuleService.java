@@ -74,6 +74,7 @@ public interface BaseModuleService {
 	 * @return
 	 */
 	List<Combo> selectComboBySql(Criteria example);
+
 	/**
 	 * 查找EXTjs里面的Combo对象
 	 * 

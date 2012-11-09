@@ -18,7 +18,7 @@ import org.codehaus.jackson.type.TypeReference;
 /**
  * jackjson一些转换方法
  * 
- * @author chenxin
+ * @author Maty Chen
  * @date 2010-6-28 下午04:07:33
  */
 public class Jackson {

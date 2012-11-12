@@ -5,5 +5,5 @@
 <script type="text/javascript">
 	var param='${param.id}',
 	SEX = eval('(${fields.sex==null?"{}":fields.sex})');
-	yepnope("${ctx}/resources/js/user/user.js");
+	yepnope.injectJs("${ctx}/resources/js/user/user.js");
 </script>

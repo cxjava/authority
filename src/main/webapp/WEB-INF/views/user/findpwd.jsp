@@ -15,5 +15,5 @@
 }
 </style>
 <script type="text/javascript">
-yepnope("${ctx}/resources/js/user/findpwd.js");
+yepnope.injectJs("${ctx}/resources/js/user/findpwd.js");
 </script>

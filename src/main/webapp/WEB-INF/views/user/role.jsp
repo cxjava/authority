@@ -11,9 +11,7 @@
 		         "${ctx}/resources/extjs/ux/treegrid/TreeGridNodeUI.js",
 		         "${ctx}/resources/extjs/ux/treegrid/TreeGridLoader.js",
 		         "${ctx}/resources/extjs/ux/treegrid/TreeGridColumns.js",
-		         "${ctx}/resources/extjs/ux/treegrid/TreeGrid.js"],
-		complete : function() {
-			yepnope("${ctx}/resources/js/user/role.js");
-		}
+		         "${ctx}/resources/extjs/ux/treegrid/TreeGrid.js"]
 	});
+	yepnope.injectJs("${ctx}/resources/js/user/role.js");
 </script>

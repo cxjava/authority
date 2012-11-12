@@ -5,5 +5,5 @@
 <script type="text/javascript">
 var param='${param.id}',
 ENABLED = eval('(${fields.enabled==null?"{}":fields.enabled})');
-yepnope("${ctx}/resources/js/user/field.js");
+yepnope.injectJs("${ctx}/resources/js/user/field.js");
 </script>

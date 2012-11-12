@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/commons/taglibs.jsp"%>
 <div id="editUserDiv" style="width: 100%; height: 100%;">
 	<div id="editUserToolBarDiv"></div>
-	<div id="editUserFormDiv""></div>
+	<div id="editUserFormDiv"></div>
 </div>
 
 <script type="text/javascript">

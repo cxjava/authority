@@ -1,6 +1,5 @@
 package com.chenxin.authority.service.impl;
 
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -17,12 +16,9 @@ import com.chenxin.authority.dao.BaseRoleModuleRepository;
 import com.chenxin.authority.dao.BaseRoleRepository;
 import com.chenxin.authority.dao.BaseUserRoleRepository;
 import com.chenxin.authority.pojo.BaseRole;
-import com.chenxin.authority.pojo.BaseRoleModule;
-import com.chenxin.authority.pojo.BaseUserRole;
 import com.chenxin.authority.pojo.ExtPager;
 import com.chenxin.authority.service.BaseRoleService;
 import com.chenxin.authority.service.ServiceException;
-import com.google.common.collect.Maps;
 
 @Service
 @Transactional
@@ -42,6 +38,7 @@ public class BaseRoleServiceImpl implements BaseRoleService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteByPrimaryKey(Long roleId) {
 		Long count = this.baseUserRoleRepository.findByRoleId(roleId);
 		if (count > 0) {

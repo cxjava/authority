@@ -1,6 +1,5 @@
 package com.chenxin.authority.web.controller;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -75,10 +74,7 @@ public class UserController {
 			parameters.put("LIKE_realName", realName);
 		}
 		Page<BaseUser> page = this.baseUsersService.selectByParameters(pager, parameters);
-		List<BaseUser> list=new ArrayList<BaseUser>();
-		BaseUser user = (BaseUser) session.getAttribute(WebConstants.CURRENT_USER);
-		list.add(user);
-		return new ExtGridReturn(20L, list);
+		return new ExtGridReturn(page.getTotalElements(), page.getContent());
 		} catch (Exception e) {
 			logger.error("Exception: ", e);
 			return new ExceptionReturn(e);

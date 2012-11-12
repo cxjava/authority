@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.chenxin.authority.common.utils.JpaTools;
 import com.chenxin.authority.dao.BaseModuleRepository;
@@ -93,6 +94,7 @@ public class BaseModuleServiceImpl implements BaseModuleService {
 		return menu.getTreeJson();
 	}
 	@Override
+	@Transactional
 	public String saveModule(Long roleId,ArrayList<Long> modulesIdList) {
 		// 删除以前的资源
 		this.baseRoleModuleRepository.deleteByRoleId(roleId);
@@ -113,6 +115,7 @@ public class BaseModuleServiceImpl implements BaseModuleService {
 	}
 
 	@Override
+	@Transactional
 	public void delete(Long moduleId) {
 		// 删除这个模块下面的菜单
 		this.baseModulesRepository.deleteByParentUrl(moduleId);

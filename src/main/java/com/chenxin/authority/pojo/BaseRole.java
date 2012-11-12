@@ -27,7 +27,7 @@ public class BaseRole extends IdEntity {
 	/** role description */
 	private String roleDesc;
 
-	private List<BaseModule> moduleList = new ArrayList<BaseModule>();
+//	private List<BaseModule> moduleList = new ArrayList<BaseModule>();
 
 	/**
 	 * @return the roleName role name
@@ -59,26 +59,26 @@ public class BaseRole extends IdEntity {
 		this.roleDesc = roleDesc;
 	}
 
-	/**
-	 * @return the moduleList
-	 */
-	// 多对多定义
-	@ManyToMany
-	@JoinTable(name = "t_base_role_module", joinColumns = { @JoinColumn(name = "roleId") }, inverseJoinColumns = { @JoinColumn(name = "moduleId") })
-	// Fecth策略定义
-	@Fetch(FetchMode.SUBSELECT)
-	// 集合按id排序
-	@OrderBy("id ASC")
-	public List<BaseModule> getModuleList() {
-		return moduleList;
-	}
-
-	/**
-	 * @param moduleList
-	 *            the moduleList to set
-	 */
-	public void setModuleList(List<BaseModule> moduleList) {
-		this.moduleList = moduleList;
-	}
+//	/**
+//	 * @return the moduleList
+//	 */
+//	// 多对多定义
+//	@ManyToMany
+//	@JoinTable(name = "t_base_role_module", joinColumns = { @JoinColumn(name = "roleId") }, inverseJoinColumns = { @JoinColumn(name = "moduleId") })
+//	// Fecth策略定义
+//	@Fetch(FetchMode.SUBSELECT)
+//	// 集合按id排序
+//	@OrderBy("id ASC")
+//	public List<BaseModule> getModuleList() {
+//		return moduleList;
+//	}
+//
+//	/**
+//	 * @param moduleList
+//	 *            the moduleList to set
+//	 */
+//	public void setModuleList(List<BaseModule> moduleList) {
+//		this.moduleList = moduleList;
+//	}
 
 }

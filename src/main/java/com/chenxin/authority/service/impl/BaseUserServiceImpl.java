@@ -101,6 +101,7 @@ public class BaseUserServiceImpl implements BaseUserService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteByPrimaryKey(Long id) {
 		// 删除角色中的
 		this.baseUserRoleRepository.deleteByUserId(id);
@@ -108,6 +109,7 @@ public class BaseUserServiceImpl implements BaseUserService {
 	}
 
 	@Override
+	@Transactional
 	public void updateUserPassword(Map<String, Object> parameters) {
 		Long userId = MapUtils.getLong(parameters, "userId");
 		String newPassword = MapUtils.getString(parameters, "newPassword");
@@ -118,6 +120,7 @@ public class BaseUserServiceImpl implements BaseUserService {
 	}
 
 	@Override
+	@Transactional
 	public String saveUser(BaseUser user,Collection<Long> roleIds) {
 		// 判断用户名是否重复
 		if (null==user.getId()) {
@@ -130,6 +133,7 @@ public class BaseUserServiceImpl implements BaseUserService {
 			// 新建的用户,加密保存下
 			user.setPassword(EncryptUtil.encrypt(user.getPassword()));
 		}
+		user.setLastLoginTime(new Date());
 		this.baseUserRepository.save(user);
 		// 更新用户的角色信息
 		// 删除已有的用户角色信息
@@ -226,6 +230,7 @@ public class BaseUserServiceImpl implements BaseUserService {
 	}
 
 	@Override
+	@Transactional
 	public String findPassword(BaseUser user) {
 		// 查询是否存在
 		List<BaseUser> list = this.baseUserRepository.findByAccountAndEmail(user.getAccount(),user.getEmail());

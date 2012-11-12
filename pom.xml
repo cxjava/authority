@@ -168,7 +168,7 @@
 					<!-- 用户名和密码 -->
 					<username>admin</username>
 					<password>admin</password>
-					<port>8082</port>
+					<port>8081</port>
 				</configuration>
 			</plugin>
 			<plugin>

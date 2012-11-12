@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chenxin.authority.common.jackjson.Jackson;
 import com.chenxin.authority.common.springmvc.DateConvertEditor;
-import com.chenxin.authority.pojo.BaseField;
 import com.chenxin.authority.pojo.BaseModule;
 import com.chenxin.authority.pojo.BaseRoleModule;
 import com.chenxin.authority.pojo.ExceptionReturn;

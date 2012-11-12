@@ -40,7 +40,11 @@ public class JpaTools {
 	 * @return
 	 */
 	public static PageRequest getPageRequest(ExtPager pager, String define) {
-		return new PageRequest(Integer.valueOf(pager.getStart() / pager.getLimit()), pager.getLimit(), JpaTools.getSort(pager, define));
+		if(null==pager.getLimit()||null==pager.getStart()){
+			return new PageRequest(0, Integer.MAX_VALUE, JpaTools.getSort(pager, define));
+		}else{
+			return new PageRequest(Integer.valueOf(pager.getStart() / pager.getLimit()), pager.getLimit(), JpaTools.getSort(pager, define));
+		}
 	}
 
 	/**

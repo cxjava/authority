@@ -43,7 +43,7 @@ public class BaseUser extends IdEntity {
 	private String lastLoginIp;
 	private String remark;
 
-	private List<BaseRole> roleList = new ArrayList<BaseRole>();
+//	private List<BaseRole> roleList = new ArrayList<BaseRole>();
 
 	/**
 	 * @return the account
@@ -209,27 +209,27 @@ public class BaseUser extends IdEntity {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-
-	/**
-	 * @return the roleList
-	 */
-	// 多对多定义
-	@ManyToMany
-	@JoinTable(name = "t_base_user_role", joinColumns = { @JoinColumn(name = "userId") }, inverseJoinColumns = { @JoinColumn(name = "roleId") })
-	// Fecth策略定义
-	@Fetch(FetchMode.SUBSELECT)
-	// 集合按id排序
-	@OrderBy("id ASC")
-	public List<BaseRole> getRoleList() {
-		return roleList;
-	}
-
-	/**
-	 * @param roleList
-	 *            the roleList to set
-	 */
-	public void setRoleList(List<BaseRole> roleList) {
-		this.roleList = roleList;
-	}
+//
+//	/**
+//	 * @return the roleList
+//	 */
+//	// 多对多定义
+//	@ManyToMany
+//	@JoinTable(name = "t_base_user_role", joinColumns = { @JoinColumn(name = "userId") }, inverseJoinColumns = { @JoinColumn(name = "roleId") })
+//	// Fecth策略定义
+//	@Fetch(FetchMode.SUBSELECT)
+//	// 集合按id排序
+//	@OrderBy("id ASC")
+//	public List<BaseRole> getRoleList() {
+//		return roleList;
+//	}
+//
+//	/**
+//	 * @param roleList
+//	 *            the roleList to set
+//	 */
+//	public void setRoleList(List<BaseRole> roleList) {
+//		this.roleList = roleList;
+//	}
 
 }

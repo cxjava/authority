@@ -1,7 +1,6 @@
 package com.chenxin.authority.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -123,28 +122,6 @@ public class BaseModuleServiceImpl implements BaseModuleService {
 		this.baseModulesRepository.delete(moduleId);
 	}
 
-//	@Override
-//	public List<HashMap<String, Object>> selectByDynamicSql(Criteria example) {
-//		return this.baseModulesRepository.selectByDynamicSql(example);
-//	}
-//
-//	@Override
-//	public List<Combo> selectComboBySql(Criteria example) {
-//		return this.baseModulesRepository.selectComboBySql(example);
-//	}
-
-	@Override
-	public Map<Object, Object> selectComboBySql(String sql) {
-//		Criteria criteria = new Criteria();
-//		criteria.put("comboSql", sql);
-//		List<Combo> list = this.baseModulesRepository.selectComboBySql(criteria);
-		HashMap<Object, Object> map = new HashMap<Object, Object>();
-//		for (Combo combo : list) {
-//			map.put(combo.getK(), combo.getV());
-//		}
-		return map;
-	}
-
 	@Override
 	public Page<BaseModule> selectByParameters(ExtPager pager, Map<String, Object> parameters) {
 		PageRequest pageable = JpaTools.getPageRequest(pager, "");
@@ -154,6 +131,16 @@ public class BaseModuleServiceImpl implements BaseModuleService {
 	@Override
 	public List<BaseRoleModule> selectModuleByRoleId(Long roleId) {
 		return this.baseRoleModuleRepository.findByRoleId(roleId);
+	}
+
+	@Override
+	public Map<String, Object> selectParentModule() {
+		List<BaseModule> list=this.baseModulesRepository.findByLeaf(0);
+		 Map<String, Object> maps=Maps.newHashMap();
+		 for(BaseModule base:list){
+			 maps.put(base.getId().toString(), base.getModuleName());
+		 }
+		return maps;
 	}
 
 }

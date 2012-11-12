@@ -52,7 +52,7 @@ public class BaseUserServiceImpl implements BaseUserService {
 	/** 读取配置文件的值，分号后面为没有此配置项时的默认值 */
 	@Value("${email.host:smtp.163.com}")
 	private String emailHost;
-	@Value("${email.account:test@whty.com.cn}")
+	@Value("${email.account:test@qq.com.cn}")
 	private String emailAccount;
 	@Value("${email.password:test}")
 	private String emailPassword;
@@ -132,8 +132,11 @@ public class BaseUserServiceImpl implements BaseUserService {
 			}
 			// 新建的用户,加密保存下
 			user.setPassword(EncryptUtil.encrypt(user.getPassword()));
+		}else{
+			BaseUser target=this.baseUserRepository.findOne(user.getId());
+			user.setPassword(EncryptUtil.encrypt(target.getPassword()));
+			user.setLastLoginTime(target.getLastLoginTime());
 		}
-		user.setLastLoginTime(new Date());
 		this.baseUserRepository.save(user);
 		// 更新用户的角色信息
 		// 删除已有的用户角色信息
@@ -161,7 +164,14 @@ public class BaseUserServiceImpl implements BaseUserService {
 
 	@Override
 	public void update(BaseUser user) {
-		 this.baseUserRepository.save(user);
+		BaseUser target=this.baseUserRepository.findOne(user.getId());
+		target.setRealName(user.getRealName());
+		target.setSex(user.getSex());
+		target.setEmail(user.getEmail());
+		target.setMobile(user.getMobile());
+		target.setOfficePhone(user.getOfficePhone());
+		target.setRemark(user.getRemark());
+		this.baseUserRepository.save(target);
 	}
 
 	@Override

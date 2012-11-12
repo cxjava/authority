@@ -33,6 +33,7 @@ import com.chenxin.authority.pojo.ExtPager;
 import com.chenxin.authority.pojo.ExtReturn;
 import com.chenxin.authority.pojo.Tree;
 import com.chenxin.authority.service.BaseModuleService;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 /**
@@ -61,10 +62,7 @@ public class ModuleController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String module(Model model) {
 		// 先查出所有的父节点
-		StringBuilder sb = new StringBuilder();
-		sb.append("select a.module_id   as k, ").append("       a.module_name as v ").append("from   base_modules a ")
-				.append("where  a.leaf = 0 ").append("order by a.module_id asc ");
-		Map<Object, Object> map = this.baseModulesService.selectComboBySql(sb.toString());
+		Map<String, Object> map = this.baseModulesService.selectParentModule();
 		map.put("0", "主菜单");
 		model.addAttribute("moduleMap", Jackson.objToJson(map));
 		return "user/module";
@@ -129,7 +127,7 @@ public class ModuleController {
 	@ResponseBody
 	public Object save(@RequestParam Long roleId, @RequestParam String moduleIds) {
 		try {
-			ArrayList<Long> modulesIdList = new ArrayList<Long>();
+			ArrayList<Long> modulesIdList = Lists.newArrayList();
 			if (null==roleId) {
 				return new ExtReturn(false, "角色不能为空！");
 			}

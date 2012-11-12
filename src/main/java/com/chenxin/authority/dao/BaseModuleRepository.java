@@ -1,6 +1,8 @@
 package com.chenxin.authority.dao;
 
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,4 +16,6 @@ public interface BaseModuleRepository extends PagingAndSortingRepository<BaseMod
 	@Modifying
 	@Query("delete BaseModule u where u.parentId = ?1")
 	Integer deleteByParentUrl(Long parentId);
+	
+	List<BaseModule> findByLeaf(Integer leaf);
 }

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 /**
  * 菜单类1.1
  * 
@@ -38,7 +40,7 @@ public class TreeMenu implements Serializable {
 			return tree;
 		}
 		if (hasChild(list, node)) {
-			List<Tree> lt = new ArrayList<Tree>();
+			List<Tree> lt = Lists.newArrayList();
 			tree.setUrl("");
 			tree.setLeaf(node.getLeaf() == 1 ? true : false);
 			tree.setExpanded(node.getExpanded() == 1 ? true : false);
@@ -75,7 +77,7 @@ public class TreeMenu implements Serializable {
 	 * 得到子节点列表
 	 */
 	private List<BaseModule> getChildList(List<BaseModule> list, BaseModule modules) {
-		List<BaseModule> li = new ArrayList<BaseModule>();
+		List<BaseModule> li = Lists.newArrayList();
 		Iterator<BaseModule> it = list.iterator();
 		while (it.hasNext()) {
 			BaseModule temp = it.next();

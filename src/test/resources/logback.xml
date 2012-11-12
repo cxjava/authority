@@ -2,7 +2,7 @@
 <configuration>
 
 	<!-- 日志存放的路径 ,默认为tomcat下面的logs -->
-	<property name="USER_HOME" value="${catalina.base}" />
+	<property name="USER_HOME" value="." />
 
 	<!-- 输出到窗口 -->
 	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">

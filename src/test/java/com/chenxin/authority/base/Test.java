@@ -1,9 +1,11 @@
 package com.chenxin.authority.base;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.util.StringUtils;
+import org.apache.commons.beanutils.PropertyUtils;
+
+import com.chenxin.authority.pojo.BaseUser;
 
 /**
  * 
@@ -22,6 +24,33 @@ public class Test {
 	}
 
 	public static void test1() {
+		BaseUser baseUser=new BaseUser();
+		BaseUser b=new BaseUser();
+		baseUser.setAccount("admin");
+		baseUser.setLastLoginIp("lastloginIp");
+//		baseUser.setLastLoginTime(new Date());
+		b.setAccount("dd");
+		b.setPassword("test");
+//		b.setLastLoginTime(new Date());
+		try {
+//			BeanUtils.copyProperties(b, baseUser);
+			PropertyUtils.copyProperties(baseUser,b);
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(baseUser.getAccount());
+		System.out.println(b.getAccount());
+		System.out.println(baseUser.getPassword());
+		System.out.println(b.getPassword());
+		System.out.println(baseUser.getLastLoginIp());
+		 System.out.println(b.getLastLoginIp());
 		// System.out.println(source[random.nextInt(source.length)]);
 		// System.out.println(getStrings(12));
 		// System.out.println(getStrings(5));
@@ -41,7 +70,7 @@ public class Test {
 		// System.out.println(test.charAt(0)<test.charAt(3));
 		// sort1(source);
 		// System.out.println(new String(source));
-		getShui();
+//		getShui();
 	}
 
 	public static char getChar() {

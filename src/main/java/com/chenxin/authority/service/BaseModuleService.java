@@ -17,6 +17,7 @@ public interface BaseModuleService {
 	Page<BaseModule> selectByParameters(ExtPager pager, Map<String, Object> parameters);
 
 	List<BaseRoleModule> selectModuleByRoleId(Long roleId);
+
 	/**
 	 * 查找用户的模块
 	 * 
@@ -37,7 +38,7 @@ public interface BaseModuleService {
 	 * 保存角色的系统菜单
 	 * 
 	 */
-	String saveModule(Long roleId,ArrayList<Long> modulesIdList);
+	String saveModule(Long roleId, ArrayList<Long> modulesIdList);
 
 	/**
 	 * 保存系统菜单
@@ -55,29 +56,5 @@ public interface BaseModuleService {
 	 */
 	void delete(Long moduleId);
 
-	/**
-	 * 动态sql<br>
-	 * 最好不要带外部参数拼装进来，防止SQL注入<br>
-	 * 非正常情况不要用
-	 * 
-	 * @param example
-	 * @return
-	 */
-//	List<HashMap<String, Object>> selectByDynamicSql(Criteria example);
-
-	/**
-	 * 查找EXTjs里面的Combo对象
-	 * 
-	 * @param example
-	 * @return
-	 */
-//	List<Combo> selectComboBySql(Criteria example);
-
-	/**
-	 * 查找EXTjs里面的Combo对象
-	 * 
-	 * @param example
-	 * @return
-	 */
-	Map<Object, Object> selectComboBySql(String sql);
+	Map<String, Object> selectParentModule();
 }

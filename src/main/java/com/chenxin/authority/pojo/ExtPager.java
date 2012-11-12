@@ -46,8 +46,7 @@ public class ExtPager implements Serializable {
 	}
 
 	public String getSort() {
-		// TODO:先转化
-		return Table.toClumn(sort);
+		return sort;
 	}
 
 	public void setSort(String sort) {

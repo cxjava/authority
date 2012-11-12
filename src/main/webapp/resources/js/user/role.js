@@ -30,10 +30,10 @@ role.pageSize = parseInt(role.pageSizeCombo.getValue());
 role.store = new Ext.data.Store({
 			autoLoad : true,
 			remoteSort : true,
-			baseParams : {
-				start : 0,
-				limit : role.pageSize
-			},
+//			baseParams : {
+//				start : 0,
+//				limit : role.pageSize
+//			},
 			proxy : new Ext.data.HttpProxy({// 获取数据的方式
 				method : 'POST',
 				url : role.all

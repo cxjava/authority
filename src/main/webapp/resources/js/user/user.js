@@ -306,11 +306,15 @@ user.roleStore = new Ext.data.JsonStore({
 			root : 'rows',
 			totalProperty : 'results',
 			autoLoad : true,
+			baseParams : {
+				start : 0,
+				limit : user.pageSize
+			},
 			proxy : new Ext.data.HttpProxy({
 						method : 'POST',
 						url : user.loadRole
 					}),
-			fields : ['roleId', 'roleName', 'roleDesc'],
+			fields : ['id', 'roleName', 'roleDesc'],
 			listeners : {
 				'load' : function(store, records, options) {
 					// user.roleSelModel.clearSelections();
@@ -330,7 +334,7 @@ user.roleGrid = new Ext.grid.GridPanel({
 			columns : [user.roleSelModel, {
 						hidden : true,
 						header : '角色ID',
-						dataIndex : 'roleId'
+						dataIndex : 'id'
 					}, {
 						header : "角色名称",
 						width : 200,
@@ -351,7 +355,7 @@ user.roleGrid = new Ext.grid.GridPanel({
 						var total = store.getCount();// 数据行数
 						for (var i = 0; i < total; i++) {
 							var row = store.data.items[i];
-							if (user.userRoleIds.containsKey(row.data.roleId)) {
+							if (user.userRoleIds.containsKey(row.data.id)) {
 								user.roleSelModel.selectRow(i, true);
 							}
 						}
@@ -412,7 +416,7 @@ user.saveFun = function() {
 		ids = user.userRoleIds.keys;
 	} else {// 点击了角色tab
 		for (var i = 0; i < selections.length; i++) {
-			ids.push(selections[i].data.roleId);
+			ids.push(selections[i].data.id);
 		}
 	}
 	if (ids.length == 0) {

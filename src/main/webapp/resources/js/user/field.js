@@ -38,7 +38,7 @@ field.store = new Ext.data.Store({
 			reader : new Ext.data.JsonReader({// 数据读取器
 				totalProperty : 'results', // 记录总数
 				root : 'rows' // Json中的列表数据根节点
-			}, ['fieldId', 'fieldName', 'field', 'valueField', 'displayField',
+			}, ['id', 'fieldName', 'field', 'valueField', 'displayField',
 					'enabled', 'sort']),
 			listeners : {
 				'load' : function(store, records, options) {
@@ -68,7 +68,7 @@ field.colModel = new Ext.grid.ColumnModel({
 			columns : [field.selModel, {
 						hidden : true,
 						header : '字段ID',
-						dataIndex : 'fieldId'
+						dataIndex : 'id'
 					}, {
 						header : '字段',
 						dataIndex : 'field'
@@ -206,7 +206,7 @@ field.formPanel = new Ext.form.FormPanel({
 			items : [{
 						xtype : 'hidden',
 						fieldLabel : 'ID',
-						name : 'fieldId',
+						name : 'id',
 						anchor : '99%'
 					}, {
 						fieldLabel : '字段',
@@ -260,10 +260,10 @@ field.addWindow = new Ext.Window({
 						text : '重置',
 						handler : function() {
 							var form = field.formPanel.getForm();
-							var id = form.findField("fieldId").getValue();
+							var id = form.findField("id").getValue();
 							form.reset();
 							if (id != '')
-								form.findField("fieldId").setValue(id);
+								form.findField("id").setValue(id);
 						}
 					}]
 		});
@@ -294,7 +294,7 @@ field.delFun = function() {
 				if (btn == 'yes') {
 					// 发送请求
 					Share.AjaxRequest({
-								url : field.del + record.data.fieldId,
+								url : field.del + record.data.id,
 								callback : function(json) {
 									field.alwaysFun();
 									field.store.reload();

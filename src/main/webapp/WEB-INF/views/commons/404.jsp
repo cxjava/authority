@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <%@ include file="/WEB-INF/views/commons/taglibs.jsp"%>
-<title><fmt:message key="login.title" /> - 404错误: 找不到页</title>
+<title>404错误: 找不到页</title>
 </head>
 <body>
 	<div align="center" style="vertical-align: middle;">

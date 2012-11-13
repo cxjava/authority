@@ -47,9 +47,7 @@
 	<!-- <logger name="org.springframework.web.servlet.mvc.method.annotation" level="ERROR" /> -->
 	<logger name="com.chenxin.authority" level="DEBUG" />
 	
-	<logger name="com.chenxin.authority" level="DEBUG" >
-    	<!-- <appender-ref ref="DB" /> -->
-	</logger>
+	<logger name="jdbc.sqltiming" level="DEBUG" />
 	
 	<root>
     	<level value ="info"/>

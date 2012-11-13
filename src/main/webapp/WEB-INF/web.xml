@@ -12,6 +12,10 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:/config/spring/spring.xml</param-value>
 	</context-param>
+	<context-param>
+		<param-name>spring.profiles.default</param-name>
+		<param-value>MYSQL</param-value>
+	</context-param>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
@@ -74,10 +78,10 @@
 	</error-page>
 	<error-page>
 		<error-code>404</error-code>
-		<location>/WEB-INF/views/commons/timeout.jsp</location>
+		<location>/WEB-INF/views/commons/404.jsp</location>
 	</error-page>
 	<error-page>
 		<error-code>403</error-code>
-		<location>/WEB-INF/views/commons/timeout.jsp</location>
+		<location>/WEB-INF/views/commons/403.jsp</location>
 	</error-page>
 </web-app>

@@ -15,14 +15,12 @@
 		<logback.version>1.0.3</logback.version>
 		<aspectj.version>1.6.11</aspectj.version>
 		<jackson.version>1.9.7</jackson.version>
-		<mybatis-spring.version>1.1.1</mybatis-spring.version>
 		<proxool.version>0.9.1</proxool.version>
 		<bonecp.version>0.7.1.RELEASE</bonecp.version>
 		<axis2.version>1.6.1</axis2.version>
 		<wro4j.version>1.4.5</wro4j.version>
 	</properties>
-
-
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -372,6 +370,11 @@
 			<artifactId>mail</artifactId>
 			<version>1.4</version>
 		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.21</version>
+		</dependency>
 		<!-- 验证码 -->
 		<dependency>
 			<groupId>com.google.code</groupId>
@@ -381,7 +384,8 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
-			<version>1.1.0.RELEASE</version>
+<!-- 			<version>1.2.0.RC1</version> -->
+			<version>1.2.0.RELEASE</version>
 			<exclusions>
 				<exclusion>
 					<groupId>junit</groupId>
@@ -418,6 +422,11 @@
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 			<version>1.8.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.lazyluke</groupId>
+			<artifactId>log4jdbc-remix</artifactId>
+			<version>0.2.7</version>
 		</dependency>
 	</dependencies>
 </project>

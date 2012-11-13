@@ -64,7 +64,7 @@ public class BaseFieldServiceTest extends Services {
 		pager.setLimit(10);
 		pager.setStart(0);
 		pager.setDir("desc");
-		pager.setSort("id");
+		pager.setSort("fieldName");
 		Map<String, Object> parameters = Maps.newHashMap();
 		parameters.put("", "");
 		Page<BaseField> pages = this.service.selectByParameters(pager, parameters);

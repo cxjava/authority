@@ -4,8 +4,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.chenxin.authority.pojo.BaseUser;
+import com.chenxin.authority.pojo.Table;
 
 /**
  * 
@@ -20,9 +22,36 @@ public class Test {
 	static Random random = new Random();
 
 	public static void main(String[] args) {
-		test1();
+		//test1();
+		test2();
 	}
 
+	public static void test2() {
+		String aa="realName";
+		System.out.println(Table.toClumn(aa));
+	}
+	
+	public static String toCamelCase(String str) {
+		if (StringUtils.isBlank(str)) {
+			return null;
+		}
+		StringBuffer hs = new StringBuffer();
+		char[] chars = str.toCharArray();
+		for (int i = 0; i < chars.length; i++) {
+			char c = chars[i];
+			if (c == '.' || c == '_') {
+				if (++i < chars.length) {
+					c = chars[i];
+					if (c >= 97 && c <= 122)
+						hs.append((char) (c - 32));
+					else
+						hs.append(c);
+				}
+			} else
+				hs.append(c);
+		}
+		return hs.toString();
+	}
 	public static void test1() {
 		BaseUser baseUser=new BaseUser();
 		BaseUser b=new BaseUser();

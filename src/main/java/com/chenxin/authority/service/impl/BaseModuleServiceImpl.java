@@ -69,27 +69,8 @@ public class BaseModuleServiceImpl implements BaseModuleService {
 
 	@Override
 	public Tree selectModulesByUser(BaseUser baseUser) {
-		Map<String, Object> parameters = Maps.newHashMap();
-		parameters.put("Distinct", "");
-		if (!isDisplay) {
-			// 是否显示 0:否 1:是
-			// 这个条件表示只显示允许显示的模块，否则没有这个条件会显示所有的模块
-			parameters.put("isDisplay", 1);
-		}
-		List<BaseModule> list = null;
-		// 显示所有模块
-//		if (resoved) {
-			Sort sort = JpaTools.getSort(null, " displayIndex ASC ");
-			Specification<BaseModule> spec = JpaTools.getSpecification(parameters, BaseModule.class);
-			list = this.baseModulesRepository.findAll(spec, sort);
-			logger.info("list.size():{}",list.size());
-//		} else {
-//			// 显示当前用户权限模块，从配置表中获取
-//			parameters = Maps.newHashMap();
-//			parameters.put("Distinct", "");
-//			Sort sort = JpaTools.getSort(null, " displayIndex ASC ");
-//			BaseUser user = this.baseUserRepository.findOne(baseUser.getId());
-//		}
+		List<BaseModule> list = this.baseModulesRepository.findByUserId(baseUser.getId());
+		logger.info("list.size():{}",list.size());
 		TreeMenu menu = new TreeMenu(list);
 		return menu.getTreeJson();
 	}

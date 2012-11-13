@@ -3,6 +3,7 @@ package com.chenxin.authority.service;
 import javax.sql.DataSource;
 
 import org.junit.runner.RunWith;
+import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = { "classpath:/config/spring/spring.xml" })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
+@Profile("H2")
 public class Services extends AbstractTransactionalJUnit4SpringContextTests {
 
 	/**

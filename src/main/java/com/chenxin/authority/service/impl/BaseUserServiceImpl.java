@@ -92,7 +92,7 @@ public class BaseUserServiceImpl implements BaseUserService {
 			// return "00";
 		}
 		// 更新最后登录时间和登录ip
-		dataBaseUser.setErrorCount(0);
+		dataBaseUser.setErrorCount(dataBaseUser.getErrorCount()+1);
 		dataBaseUser.setLastLoginTime(new Date());
 		dataBaseUser.setLastLoginIp(MapUtils.getString(parameters, "loginIp"));
 		this.baseUserRepository.save(dataBaseUser);
@@ -136,6 +136,8 @@ public class BaseUserServiceImpl implements BaseUserService {
 			}
 			// 新建的用户,加密保存下
 			user.setPassword(EncryptUtil.encrypt(user.getPassword()));
+			user.setLastLoginTime(new Date());
+			user.setErrorCount(0);
 		} else {
 			BaseUser target = this.baseUserRepository.findOne(user.getId());
 			user.setPassword(EncryptUtil.encrypt(target.getPassword()));

@@ -3,11 +3,11 @@ package com.chenxin.authority.controller;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
 
@@ -20,7 +20,7 @@ import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAda
 @ContextConfiguration(locations = { "classpath:/config/spring/spring*.xml" })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
+@Profile("H2")
 public class ControllerTest {
 	@Autowired
 	protected AnnotationMethodHandlerAdapter handlerAdapter;

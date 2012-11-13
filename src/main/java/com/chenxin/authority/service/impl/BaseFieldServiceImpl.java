@@ -35,7 +35,7 @@ public class BaseFieldServiceImpl implements BaseFieldService {
 
 	@Override
 	public HashMap<String, String> selectAll() {
-		logger.info("开始读取系统默认配置");
+		logger.info("Start reading system default configuration");
 		Map<String, Object> parameters = Maps.newHashMap();
 		parameters.put("enabled", 1);
 		Specification<BaseField> spec = JpaTools.getSpecification(parameters, BaseField.class);
@@ -68,7 +68,7 @@ public class BaseFieldServiceImpl implements BaseFieldService {
 			logger.debug(val);
 			part.put(key, val);
 		}
-		logger.info("结束读取系统默认配置");
+		logger.info("The end of the reading system default configuration");
 		return part;
 	}
 

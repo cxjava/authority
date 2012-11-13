@@ -69,6 +69,6 @@ public class BaseFieldServiceTest extends Services {
 		parameters.put("", "");
 		Page<BaseField> pages = this.service.selectByParameters(pager, parameters);
 		assertNotNull(pages);
-		//assertEquals(pages.getTotalElements(), 1);
+		// assertEquals(pages.getTotalElements(), 1);
 	}
 }

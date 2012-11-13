@@ -17,7 +17,7 @@ import com.chenxin.authority.web.controller.UserController;
  * @author Maty Chen
  * @date 2011-12-7 下午4:17:51
  */
-public class SimpleControllerTest extends ControllerTest {
+public class SimpleControllerTestTemp extends Controller {
 	@Autowired
 	private UserController controller;
 

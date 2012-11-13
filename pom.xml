@@ -176,16 +176,15 @@
 				<version>2.10</version>
 				<configuration>
 					<argLine>-Dfile.encoding=UTF-8 -Djava.net.preferIPv4Stack=true</argLine>
-					<excludes>
-						<!-- 不包含 -->
-						<exclude>**${file.separator}ControllerTest.java</exclude>
-						<exclude>**${file.separator}ServicesTest.java</exclude>
-					</excludes>
+					<includes>
+						<include>**/*Test.java</include>
+					</includes>
 					<!-- 忽略单元测试失败 -->
 					<!-- 命令：mvn package -Dmaven.test.failure.ignore=true <testFailureIgnore>true</testFailureIgnore> -->
-					<!-- 跳过单元测试 -->
-					<!-- 命令：mvn -package -Dmaven.test.skip=true <skip>true</skip> -->
+					<!-- 跳过单元测试
 					<skip>true</skip>
+					 -->
+					<!-- 命令：mvn -package -Dmaven.test.skip=true <skip>true</skip> -->
 				</configuration>
 			</plugin>
 		</plugins>

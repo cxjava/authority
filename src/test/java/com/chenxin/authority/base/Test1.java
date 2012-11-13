@@ -15,7 +15,7 @@ import com.chenxin.authority.pojo.Table;
  * @author Maty Chen
  * @date 2012-5-16 下午10:14:21
  */
-public class Test {
+public class Test1 {
 
 	static String test = "abcdefghijklmnopqrstuvwxyz";
 	static char[] source = test.toCharArray();

@@ -6,39 +6,32 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.chenxin.authority.pojo.BaseField;
 
 public class BaseFieldRepositoryTest extends Dao {
-	private static final Logger logger = LoggerFactory.getLogger(BaseFieldRepositoryTest.class);
 	@Autowired
 	private BaseFieldRepository repository;
-	@Autowired
-	private BaseModuleRepository repository2;
 
-	private BaseField baseField;
+	private BaseField object;
+
+	private List<BaseField> list;
 
 	@Before
 	public void before() {
-		baseField = new BaseField();
-		baseField.setField("field");
-		baseField.setEnabled(1);
-		baseField.setFieldName("fieldName");
+		object = new BaseField();
+		object.setField("field");
+		object.setEnabled(1);
+		object.setFieldName("fieldName");
 	}
 
 	@Test
-	public void testSave() {
-		repository.deleteAll();
-		baseField = repository.save(baseField);
-		assertNotNull(baseField);
-		logger.info(baseField.toString());
-		List<BaseField> list = repository.findByEnabled(1);
+	public void testFindByEnabled() {
+		object = repository.save(object);
+		assertNotNull(object.getId());
+		list = repository.findByEnabled(1);
 		assertNotNull(list);
-		assertEquals(list.size(), 1);
-		
-		assertNotNull(repository2.selectAllModules(null));
+		assertNotNull(list.size() >= 1);
 	}
 }

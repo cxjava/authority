@@ -2,7 +2,6 @@ package com.chenxin.authority.dao;
 
 import java.util.List;
 
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,7 +22,5 @@ public interface BaseModuleRepository extends PagingAndSortingRepository<BaseMod
 	List<BaseModule> findByUserId(Long UserId);
 
 	List<BaseModule> findByLeaf(Integer leaf);
-
-	List<BaseModule> findByLeaf(Integer leaf, Pageable pageable);
 
 }

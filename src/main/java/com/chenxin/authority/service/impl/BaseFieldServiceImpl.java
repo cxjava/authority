@@ -26,7 +26,7 @@ import com.chenxin.authority.service.BaseFieldService;
 import com.google.common.collect.Maps;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class BaseFieldServiceImpl implements BaseFieldService {
 	@Autowired
 	private BaseFieldRepository repository;
@@ -73,11 +73,13 @@ public class BaseFieldServiceImpl implements BaseFieldService {
 	}
 
 	@Override
+	@Transactional
 	public BaseField saveField(BaseField field) {
 		return this.repository.save(field);
 	}
 
 	@Override
+	@Transactional
 	public void delete(Long fieldId) {
 		this.repository.delete(fieldId);
 	}

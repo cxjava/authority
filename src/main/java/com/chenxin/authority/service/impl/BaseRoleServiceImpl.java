@@ -21,7 +21,7 @@ import com.chenxin.authority.service.BaseRoleService;
 import com.chenxin.authority.service.ServiceException;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class BaseRoleServiceImpl implements BaseRoleService {
 	@Autowired
 	private BaseRoleRepository baseRolesRepository;
@@ -33,6 +33,7 @@ public class BaseRoleServiceImpl implements BaseRoleService {
 	private static final Logger logger = LoggerFactory.getLogger(BaseRoleServiceImpl.class);
 
 	@Override
+	@Transactional
 	public BaseRole saveRole(BaseRole role) {
 		return this.baseRolesRepository.save(role);
 	}

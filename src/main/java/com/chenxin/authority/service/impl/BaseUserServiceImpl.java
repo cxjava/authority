@@ -42,8 +42,9 @@ import com.chenxin.authority.pojo.BaseUserRole;
 import com.chenxin.authority.pojo.ExtPager;
 import com.chenxin.authority.service.BaseUserService;
 import com.chenxin.authority.service.ServiceException;
+
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class BaseUserServiceImpl implements BaseUserService {
 	@Autowired
 	private BaseUserRepository baseUserRepository;
@@ -72,7 +73,7 @@ public class BaseUserServiceImpl implements BaseUserService {
 
 	@Override
 	public String selectByAccount(Map<String, Object> parameters) {
-		String account=MapUtils.getString(parameters, "account");
+		String account = MapUtils.getString(parameters, "account");
 		// 条件查询
 		List<BaseUser> list = this.baseUserRepository.findByAccount(account);
 		if (CollectionUtils.isEmpty(list)) {
@@ -91,7 +92,7 @@ public class BaseUserServiceImpl implements BaseUserService {
 			// return "00";
 		}
 		// 更新最后登录时间和登录ip
-		dataBaseUser.setErrorCount( 0);
+		dataBaseUser.setErrorCount(0);
 		dataBaseUser.setLastLoginTime(new Date());
 		dataBaseUser.setLastLoginIp(MapUtils.getString(parameters, "loginIp"));
 		this.baseUserRepository.save(dataBaseUser);
@@ -103,6 +104,9 @@ public class BaseUserServiceImpl implements BaseUserService {
 	@Override
 	@Transactional
 	public void deleteByPrimaryKey(Long id) {
+		if (1L == id) {
+			throw new ServiceException("不能删除超级管理员！", "007");
+		}
 		// 删除角色中的
 		this.baseUserRoleRepository.deleteByUserId(id);
 		this.baseUserRepository.delete(id);
@@ -121,19 +125,19 @@ public class BaseUserServiceImpl implements BaseUserService {
 
 	@Override
 	@Transactional
-	public String saveUser(BaseUser user,Collection<Long> roleIds) {
+	public String saveUser(BaseUser user, Collection<Long> roleIds) {
 		// 判断用户名是否重复
-		if (null==user.getId()) {
-			//TODO: 如果是已经存在的用户，并且用户要修改用户名，则需要判断
-			//criteria.put("userId", user.getId());
+		if (null == user.getId()) {
+			// TODO: 如果是已经存在的用户，并且用户要修改用户名，则需要判断
+			// criteria.put("userId", user.getId());
 			List<BaseUser> list = this.baseUserRepository.findByAccount(user.getAccount());
 			if (!CollectionUtils.isEmpty(list)) {
 				return "帐号已经被注册！请重新填写!";
 			}
 			// 新建的用户,加密保存下
 			user.setPassword(EncryptUtil.encrypt(user.getPassword()));
-		}else{
-			BaseUser target=this.baseUserRepository.findOne(user.getId());
+		} else {
+			BaseUser target = this.baseUserRepository.findOne(user.getId());
 			user.setPassword(EncryptUtil.encrypt(target.getPassword()));
 			user.setLastLoginTime(target.getLastLoginTime());
 		}
@@ -152,6 +156,7 @@ public class BaseUserServiceImpl implements BaseUserService {
 	}
 
 	@Override
+	@Transactional
 	public String resetPwdByPrimaryKey(Long userId) {
 		BaseUser oldUser = this.baseUserRepository.findOne(userId);
 		if (oldUser == null) {
@@ -163,8 +168,9 @@ public class BaseUserServiceImpl implements BaseUserService {
 	}
 
 	@Override
+	@Transactional
 	public void update(BaseUser user) {
-		BaseUser target=this.baseUserRepository.findOne(user.getId());
+		BaseUser target = this.baseUserRepository.findOne(user.getId());
 		target.setRealName(user.getRealName());
 		target.setSex(user.getSex());
 		target.setEmail(user.getEmail());
@@ -176,8 +182,8 @@ public class BaseUserServiceImpl implements BaseUserService {
 
 	@Override
 	public boolean validateAccount(String account) {
-		List<BaseUser> list=this.baseUserRepository.findByAccount(account);
-		if(!CollectionUtils.isEmpty(list)){
+		List<BaseUser> list = this.baseUserRepository.findByAccount(account);
+		if (!CollectionUtils.isEmpty(list)) {
 			return false;
 		}
 		return true;
@@ -195,18 +201,18 @@ public class BaseUserServiceImpl implements BaseUserService {
 		Integer errorCount = baseUsers.getErrorCount();
 		Date lastLoginTime = baseUsers.getLastLoginTime();
 		if (!compareTo(lastLoginTime)) {// 已经过了XX分钟，那么把errorCount设置为0，重新计数。
-			errorCount =  0;
+			errorCount = 0;
 		}
 		switch (errorCount) {
 		case 0:
 			// 第一次输入密码错误
 			info = "密码错误!你还有2次机会输入密码!";
-			errorCount =  errorCount + 1;
+			errorCount = errorCount + 1;
 			break;
 		case 1:
 			// 第二次输入密码错误
 			info = "密码错误!你还有1次机会输入密码!<br/>如果输入错误，帐户将被锁定不能登录！";
-			errorCount =  errorCount + 1;
+			errorCount = errorCount + 1;
 			break;
 		case 2:
 			// 第三次输入密码错误
@@ -243,7 +249,7 @@ public class BaseUserServiceImpl implements BaseUserService {
 	@Transactional
 	public String findPassword(BaseUser user) {
 		// 查询是否存在
-		List<BaseUser> list = this.baseUserRepository.findByAccountAndEmail(user.getAccount(),user.getEmail());
+		List<BaseUser> list = this.baseUserRepository.findByAccountAndEmail(user.getAccount(), user.getEmail());
 		if (CollectionUtils.isEmpty(list)) {
 			return "请输入正确的帐号和其注册邮箱！";
 		}
@@ -303,8 +309,8 @@ public class BaseUserServiceImpl implements BaseUserService {
 			// 发送邮件
 			Transport.send(message);
 		} catch (MessagingException e) {
-			logger.error("MessagingException:{}",e);
-			throw new ServiceException(e,"邮件发送失败！","");
+			logger.error("MessagingException:{}", e);
+			throw new ServiceException(e, "邮件发送失败！", "");
 		}
 		logger.info("向邮件地址:{}发送邮件成功！", address);
 		return true;
@@ -319,8 +325,8 @@ public class BaseUserServiceImpl implements BaseUserService {
 
 	@Override
 	public String updatePassword(Map<String, Object> parameters) {
-		Long id=MapUtils.getLong(parameters, "userId");
-		String password=MapUtils.getString(parameters, "password");
+		Long id = MapUtils.getLong(parameters, "userId");
+		String password = MapUtils.getString(parameters, "password");
 		BaseUser user = this.baseUserRepository.findOne(id);
 		if (user == null) {
 			return "00";

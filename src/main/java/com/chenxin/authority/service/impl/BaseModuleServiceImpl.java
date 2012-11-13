@@ -29,6 +29,7 @@ import com.chenxin.authority.service.BaseModuleService;
 import com.google.common.collect.Maps;
 
 @Service
+@Transactional(readOnly = true)
 public class BaseModuleServiceImpl implements BaseModuleService {
 	@Autowired
 	private BaseUserRepository baseUserRepository;
@@ -109,6 +110,7 @@ public class BaseModuleServiceImpl implements BaseModuleService {
 	}
 
 	@Override
+	@Transactional
 	public void saveModules(BaseModule modules) {
 			this.baseModulesRepository.save(modules);
 	}

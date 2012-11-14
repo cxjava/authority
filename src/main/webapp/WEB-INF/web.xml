@@ -18,7 +18,7 @@
 	</context-param>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
+	</listener>		
 	<!-- Spring MVC start -->
 	<servlet>
 		<servlet-name>SpringMVC</servlet-name>

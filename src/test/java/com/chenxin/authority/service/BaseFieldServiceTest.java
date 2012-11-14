@@ -2,7 +2,6 @@ package com.chenxin.authority.service;
 
 import static org.junit.Assert.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
@@ -37,7 +36,7 @@ public class BaseFieldServiceTest extends Services {
 
 	@Test
 	public void testSelectAll() {
-		HashMap<String, String> values = service.selectAll();
+		Map<String, String> values = service.selectAll();
 		logger.info(values.toString());
 		assertNotNull(values);
 	}

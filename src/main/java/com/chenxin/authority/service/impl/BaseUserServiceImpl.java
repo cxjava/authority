@@ -89,7 +89,6 @@ public class BaseUserServiceImpl implements BaseUserService {
 		if (!EncryptUtil.match(MapUtils.getString(parameters, "passwordIn"), dataBaseUser.getPassword())) {
 			// 密码不正确
 			return loginTimes(dataBaseUser, MapUtils.getString(parameters, "loginIp"));
-			// return "00";
 		}
 		// 更新最后登录时间和登录ip
 		dataBaseUser.setErrorCount(dataBaseUser.getErrorCount()+1);
@@ -129,7 +128,6 @@ public class BaseUserServiceImpl implements BaseUserService {
 		// 判断用户名是否重复
 		if (null == user.getId()) {
 			// TODO: 如果是已经存在的用户，并且用户要修改用户名，则需要判断
-			// criteria.put("userId", user.getId());
 			List<BaseUser> list = this.baseUserRepository.findByAccount(user.getAccount());
 			if (!CollectionUtils.isEmpty(list)) {
 				return "帐号已经被注册！请重新填写!";
@@ -243,7 +241,6 @@ public class BaseUserServiceImpl implements BaseUserService {
 		long now = c.getTimeInMillis();
 		c.setTime(date);
 		long lastly = c.getTimeInMillis();
-		// 60分钟1000*60*60;
 		return (now - lastly) <= millis;
 	}
 

@@ -19,7 +19,7 @@ public interface BaseModuleRepository extends PagingAndSortingRepository<BaseMod
 	@Query("SELECT distinct a FROM BaseModule a, BaseRoleModule b, BaseRole c, "
 			+ "BaseUserRole d, BaseUser e WHERE a.id = b.moduleId AND b.roleId = c.id "
 			+ "AND c.id = d.roleId AND d.userId = e.id and e.id=?1 order by a.id asc")
-	List<BaseModule> findByUserId(Long UserId);
+	List<BaseModule> findByUserId(Long userId);
 
 	List<BaseModule> findByLeaf(Integer leaf);
 

@@ -11,4 +11,12 @@ public interface WebConstants {
 	public static final String TIME_OUT = "{\"error\":true,\"msg\":\"登录超时,请重新登录！\"}";
 	/** 保存session中的admin用户key */
 	public static final String CURRENT_USER = "CURRENT_USER";
+	/** exception */
+	public static final String JSON_MAPPING_EXCEPTION = "JsonMappingException: ";
+	/** exception */
+	public static final String IO_EXCEPTION = "IOException: ";
+	/** exception */
+	public static final String JSON_GENERATION_EXCEPTION = "JsonGenerationException: ";
+	/** exception */
+	public static final String EXCEPTION = "Exception: ";
 }

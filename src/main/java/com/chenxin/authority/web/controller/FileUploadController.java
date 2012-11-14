@@ -1,12 +1,5 @@
 package com.chenxin.authority.web.controller;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -18,6 +11,12 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.chenxin.authority.common.jackjson.Jackson;
 import com.chenxin.authority.common.utils.FileDigest;
 import com.chenxin.authority.pojo.ExtReturn;
+import com.chenxin.authority.web.interseptor.WebConstants;
 
 @Controller
 public class FileUploadController {
@@ -71,7 +71,7 @@ public class FileUploadController {
 			logger.debug("{}", returnMsg);
 			writer.print(returnMsg);
 		} catch (Exception e) {
-			logger.error("Exception: ", e);
+			logger.error(WebConstants.EXCEPTION, e);
 		} finally {
 			writer.flush();
 			writer.close();
@@ -113,7 +113,7 @@ public class FileUploadController {
 			IOUtils.copy(input, output);
 			output.flush();
 		} catch (Exception e) {
-			logger.error("Exception: ", e);
+			logger.error(WebConstants.EXCEPTION, e);
 		} finally {
 			IOUtils.closeQuietly(output);
 			IOUtils.closeQuietly(input);

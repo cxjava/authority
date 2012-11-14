@@ -1,6 +1,5 @@
 package com.chenxin.authority.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +37,7 @@ public interface BaseModuleService {
 	 * 保存角色的系统菜单
 	 * 
 	 */
-	String saveModule(Long roleId, ArrayList<Long> modulesIdList);
+	String saveModule(Long roleId, List<Long> modulesIdList);
 
 	/**
 	 * 保存系统菜单

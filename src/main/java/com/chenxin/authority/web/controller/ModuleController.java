@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -26,13 +25,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.chenxin.authority.common.jackjson.Jackson;
 import com.chenxin.authority.common.springmvc.DateConvertEditor;
 import com.chenxin.authority.pojo.BaseModule;
-import com.chenxin.authority.pojo.BaseRoleModule;
 import com.chenxin.authority.pojo.ExceptionReturn;
 import com.chenxin.authority.pojo.ExtGridReturn;
 import com.chenxin.authority.pojo.ExtPager;
 import com.chenxin.authority.pojo.ExtReturn;
 import com.chenxin.authority.pojo.Tree;
 import com.chenxin.authority.service.BaseModuleService;
+import com.chenxin.authority.web.interseptor.WebConstants;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -97,7 +96,7 @@ public class ModuleController {
 			Page<BaseModule> page = this.baseModulesService.selectByParameters(pager, parameters);
 			return new ExtGridReturn(page.getTotalElements(), page.getContent());
 		} catch (Exception e) {
-			logger.error("Exception: ", e);
+			logger.error(WebConstants.EXCEPTION, e);
 			return new ExceptionReturn(e);
 		}
 	}
@@ -112,10 +111,9 @@ public class ModuleController {
 			if (null == roleId) {
 				return new ExtReturn(false, "角色ID不能为空！");
 			}
-			List<BaseRoleModule> list = this.baseModulesService.selectModuleByRoleId(roleId);
-			return list;
+			return this.baseModulesService.selectModuleByRoleId(roleId);
 		} catch (Exception e) {
-			logger.error("Exception: ", e);
+			logger.error(WebConstants.EXCEPTION, e);
 			return new ExceptionReturn(e);
 		}
 	}
@@ -153,7 +151,7 @@ public class ModuleController {
 				return new ExtReturn(false, result);
 			}
 		} catch (Exception e) {
-			logger.error("Exception: ", e);
+			logger.error(WebConstants.EXCEPTION, e);
 			return new ExceptionReturn(e);
 		}
 	}
@@ -174,7 +172,7 @@ public class ModuleController {
 			this.baseModulesService.saveModules(modules);
 			return new ExtReturn(true, "保存成功！");
 		} catch (Exception e) {
-			logger.error("Exception: ", e);
+			logger.error(WebConstants.EXCEPTION, e);
 			return new ExceptionReturn(e);
 		}
 	}
@@ -192,7 +190,7 @@ public class ModuleController {
 			this.baseModulesService.delete(moduleId);
 			return new ExtReturn(true, "删除成功！");
 		} catch (Exception e) {
-			logger.error("Exception: ", e);
+			logger.error(WebConstants.EXCEPTION, e);
 			return new ExceptionReturn(e);
 		}
 	}

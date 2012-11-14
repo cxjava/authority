@@ -30,7 +30,6 @@ public class ExceptionReturn implements Serializable {
 		// 异常情况
 		this.success = false;
 		// 太详细了
-		// this.exceptionMessage = sw.toString();
 		this.exceptionMessage = exceptionMessage.getMessage();
 	}
 

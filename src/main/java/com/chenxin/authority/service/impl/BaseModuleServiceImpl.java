@@ -1,6 +1,5 @@
 package com.chenxin.authority.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.chenxin.authority.common.utils.JpaTools;
 import com.chenxin.authority.dao.BaseModuleRepository;
 import com.chenxin.authority.dao.BaseRoleModuleRepository;
-import com.chenxin.authority.dao.BaseUserRepository;
 import com.chenxin.authority.pojo.BaseModule;
 import com.chenxin.authority.pojo.BaseRoleModule;
 import com.chenxin.authority.pojo.BaseUser;
@@ -32,16 +30,9 @@ import com.google.common.collect.Maps;
 @Transactional(readOnly = true)
 public class BaseModuleServiceImpl implements BaseModuleService {
 	@Autowired
-	private BaseUserRepository baseUserRepository;
-	@Autowired
 	private BaseModuleRepository baseModulesRepository;
 	@Autowired
 	private BaseRoleModuleRepository baseRoleModuleRepository;
-	/**
-	 * 开发阶段是否显示全部模块
-	 */
-	@Value("${resoved:false}")
-	private boolean resoved;
 	/**
 	 * 是否需要显示被隐藏的模块,true显示被隐藏的模块，false表示不显示隐藏的模块
 	 */
@@ -76,7 +67,7 @@ public class BaseModuleServiceImpl implements BaseModuleService {
 	}
 	@Override
 	@Transactional
-	public String saveModule(Long roleId,ArrayList<Long> modulesIdList) {
+	public String saveModule(Long roleId,List<Long> modulesIdList) {
 		// 删除以前的资源
 		this.baseRoleModuleRepository.deleteByRoleId(roleId);
 		for (Long moduleId : modulesIdList) {

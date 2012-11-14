@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2011-12-1 下午3:14:59
  */
 public class WebUtils {
+	private WebUtils() {}
+
 	/**
 	 * 将请求参数封装为Map<br>
 	 * request中的参数t1=1&t1=2&t2=3<br>
@@ -24,7 +26,7 @@ public class WebUtils {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public static HashMap<String, String> getPraramsAsMap(HttpServletRequest request) {
+	public static Map<String, String> getPraramsAsMap(HttpServletRequest request) {
 		HashMap<String, String> hashMap = new HashMap<String, String>();
 		Map map = request.getParameterMap();
 		Iterator keyIterator = map.keySet().iterator();

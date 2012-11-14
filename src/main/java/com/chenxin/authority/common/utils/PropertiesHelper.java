@@ -61,12 +61,18 @@ public class PropertiesHelper {
 
 	private Properties p;
 
-	public PropertiesHelper(Properties p) {
-		setProperties(p);
+	public PropertiesHelper(Properties props) {
+		if (props == null){
+			throw new IllegalArgumentException("properties must be not null");
+		}
+		this.p = props;
 	}
 
-	public PropertiesHelper(Properties p, int systemPropertiesMode) {
-		setProperties(p);
+	public PropertiesHelper(Properties props, int systemPropertiesMode) {
+		if (props == null){
+			throw new IllegalArgumentException("properties must be not null");
+		}
+		this.p = props;
 		if (systemPropertiesMode != SYSTEM_PROPERTIES_MODE_NEVER && systemPropertiesMode != SYSTEM_PROPERTIES_MODE_FALLBACK
 				&& systemPropertiesMode != SYSTEM_PROPERTIES_MODE_OVERRIDE) {
 			throw new IllegalArgumentException("error systemPropertiesMode mode:" + systemPropertiesMode);
@@ -79,8 +85,9 @@ public class PropertiesHelper {
 	}
 
 	public void setProperties(Properties props) {
-		if (props == null)
+		if (props == null){
 			throw new IllegalArgumentException("properties must be not null");
+		}
 		this.p = props;
 	}
 
@@ -264,7 +271,7 @@ public class PropertiesHelper {
 		try {
 			return new URL(getProperty(key));
 		} catch (MalformedURLException e) {
-			throw new IllegalArgumentException("Property " + key + " must be a valid URL (" + getProperty(key) + ")");
+			throw new IllegalArgumentException("Property " + key + " must be a valid URL (" + key + ")");
 		}
 	}
 

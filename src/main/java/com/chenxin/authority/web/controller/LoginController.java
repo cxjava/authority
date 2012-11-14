@@ -77,7 +77,7 @@ public class LoginController {
 			session.invalidate();
 			return new ExtReturn(true, "退出系统成功！");
 		} catch (Exception e) {
-			logger.error("Exception: ", e);
+			logger.error(WebConstants.EXCEPTION, e);
 			return new ExceptionReturn(e);
 		}
 	}
@@ -97,7 +97,7 @@ public class LoginController {
 			// 返回根菜单下面的子菜单
 			return tree.getChildren();
 		} catch (Exception e) {
-			logger.error("Exception: ", e);
+			logger.error(WebConstants.EXCEPTION, e);
 			return new ExceptionReturn(e);
 		}
 	}
@@ -131,7 +131,7 @@ public class LoginController {
 				return new ExtReturn(false, result);
 			}
 		} catch (ServiceException e) {
-			logger.error("Exception: ", e);
+			logger.error(WebConstants.EXCEPTION, e);
 			if (StringUtils.isNotBlank(e.getErrorCode())) {
 				return new ExtReturn(false, e.getMessage());
 			} else {
@@ -218,7 +218,7 @@ public class LoginController {
 				return new ExtReturn(false, result);
 			}
 		} catch (Exception e) {
-			logger.error("Exception: ", e);
+			logger.error(WebConstants.EXCEPTION, e);
 			return new ExceptionReturn(e);
 		}
 	}
@@ -280,7 +280,7 @@ public class LoginController {
 				model.addAttribute("msg", result);
 			}
 		} catch (Exception e) {
-			logger.error("Exception: ", e);
+			logger.error(WebConstants.EXCEPTION, e);
 			model.addAttribute("msg", e.getMessage());
 		}
 		return "user/resetpwd";

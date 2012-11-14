@@ -38,8 +38,9 @@ public class DateConvertEditor extends PropertyEditorSupport {
 	/** Date -> String */
 	@Override
 	public String getAsText() {
-		if (getValue() == null)
+		if (getValue() == null){
 			return "";
+		}
 		return this.format.format(getValue());
 	}
 

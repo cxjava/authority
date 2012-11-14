@@ -3,7 +3,6 @@ package com.chenxin.authority.service;
 import com.chenxin.authority.pojo.BaseField;
 import com.chenxin.authority.pojo.ExtPager;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
@@ -12,7 +11,7 @@ public interface BaseFieldService {
 
 	Page<BaseField> selectByParameters(ExtPager pager, Map<String, Object> parameters);
 
-	HashMap<String, String> selectAll();
+	Map<String, String> selectAll();
 
 	/**
 	 * 保存系统字段设置

@@ -29,6 +29,7 @@ import com.chenxin.authority.pojo.ExtPager;
 import com.chenxin.authority.pojo.ExtReturn;
 import com.chenxin.authority.service.BaseFieldService;
 import com.chenxin.authority.service.ServiceException;
+import com.chenxin.authority.web.interseptor.WebConstants;
 import com.google.common.collect.Maps;
 
 /**
@@ -73,7 +74,7 @@ public class FieldController {
 			Page<BaseField> page = this.baseFieldsService.selectByParameters(pager, parameters);
 			return new ExtGridReturn(page.getTotalElements(), page.getContent());
 		} catch (ServiceException e) {
-			logger.error("Exception: ", e);
+			logger.error(WebConstants.EXCEPTION, e);
 			return new ExceptionReturn(e);
 		}
 	}
@@ -103,7 +104,7 @@ public class FieldController {
 			this.baseFieldsService.saveField(fields);
 			return new ExtReturn(true, "保存成功！");
 		} catch (ServiceException e) {
-			logger.error("Exception: ", e);
+			logger.error(WebConstants.EXCEPTION, e);
 			return new ExceptionReturn(e);
 		}
 	}
@@ -121,7 +122,7 @@ public class FieldController {
 			this.baseFieldsService.delete(fieldId);
 			return new ExtReturn(true, "删除成功！");
 		} catch (ServiceException e) {
-			logger.error("Exception: ", e);
+			logger.error(WebConstants.EXCEPTION, e);
 			return new ExceptionReturn(e);
 		}
 	}
@@ -137,7 +138,7 @@ public class FieldController {
 			session.getServletContext().setAttribute("fields", baseFieldsService.selectAll());
 			return new ExtReturn(true, "同步成功！");
 		} catch (ServiceException e) {
-			logger.error("Exception: ", e);
+			logger.error(WebConstants.EXCEPTION, e);
 			return new ExceptionReturn(e);
 		}
 	}

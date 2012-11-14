@@ -52,12 +52,6 @@ public class TreeMenu implements Serializable {
 				lt.add(getNodeJson(list, modules));
 			}
 			tree.setChildren(lt);
-			// } else if ((node.getParentId() == root.getModuleId()) ||
-			// node.getModuleUrl() == null) {
-			// // 防止是主菜单,或者主菜单里面的url为空，但是下面没有子菜单的时候
-			// tree.setUrl("");
-			// tree.setLeaf(node.getLeaf() == 1 ? true : false);
-			// tree.setExpanded(node.getExpanded() == 1 ? true : false);
 		} else {
 			tree.setUrl(node.getModuleUrl());
 			tree.setLeaf(node.getLeaf() == 1 ? true : false);

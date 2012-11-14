@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
  * @date 2012-2-29 上午10:52:20
  */
 public class EncryptUtil {
+	
+	private EncryptUtil(){}
 	private static final PasswordEncoder encoder = new StandardPasswordEncoder("secret");
 
 	public static String encrypt(String rawPassword) {

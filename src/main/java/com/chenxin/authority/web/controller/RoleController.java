@@ -25,6 +25,7 @@ import com.chenxin.authority.pojo.ExtGridReturn;
 import com.chenxin.authority.pojo.ExtPager;
 import com.chenxin.authority.pojo.ExtReturn;
 import com.chenxin.authority.service.BaseRoleService;
+import com.chenxin.authority.web.interseptor.WebConstants;
 import com.google.common.collect.Maps;
 
 /**
@@ -85,7 +86,7 @@ public class RoleController {
 			this.baseRolesService.saveRole(role);
 			return new ExtReturn(true, "保存成功！");
 		} catch (Exception e) {
-			logger.error("Exception: ", e);
+			logger.error(WebConstants.EXCEPTION, e);
 			return new ExceptionReturn(e);
 		}
 	}
@@ -103,7 +104,7 @@ public class RoleController {
 			this.baseRolesService.deleteByPrimaryKey(roleId);
 			return new ExtReturn(true, "删除成功！");
 		} catch (Exception e) {
-			logger.error("Exception: ", e);
+			logger.error(WebConstants.EXCEPTION, e);
 			return new ExceptionReturn(e);
 		}
 	}

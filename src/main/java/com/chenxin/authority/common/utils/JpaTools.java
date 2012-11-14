@@ -12,7 +12,6 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.DefaultConversionService;
@@ -21,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.CollectionUtils;
 
 import com.chenxin.authority.pojo.ExtPager;
 import com.chenxin.authority.pojo.SearchFilter;
@@ -29,7 +29,7 @@ import com.google.common.collect.Maps;
 
 public class JpaTools {
 	private static final ConversionService conversionService = new DefaultConversionService();
-
+	private JpaTools(){}
 	/**
 	 * create page request
 	 * 
@@ -103,7 +103,7 @@ public class JpaTools {
 			} else if (names.length == 0 || names.length > 2) {
 				throw new IllegalArgumentException(entry.getKey() + " is not a valid search filter name");
 			}
-			filters.put(filter.fieldName, filter);
+			filters.put(filter.getFieldName(), filter);
 		}
 
 		return filters;
@@ -118,18 +118,18 @@ public class JpaTools {
 			@SuppressWarnings({ "rawtypes", "unchecked" })
 			@Override
 			public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-				if (CollectionUtils.isNotEmpty(filters)) {
+				if (!CollectionUtils.isEmpty(filters)) {
 
 					List<Predicate> predicates = Lists.newArrayList();
 					for (SearchFilter filter : filters) {
 						//deal with this condition:parameters.put("DIStINCT", Any Object);
-						if (filter.operator.equals(SearchFilter.Operator.DISTINCT)) {
+						if (filter.getOperator().equals(SearchFilter.Operator.DISTINCT)) {
 							query.distinct(true);
 							continue;
 						}
 						// nested path translate, 如Task的名为"user.name"的filedName,
 						// 转换为Task.user.name属性
-						String[] names = StringUtils.split(filter.fieldName, ".");
+						String[] names = StringUtils.split(filter.getFieldName(), ".");
 						Path expression = root.get(names[0]);
 						for (int i = 1; i < names.length; i++) {
 							expression = expression.get(names[i]);
@@ -137,30 +137,30 @@ public class JpaTools {
 
 						// convert value from string to target type
 						Class attributeClass = expression.getJavaType();
-						if (!attributeClass.equals(String.class) && filter.value instanceof String
+						if (!attributeClass.equals(String.class) && filter.getValue() instanceof String
 								&& conversionService.canConvert(String.class, attributeClass)) {
-							filter.value = conversionService.convert(filter.value, attributeClass);
+							filter.setValue(conversionService.convert(filter.getValue(), attributeClass));
 						}
 
 						// logic operator
-						switch (filter.operator) {
+						switch (filter.getOperator()) {
 						case EQ:
-							predicates.add(builder.equal(expression, filter.value));
+							predicates.add(builder.equal(expression, filter.getValue()));
 							break;
 						case LIKE:
-							predicates.add(builder.like(expression, "%" + filter.value + "%"));
+							predicates.add(builder.like(expression, "%" + filter.getValue() + "%"));
 							break;
 						case GT:
-							predicates.add(builder.greaterThan(expression, (Comparable) filter.value));
+							predicates.add(builder.greaterThan(expression, (Comparable) filter.getValue()));
 							break;
 						case LT:
-							predicates.add(builder.lessThan(expression, (Comparable) filter.value));
+							predicates.add(builder.lessThan(expression, (Comparable) filter.getValue()));
 							break;
 						case GTE:
-							predicates.add(builder.greaterThanOrEqualTo(expression, (Comparable) filter.value));
+							predicates.add(builder.greaterThanOrEqualTo(expression, (Comparable) filter.getValue()));
 							break;
 						case LTE:
-							predicates.add(builder.lessThanOrEqualTo(expression, (Comparable) filter.value));
+							predicates.add(builder.lessThanOrEqualTo(expression, (Comparable) filter.getValue()));
 							break;
 						case DISTINCT:
 							query.distinct(true);

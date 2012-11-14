@@ -1,21 +1,13 @@
 package com.chenxin.authority.pojo;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -42,8 +34,6 @@ public class BaseUser extends IdEntity {
 	private Date lastLoginTime;
 	private String lastLoginIp;
 	private String remark;
-
-//	private List<BaseRole> roleList = new ArrayList<BaseRole>();
 
 	/**
 	 * @return the account
@@ -209,27 +199,5 @@ public class BaseUser extends IdEntity {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-//
-//	/**
-//	 * @return the roleList
-//	 */
-//	// 多对多定义
-//	@ManyToMany
-//	@JoinTable(name = "t_base_user_role", joinColumns = { @JoinColumn(name = "userId") }, inverseJoinColumns = { @JoinColumn(name = "roleId") })
-//	// Fecth策略定义
-//	@Fetch(FetchMode.SUBSELECT)
-//	// 集合按id排序
-//	@OrderBy("id ASC")
-//	public List<BaseRole> getRoleList() {
-//		return roleList;
-//	}
-//
-//	/**
-//	 * @param roleList
-//	 *            the roleList to set
-//	 */
-//	public void setRoleList(List<BaseRole> roleList) {
-//		this.roleList = roleList;
-//	}
 
 }

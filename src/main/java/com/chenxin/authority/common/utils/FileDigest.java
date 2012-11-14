@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class FileDigest {
 	private static final Logger logger = LoggerFactory.getLogger(FileDigest.class);
-
+	private FileDigest(){}
 	/**
 	 * 获取单个文件的MD5值！
 	 * 

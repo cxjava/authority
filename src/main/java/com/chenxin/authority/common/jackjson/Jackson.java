@@ -15,6 +15,8 @@ import org.codehaus.jackson.map.ser.impl.SimpleBeanPropertyFilter;
 import org.codehaus.jackson.map.ser.impl.SimpleFilterProvider;
 import org.codehaus.jackson.type.TypeReference;
 
+import com.chenxin.authority.web.interseptor.WebConstants;
+
 /**
  * jackjson一些转换方法
  * 
@@ -26,6 +28,7 @@ public class Jackson {
 	/** 格式化时间的string */
 	private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
+	private Jackson(){}
 	/**
 	 * fromJsonToObject<br>
 	 * jackjson把json字符串转换为Java对象的实现方法
@@ -50,9 +53,9 @@ public class Jackson {
 		} catch (JsonParseException e) {
 			logger.error("JsonParseException: ", e);
 		} catch (JsonMappingException e) {
-			logger.error("JsonMappingException: ", e);
+			logger.error(WebConstants.JSON_MAPPING_EXCEPTION, e);
 		} catch (IOException e) {
-			logger.error("IOException: ", e);
+			logger.error(WebConstants.IO_EXCEPTION, e);
 		}
 		return null;
 	}
@@ -80,9 +83,9 @@ public class Jackson {
 		} catch (JsonParseException e) {
 			logger.error("JsonParseException: ", e);
 		} catch (JsonMappingException e) {
-			logger.error("JsonMappingException: ", e);
+			logger.error(WebConstants.JSON_MAPPING_EXCEPTION, e);
 		} catch (IOException e) {
-			logger.error("IOException: ", e);
+			logger.error(WebConstants.IO_EXCEPTION, e);
 		}
 		return null;
 	}
@@ -100,11 +103,11 @@ public class Jackson {
 		try {
 			return mapper.writeValueAsString(object);
 		} catch (JsonGenerationException e) {
-			logger.error("JsonGenerationException: ", e);
+			logger.error(WebConstants.JSON_GENERATION_EXCEPTION, e);
 		} catch (JsonMappingException e) {
-			logger.error("JsonMappingException: ", e);
+			logger.error(WebConstants.JSON_MAPPING_EXCEPTION, e);
 		} catch (IOException e) {
-			logger.error("IOException: ", e);
+			logger.error(WebConstants.IO_EXCEPTION, e);
 		}
 		return null;
 	}
@@ -128,11 +131,11 @@ public class Jackson {
 		try {
 			return mapper.filteredWriter(filters).writeValueAsString(object);
 		} catch (JsonGenerationException e) {
-			logger.error("JsonGenerationException: ", e);
+			logger.error(WebConstants.JSON_GENERATION_EXCEPTION, e);
 		} catch (JsonMappingException e) {
-			logger.error("JsonMappingException: ", e);
+			logger.error(WebConstants.JSON_MAPPING_EXCEPTION, e);
 		} catch (IOException e) {
-			logger.error("IOException: ", e);
+			logger.error(WebConstants.IO_EXCEPTION, e);
 		}
 		return null;
 	}
@@ -156,11 +159,11 @@ public class Jackson {
 		try {
 			return mapper.filteredWriter(filters).writeValueAsString(object);
 		} catch (JsonGenerationException e) {
-			logger.error("JsonGenerationException: ", e);
+			logger.error(WebConstants.JSON_GENERATION_EXCEPTION, e);
 		} catch (JsonMappingException e) {
-			logger.error("JsonMappingException: ", e);
+			logger.error(WebConstants.JSON_MAPPING_EXCEPTION, e);
 		} catch (IOException e) {
-			logger.error("IOException: ", e);
+			logger.error(WebConstants.IO_EXCEPTION, e);
 		}
 		return null;
 	}
@@ -179,11 +182,11 @@ public class Jackson {
 		try {
 			return mapper.writeValueAsString(object);
 		} catch (JsonGenerationException e) {
-			logger.error("JsonGenerationException: ", e);
+			logger.error(WebConstants.JSON_GENERATION_EXCEPTION, e);
 		} catch (JsonMappingException e) {
-			logger.error("JsonMappingException: ", e);
+			logger.error(WebConstants.JSON_MAPPING_EXCEPTION, e);
 		} catch (IOException e) {
-			logger.error("IOException: ", e);
+			logger.error(WebConstants.IO_EXCEPTION, e);
 		}
 		return null;
 	}
@@ -204,11 +207,11 @@ public class Jackson {
 		try {
 			return mapper.writeValueAsString(object);
 		} catch (JsonGenerationException e) {
-			logger.error("JsonGenerationException: ", e);
+			logger.error(WebConstants.JSON_GENERATION_EXCEPTION, e);
 		} catch (JsonMappingException e) {
-			logger.error("JsonMappingException: ", e);
+			logger.error(WebConstants.JSON_MAPPING_EXCEPTION, e);
 		} catch (IOException e) {
-			logger.error("IOException: ", e);
+			logger.error(WebConstants.IO_EXCEPTION, e);
 		}
 		return null;
 	}

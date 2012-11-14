@@ -33,21 +33,12 @@ import com.chenxin.authority.common.utils.PropertiesHelper;
 public class PropertiesHolder implements InitializingBean {
 	private static final Logger logger = LoggerFactory.getLogger(PropertiesHolder.class);
 
-	public static PropertiesHelper properies = null;
+	private static PropertiesHelper properies = null;
 
 	public void setProperties(Properties properies) {
 		Assert.isNull(PropertiesHolder.properies, "PropertiesHolder alreade hold properties");
 		PropertiesHolder.properies = new PropertiesHelper(properies);
 	}
-
-	// /**
-	// * 重新设置properties
-	// * @param properties
-	// */
-	// public void resetProperties(Properties properties) {
-	// clearHolder();
-	// new PropertiesHolder().setProperties(properties);
-	// }
 
 	/**
 	 * 清空 holder,只有清空Holder才可以重新设置 Properties
@@ -177,8 +168,9 @@ public class PropertiesHolder implements InitializingBean {
 	}
 
 	private static void assertHolderInited() {
-		if (properies == null)
+		if (properies == null){
 			throw new IllegalStateException("PropertiesHolder.properties must be not null, PropertiesHolder not yet init.");
+		}
 	}
 
 	@Override

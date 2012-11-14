@@ -47,10 +47,10 @@ import ch.qos.logback.core.db.DBAppenderBase;
  * @author S&eacute;bastien Pennec
  */
 public class DBAppender extends DBAppenderBase<ILoggingEvent> {
-	protected String insertPropertiesSQL;
-	protected String insertExceptionSQL;
-	protected String insertSQL;
-	protected static final Method GET_GENERATED_KEYS_METHOD;
+	private String insertPropertiesSQL;
+	private String insertExceptionSQL;
+	private String insertSQL;
+	private static final Method GET_GENERATED_KEYS_METHOD;
 
 	private DBNameResolver dbNameResolver;
 
@@ -91,8 +91,9 @@ public class DBAppender extends DBAppenderBase<ILoggingEvent> {
 
 	@Override
 	public void start() {
-		if (dbNameResolver == null)
+		if (dbNameResolver == null){
 			dbNameResolver = new DefaultDBNameResolver();
+		}
 		insertExceptionSQL = SQLBuilder.buildInsertExceptionSQL(dbNameResolver);
 		insertPropertiesSQL = SQLBuilder.buildInsertPropertiesSQL(dbNameResolver);
 		insertSQL = SQLBuilder.buildInsertSQL(dbNameResolver);
@@ -100,7 +101,7 @@ public class DBAppender extends DBAppenderBase<ILoggingEvent> {
 	}
 
 	@Override
-	protected void subAppend(ILoggingEvent event, Connection connection, PreparedStatement insertStatement) throws Throwable {
+	protected void subAppend(ILoggingEvent event, Connection connection, PreparedStatement insertStatement) throws Exception {
 
 		bindLoggingEventWithInsertStatement(insertStatement, event);
 		bindLoggingEventArgumentsWithPreparedStatement(insertStatement, event.getArgumentArray());
@@ -115,7 +116,7 @@ public class DBAppender extends DBAppenderBase<ILoggingEvent> {
 	}
 
 	@Override
-	protected void secondarySubAppend(ILoggingEvent event, Connection connection, long eventId) throws Throwable {
+	protected void secondarySubAppend(ILoggingEvent event, Connection connection, long eventId) throws Exception {
 		Map<String, String> mergedMap = mergePropertyMaps(event);
 		insertProperties(mergedMap, connection, eventId);
 
@@ -125,8 +126,6 @@ public class DBAppender extends DBAppenderBase<ILoggingEvent> {
 	}
 
 	void bindLoggingEventWithInsertStatement(PreparedStatement stmt, ILoggingEvent event) throws SQLException {
-		// stmt.setLong(TIMESTMP_INDEX, event.getTimeStamp());
-		// stmt.setDate(TIMESTMP_INDEX, new Date(event.getTimeStamp()));
 		stmt.setString(TIMESTMP_INDEX, DateFormatUtils.format(new Date(event.getTimeStamp()), "yyyy-MM-dd HH:mm:ss"));
 		stmt.setString(FORMATTED_MESSAGE_INDEX, event.getFormattedMessage());
 		stmt.setString(LOGGER_NAME_INDEX, event.getLoggerName());
@@ -206,7 +205,6 @@ public class DBAppender extends DBAppenderBase<ILoggingEvent> {
 		Set propertiesKeys = mergedMap.keySet();
 		// TODO:add chenxin 不让它写入logging_event_property
 		if (propertiesKeys.size() < -1) {
-			// if (propertiesKeys.size() >0) {
 			PreparedStatement insertPropertiesStatement = connection.prepareStatement(insertPropertiesSQL);
 
 			for (Iterator i = propertiesKeys.iterator(); i.hasNext();) {

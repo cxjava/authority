@@ -34,7 +34,7 @@ public class BaseFieldServiceImpl implements BaseFieldService {
 	private static final Logger logger = LoggerFactory.getLogger(BaseFieldServiceImpl.class);
 
 	@Override
-	public HashMap<String, String> selectAll() {
+	public Map<String, String> selectAll() {
 		logger.info("Start reading system default configuration");
 		Map<String, Object> parameters = Maps.newHashMap();
 		parameters.put("enabled", 1);
@@ -63,7 +63,6 @@ public class BaseFieldServiceImpl implements BaseFieldService {
 			String key = entry.getKey();
 			HashMap<String, String> value = entry.getValue();
 			// 为了eval('(${applicationScope.fields.sex})')这个单引号使用,替换所有的'，为\'
-			// String val = Jackson.objToJson(value).replaceAll("\\'", "\\\\'");
 			String val = StringEscapeUtils.escapeEcmaScript(Jackson.objToJson(value));
 			logger.debug(val);
 			part.put(key, val);

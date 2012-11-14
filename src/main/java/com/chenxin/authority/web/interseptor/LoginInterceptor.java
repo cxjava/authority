@@ -34,13 +34,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 				response.sendRedirect(request.getContextPath() + "/");
 			}
 			return false;
-		} else {
-			// BaseUser users=(BaseUser)user;
-			// Object[] args=new
-			// Object[]{users.getAccount(),users.getRealName(),request.getRequestURI(),request.getRequestURL()};
-			// logger.debug("start");
-			// logger.debug("getAccount:{},getRealName:{},getRequestURI:{},getRequestURL:{},",args);
-			// logger.debug("end");
 		}
 		return true;
 

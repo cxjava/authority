@@ -83,7 +83,7 @@ public class BaseUserServiceImpl implements BaseUserService {
 		BaseUser dataBaseUser = list.get(0);
 		// 错误3次,并且时间未到
 		if (dataBaseUser.getErrorCount() >= 3 && compareTo(dataBaseUser.getLastLoginTime())) {
-			return "请你联系管理员，或者" + millisText + "之后再次尝试！";
+			return "请你联系管理员，或者" + millisText + "分钟之后再次尝试！";
 		}
 		// 传入的password已经md5过一次了,并且为小写
 		if (!EncryptUtil.match(MapUtils.getString(parameters, "passwordIn"), dataBaseUser.getPassword())) {
@@ -91,7 +91,7 @@ public class BaseUserServiceImpl implements BaseUserService {
 			return loginTimes(dataBaseUser, MapUtils.getString(parameters, "loginIp"));
 		}
 		// 更新最后登录时间和登录ip
-		dataBaseUser.setErrorCount(dataBaseUser.getErrorCount()+1);
+		dataBaseUser.setErrorCount(0);
 		dataBaseUser.setLastLoginTime(new Date());
 		dataBaseUser.setLastLoginIp(MapUtils.getString(parameters, "loginIp"));
 		this.baseUserRepository.save(dataBaseUser);

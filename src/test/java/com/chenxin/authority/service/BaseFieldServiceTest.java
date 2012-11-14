@@ -34,6 +34,13 @@ public class BaseFieldServiceTest extends Services {
 		base.setFieldName("333");
 	}
 
+	private BaseField getBaseField() {
+		base = new BaseField();
+		base.setField("111");
+		base.setFieldName("333");
+		return base;
+	}
+
 	@Test
 	public void testSelectAll() {
 		Map<String, String> values = service.selectAll();
@@ -54,20 +61,23 @@ public class BaseFieldServiceTest extends Services {
 	}
 
 	@Test
-	public void testBaseField() {
-		this.service.saveField(base);
-		this.service.saveField(base);
-		base.setFieldName("ggg");
-		this.service.saveField(base);
+	public void testSelectByParameters() {
+		this.service.saveField(this.getBaseField());
+		this.service.saveField(this.getBaseField());
+		this.service.saveField(this.getBaseField());
+
 		ExtPager pager = new ExtPager();
+		Map<String, Object> parameters = Maps.newHashMap();
+
 		pager.setLimit(10);
 		pager.setStart(0);
 		pager.setDir("desc");
 		pager.setSort("fieldName");
-		Map<String, Object> parameters = Maps.newHashMap();
 		parameters.put("", "");
 		Page<BaseField> pages = this.service.selectByParameters(pager, parameters);
 		assertNotNull(pages);
-		// assertEquals(pages.getTotalElements(), 1);
+		assertTrue(pages.getTotalElements() >= 3);
+		assertNotNull(pages.getContent());
+		assertTrue(pages.getContent().size() >= 3);
 	}
 }

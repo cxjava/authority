@@ -40,7 +40,11 @@
 	<bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 		<property name="showSql" value="false" />
 		<property name="generateDdl" value="true" />
-		<property name="database" value="${spring.profiles.default}"/>
+		<property name="databasePlatform">
+			<bean factory-method="getDialect" class="com.chenxin.authority.common.utils.Hibernates">
+				<constructor-arg ref="dataSource"/>
+			</bean>
+		</property>
 	</bean>
 
 	<!-- Spring Data Jpa配置 -->

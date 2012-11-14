@@ -40,11 +40,7 @@
 	<bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 		<property name="showSql" value="false" />
 		<property name="generateDdl" value="true" />
-		<property name="databasePlatform">
-			<bean factory-method="getDialect" class="com.chenxin.authority.common.utils.Hibernates">
-				<constructor-arg ref="dataSource"/>
-			</bean>
-		</property>
+		<property name="database" value="${spring.profiles.default}"/>
 	</bean>
 
 	<!-- Spring Data Jpa配置 -->
@@ -58,23 +54,6 @@
 	<!-- 使用annotation定义事务 -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	
-	<!-- 数据源配置, 使用应用中的Druid数据库连接池 -->
-	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
-		<!-- Connection Info -->
-		<property name="driverClassName" value="${jdbc.driver}" />
-		<property name="url" value="${jdbc.url}" />
-		<property name="username" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
-		
-		<property name="maxActive" value="20" />
-	    <property name="initialSize" value="1" />
-	    <property name="maxWait" value="60000" />
-	    <property name="minIdle" value="1" />
-	 
-	    <property name="timeBetweenEvictionRunsMillis" value="60000" />
-	    <property name="minEvictableIdleTimeMillis" value="300000" />
-	    <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
-	</bean>
 	
 	<!-- H2环境 -->
 	<beans profile="H2">
@@ -82,6 +61,23 @@
 		location="classpath:/config/others/jdbc.h2.properties,
 				  classpath:/config/others/config.properties" />	
 		
+		<!-- 数据源配置, 使用应用中的Druid数据库连接池 -->
+		<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+			<!-- Connection Info -->
+			<property name="driverClassName" value="${jdbc.driver}" />
+			<property name="url" value="${jdbc.url}" />
+			<property name="username" value="${jdbc.username}" />
+			<property name="password" value="${jdbc.password}" />
+			
+			<property name="maxActive" value="20" />
+		    <property name="initialSize" value="1" />
+		    <property name="maxWait" value="60000" />
+		    <property name="minIdle" value="1" />
+		 
+		    <property name="timeBetweenEvictionRunsMillis" value="60000" />
+		    <property name="minEvictableIdleTimeMillis" value="300000" />
+		    <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+		</bean>
 		<!-- 初始化数据表结构 -->
 		<jdbc:initialize-database data-source="dataSource" ignore-failures="ALL" >
 			<jdbc:script location="classpath:sql/h2/schema.sql" encoding="UTF-8" />
@@ -94,6 +90,23 @@
 		location="classpath:/config/others/jdbc.mysql.properties,
 				  classpath:/config/others/config.properties" />	
 		
+		<!-- 数据源配置, 使用应用中的Druid数据库连接池 -->
+		<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+			<!-- Connection Info -->
+			<property name="driverClassName" value="${jdbc.driver}" />
+			<property name="url" value="${jdbc.url}" />
+			<property name="username" value="${jdbc.username}" />
+			<property name="password" value="${jdbc.password}" />
+			
+			<property name="maxActive" value="20" />
+		    <property name="initialSize" value="1" />
+		    <property name="maxWait" value="60000" />
+		    <property name="minIdle" value="1" />
+		 
+		    <property name="timeBetweenEvictionRunsMillis" value="60000" />
+		    <property name="minEvictableIdleTimeMillis" value="300000" />
+		    <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+		</bean>
 		<!-- 初始化数据表结构 -->
 		<jdbc:initialize-database data-source="dataSource" ignore-failures="ALL" >
 			<jdbc:script location="classpath:sql/mysql/schema.sql" encoding="UTF-8" />

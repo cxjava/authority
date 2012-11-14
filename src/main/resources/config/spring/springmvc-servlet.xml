@@ -13,6 +13,7 @@
 	<!-- controller层的属性和配置文件读入 ,多个用逗号隔开 <context:property-placeholder location="classpath:/config/others/config.properties" /> -->
 	<context:property-placeholder ignore-unresolvable="true"
 	location="classpath:/config/others/jdbc.h2.properties,
+			  classpath:/config/others/jdbc.mysql.properties,
 			  classpath:/config/others/config.properties" />
 
 	<!-- 激活 @Required @Autowired,JSR 250's @PostConstruct, @PreDestroy and @Resource 等标注 -->

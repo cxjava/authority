@@ -29,7 +29,7 @@ import com.google.common.collect.Maps;
 
 public class JpaTools {
 	private static final ConversionService conversionService = new DefaultConversionService();
-	private JpaTools(){}
+	protected JpaTools(){}
 	/**
 	 * create page request
 	 * 

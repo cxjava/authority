@@ -23,7 +23,7 @@ public class DBHelper {
 
 	private static final short PROPERTIES_EXIST = 0x01;
 	private static final short EXCEPTION_EXISTS = 0x02;
-	private DBHelper(){}
+	protected DBHelper(){}
 	public static short computeReferenceMask(ILoggingEvent event) {
 		short mask = 0;
 

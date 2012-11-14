@@ -21,7 +21,9 @@ import ch.qos.logback.classic.db.names.*;
  */
 public class SQLBuilder {
 
-	private SQLBuilder(){}
+	protected SQLBuilder() {
+	}
+
 	static String buildInsertPropertiesSQL(DBNameResolver dbNameResolver) {
 		StringBuilder sqlBuilder = new StringBuilder("INSERT INTO ");
 		sqlBuilder.append(dbNameResolver.getTableName(TableName.LOGGING_EVENT_PROPERTY)).append(" (");

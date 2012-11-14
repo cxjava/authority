@@ -19,7 +19,7 @@ import java.net.URL;
 public class ClassLoaderUtil {
 	private static final Logger logger = LoggerFactory.getLogger(ClassLoaderUtil.class);
 
-	private ClassLoaderUtil(){}
+	protected ClassLoaderUtil(){}
 	public static URL getResource(String resourceName, Class<?> callingClass) {
 		URL url = Thread.currentThread().getContextClassLoader().getResource(resourceName);
 		if (url == null) {

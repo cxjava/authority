@@ -1,6 +1,5 @@
 package com.chenxin.authority.web.controller;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -49,6 +48,9 @@ import com.google.common.collect.Maps;
 public class LoginController {
 
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+	private static final String UNKNOWN = "unknown";
+	private static final String MSG = "msg";
+	private static final String USER_RESETPWD = "user/resetpwd";
 	@Autowired
 	private BaseUserService baseUsersService;
 	@Autowired
@@ -119,7 +121,7 @@ public class LoginController {
 			parameters.put("account", account);
 			parameters.put("passwordIn", password);
 			parameters.put("loginIp", this.getIpAddr(request));
-			String result =this.baseUsersService.selectByAccount(parameters);
+			String result = this.baseUsersService.selectByAccount(parameters);
 			if ("01".equals(result)) {
 				BaseUser baseUser = (BaseUser) parameters.get("baseUser");
 				session.setAttribute(WebConstants.CURRENT_USER, baseUser);
@@ -149,23 +151,23 @@ public class LoginController {
 	public String getIpAddr(HttpServletRequest request) {
 		String ip = request.getHeader("X-Forwarded-For");
 		logger.debug("1- X-Forwarded-For ip={}", ip);
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+		if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
 			ip = request.getHeader("Proxy-Client-IP");
 			logger.debug("2- Proxy-Client-IP ip={}", ip);
 		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+		if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
 			ip = request.getHeader("WL-Proxy-Client-IP");
 			logger.debug("3- WL-Proxy-Client-IP ip={}", ip);
 		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+		if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
 			ip = request.getHeader("HTTP_CLIENT_IP");
 			logger.debug("4- HTTP_CLIENT_IP ip={}", ip);
 		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+		if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
 			ip = request.getHeader("HTTP_X_FORWARDED_FOR");
 			logger.debug("5- HTTP_X_FORWARDED_FOR ip={}", ip);
 		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+		if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
 			ip = request.getRemoteAddr();
 			logger.debug("6- getRemoteAddr ip={}", ip);
 		}
@@ -231,11 +233,11 @@ public class LoginController {
 		BaseUser user = this.baseUsersService.findOne(userId);
 		if (user == null || !user.getPassword().equals(token.toLowerCase()) || compareTo(user.getLastLoginTime())) {
 			model.addAttribute("error", "链接已经失效！");
-			return "user/resetpwd";
+			return USER_RESETPWD;
 		}
 		model.addAttribute("t", token);
 		model.addAttribute("u", userId);
-		return "user/resetpwd";
+		return USER_RESETPWD;
 	}
 
 	/**
@@ -248,24 +250,24 @@ public class LoginController {
 			model.addAttribute("t", t);
 			model.addAttribute("u", u);
 			if (StringUtils.isBlank(u)) {
-				model.addAttribute("msg", "密码修改失败！");
-				return "user/resetpwd";
+				model.addAttribute(MSG, "密码修改失败！");
+				return USER_RESETPWD;
 			}
 			if (StringUtils.isBlank(t)) {
-				model.addAttribute("msg", "密码修改失败！");
-				return "user/resetpwd";
+				model.addAttribute(MSG, "密码修改失败！");
+				return USER_RESETPWD;
 			}
 			if (StringUtils.isBlank(newpwd)) {
-				model.addAttribute("msg", "新密码不能为空！");
-				return "user/resetpwd";
+				model.addAttribute(MSG, "新密码不能为空！");
+				return USER_RESETPWD;
 			}
 			if (StringUtils.isBlank(renewpwd)) {
-				model.addAttribute("msg", "确认密码不能为空！");
-				return "user/resetpwd";
+				model.addAttribute(MSG, "确认密码不能为空！");
+				return USER_RESETPWD;
 			}
 			if (!renewpwd.equals(newpwd)) {
-				model.addAttribute("msg", "新密码和确认密码输入不一致！");
-				return "user/resetpwd";
+				model.addAttribute(MSG, "新密码和确认密码输入不一致！");
+				return USER_RESETPWD;
 			}
 			Map<String, Object> parameters = Maps.newHashMap();
 			parameters.put("token", t);
@@ -273,17 +275,17 @@ public class LoginController {
 			parameters.put("password", newpwd);
 			String result = this.baseUsersService.updatePassword(parameters);
 			if ("01".equals(result)) {
-				model.addAttribute("msg", "密码修改成功！请重新登录");
+				model.addAttribute(MSG, "密码修改成功！请重新登录");
 			} else if ("00".equals(result)) {
-				model.addAttribute("msg", "密码修改失败！");
+				model.addAttribute(MSG, "密码修改失败！");
 			} else {
-				model.addAttribute("msg", result);
+				model.addAttribute(MSG, result);
 			}
 		} catch (Exception e) {
 			logger.error(WebConstants.EXCEPTION, e);
-			model.addAttribute("msg", e.getMessage());
+			model.addAttribute(MSG, e.getMessage());
 		}
-		return "user/resetpwd";
+		return USER_RESETPWD;
 	}
 
 	/**

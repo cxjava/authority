@@ -28,7 +28,7 @@ public class Jackson {
 	/** 格式化时间的string */
 	private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-	private Jackson(){}
+	protected Jackson(){}
 	/**
 	 * fromJsonToObject<br>
 	 * jackjson把json字符串转换为Java对象的实现方法

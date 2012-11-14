@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2011-12-1 下午3:14:59
  */
 public class WebUtils {
-	private WebUtils() {}
+	protected WebUtils() {}
 
 	/**
 	 * 将请求参数封装为Map<br>

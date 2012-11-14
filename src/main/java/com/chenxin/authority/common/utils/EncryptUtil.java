@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
  */
 public class EncryptUtil {
 	
-	private EncryptUtil(){}
+	protected EncryptUtil(){}
 	private static final PasswordEncoder encoder = new StandardPasswordEncoder("secret");
 
 	public static String encrypt(String rawPassword) {

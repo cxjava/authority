@@ -9,5 +9,5 @@ import com.chenxin.authority.pojo.BaseField;
 
 public interface BaseFieldRepository extends PagingAndSortingRepository<BaseField, Long>, JpaSpecificationExecutor<BaseField> {
 
-	public List<BaseField> findByEnabled(Integer enabled);
+	List<BaseField> findByEnabled(Integer enabled);
 }

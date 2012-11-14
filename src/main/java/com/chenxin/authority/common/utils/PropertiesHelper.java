@@ -62,14 +62,14 @@ public class PropertiesHelper {
 	private Properties p;
 
 	public PropertiesHelper(Properties props) {
-		if (props == null){
+		if (props == null) {
 			throw new IllegalArgumentException("properties must be not null");
 		}
 		this.p = props;
 	}
 
 	public PropertiesHelper(Properties props, int systemPropertiesMode) {
-		if (props == null){
+		if (props == null) {
 			throw new IllegalArgumentException("properties must be not null");
 		}
 		this.p = props;
@@ -85,7 +85,7 @@ public class PropertiesHelper {
 	}
 
 	public void setProperties(Properties props) {
-		if (props == null){
+		if (props == null) {
 			throw new IllegalArgumentException("properties must be not null");
 		}
 		this.p = props;
@@ -94,7 +94,7 @@ public class PropertiesHelper {
 	/**
 	 * 必须存在这个key的值,不然抛 IllegalStateException异常
 	 **/
-	public String getRequiredProperty(String key) throws IllegalStateException {
+	public String getRequiredProperty(String key) {
 		String value = getProperty(key);
 		if (isBlankString(value)) {
 			throw new IllegalStateException("required property is blank by key=" + key);
@@ -171,7 +171,7 @@ public class PropertiesHelper {
 	/**
 	 * 必须存在这个key的值,不然抛 IllegalStateException异常
 	 **/
-	public int getRequiredInt(String key) throws IllegalStateException {
+	public int getRequiredInt(String key) {
 		return Integer.parseInt(getRequiredProperty(key));
 	}
 
@@ -194,7 +194,7 @@ public class PropertiesHelper {
 	/**
 	 * 必须存在这个key的值,不然抛 IllegalStateException异常
 	 **/
-	public long getRequiredLong(String key) throws IllegalStateException {
+	public long getRequiredLong(String key) {
 		return Long.parseLong(getRequiredProperty(key));
 	}
 
@@ -217,7 +217,7 @@ public class PropertiesHelper {
 	/**
 	 * 必须存在这个key的值,不然抛 IllegalStateException异常
 	 **/
-	public boolean getRequiredBoolean(String key) throws IllegalStateException {
+	public boolean getRequiredBoolean(String key) {
 		return Boolean.parseBoolean(getRequiredProperty(key));
 	}
 
@@ -240,7 +240,7 @@ public class PropertiesHelper {
 	/**
 	 * 必须存在这个key的值,不然抛 IllegalStateException异常
 	 **/
-	public float getRequiredFloat(String key) throws IllegalStateException {
+	public float getRequiredFloat(String key) {
 		return Float.parseFloat(getRequiredProperty(key));
 	}
 
@@ -263,7 +263,7 @@ public class PropertiesHelper {
 	/**
 	 * 必须存在这个key的值,不然抛 IllegalStateException异常
 	 **/
-	public double getRequiredDouble(String key) throws IllegalStateException {
+	public double getRequiredDouble(String key) {
 		return Double.parseDouble(getRequiredProperty(key));
 	}
 
@@ -321,8 +321,9 @@ public class PropertiesHelper {
 	 * @return
 	 */
 	public Properties getStartsWithProperties(String prefix) {
-		if (prefix == null)
+		if (prefix == null) {
 			throw new IllegalArgumentException("'prefix' must be not null");
+		}
 
 		Properties props = getProperties();
 
@@ -490,8 +491,9 @@ public class PropertiesHelper {
 	}
 
 	public static Properties restoreFromString(String str) {
-		if (str == null)
+		if (str == null) {
 			return new Properties();
+		}
 		Properties p = new Properties();
 		try {
 			p.load(new ByteArrayInputStream(str.getBytes()));

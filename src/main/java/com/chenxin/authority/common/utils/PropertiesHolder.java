@@ -126,27 +126,27 @@ public class PropertiesHolder implements InitializingBean {
 		return getRequiredHelper().getProperty(key);
 	}
 
-	public static boolean getRequiredBoolean(String key) throws IllegalStateException {
+	public static boolean getRequiredBoolean(String key) {
 		return getRequiredHelper().getRequiredBoolean(key);
 	}
 
-	public static double getRequiredDouble(String key) throws IllegalStateException {
+	public static double getRequiredDouble(String key) {
 		return getRequiredHelper().getRequiredDouble(key);
 	}
 
-	public static float getRequiredFloat(String key) throws IllegalStateException {
+	public static float getRequiredFloat(String key) {
 		return getRequiredHelper().getRequiredFloat(key);
 	}
 
-	public static int getRequiredInt(String key) throws IllegalStateException {
+	public static int getRequiredInt(String key) {
 		return getRequiredHelper().getRequiredInt(key);
 	}
 
-	public static long getRequiredLong(String key) throws IllegalStateException {
+	public static long getRequiredLong(String key) {
 		return getRequiredHelper().getRequiredLong(key);
 	}
 
-	public static String getRequiredProperty(String key) throws IllegalStateException {
+	public static String getRequiredProperty(String key) {
 		return getRequiredHelper().getRequiredProperty(key);
 	}
 
@@ -168,7 +168,7 @@ public class PropertiesHolder implements InitializingBean {
 	}
 
 	private static void assertHolderInited() {
-		if (properies == null){
+		if (properies == null) {
 			throw new IllegalStateException("PropertiesHolder.properties must be not null, PropertiesHolder not yet init.");
 		}
 	}

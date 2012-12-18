@@ -29,7 +29,14 @@
 	 <mvc:view-controller path="/admin" view-name="/admin/login" /> 
 	-->
 	
-	<mvc:annotation-driven />
+	<mvc:annotation-driven>
+		<mvc:message-converters register-defaults="true">
+			<!-- fastjosn spring support -->
+			<bean id="jsonConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+				<property name="supportedMediaTypes" value="application/json" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven> 
 	<!-- Configures support for @Controllers <mvc:annotation-driven/>相当于注册了DefaultAnnotationHandlerMapping
 	和AnnotationMethodHandlerAdapter两个bean，配置一些messageconverter。即解决了@Controller注解的使用前提配置。
 	如果不用这个，则要声明下面2个bean

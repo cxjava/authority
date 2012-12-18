@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.chenxin.authority.common.jackjson.Jackson;
+import com.alibaba.fastjson.JSON;
 import com.chenxin.authority.common.utils.FileDigest;
 import com.chenxin.authority.pojo.ExtReturn;
 import com.chenxin.authority.web.interseptor.WebConstants;
@@ -67,7 +67,7 @@ public class FileUploadController {
 			FileUtils.writeByteArrayToFile(saveFile, file.getBytes());
 			// 保存文件的基本信息到数据库
 			// 上传的文件名（带不带后缀名？）；文件后缀名；存放的相对路径
-			String returnMsg = Jackson.objToJson(new ExtReturn(true, "磁盘空间已经满了！"));
+			String returnMsg = JSON.toJSONString(new ExtReturn(false, "磁盘空间已经满了！"));
 			logger.debug("{}", returnMsg);
 			writer.print(returnMsg);
 		} catch (Exception e) {

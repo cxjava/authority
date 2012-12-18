@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.chenxin.authority.common.jackjson.Jackson;
+import com.alibaba.fastjson.JSON;
 import com.chenxin.authority.common.springmvc.DateConvertEditor;
 import com.chenxin.authority.pojo.BaseModule;
 import com.chenxin.authority.pojo.ExceptionReturn;
@@ -63,7 +63,7 @@ public class ModuleController {
 		// 先查出所有的父节点
 		Map<String, Object> map = this.baseModulesService.selectParentModule();
 		map.put("0", "主菜单");
-		model.addAttribute("moduleMap", Jackson.objToJson(map));
+		model.addAttribute("moduleMap", JSON.toJSONString(map));
 		return "user/module";
 	}
 
@@ -75,7 +75,7 @@ public class ModuleController {
 	@RequestMapping(method = RequestMethod.POST)
 	public void all(PrintWriter writer) throws IOException {
 		Tree tree = this.baseModulesService.selectAllModules();
-		String json = Jackson.objToJson(tree.getChildren());
+		String json =JSON.toJSONString(tree.getChildren());
 		// 加入check
 		writer.write(json.replaceAll("\"leaf", "\"checked\":false,\"leaf"));
 		writer.flush();

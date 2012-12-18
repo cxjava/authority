@@ -17,7 +17,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.chenxin.authority.common.jackjson.Jackson;
+import com.alibaba.fastjson.JSON;
 import com.chenxin.authority.common.utils.JpaTools;
 import com.chenxin.authority.dao.BaseFieldRepository;
 import com.chenxin.authority.pojo.BaseField;
@@ -63,7 +63,7 @@ public class BaseFieldServiceImpl implements BaseFieldService {
 			String key = entry.getKey();
 			HashMap<String, String> value = entry.getValue();
 			// 为了eval('(${applicationScope.fields.sex})')这个单引号使用,替换所有的'，为\'
-			String val = StringEscapeUtils.escapeEcmaScript(Jackson.objToJson(value));
+			String val = StringEscapeUtils.escapeEcmaScript(JSON.toJSONString(value));
 			logger.debug(val);
 			part.put(key, val);
 		}

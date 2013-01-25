@@ -19,4 +19,5 @@ public interface WebConstants {
 	static final String JSON_GENERATION_EXCEPTION = "JsonGenerationException: ";
 	/** exception */
 	static final String EXCEPTION = "Exception: ";
+	String IPLIST = "113.57.187.29|61.147.122.47";
 }

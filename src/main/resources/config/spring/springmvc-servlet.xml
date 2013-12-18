@@ -25,10 +25,10 @@
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 
 	<!-- 简单的地址映射 -->
-	<!-- Forwards requests to the "/" resource to the "welcome" view 
-	 <mvc:view-controller path="/admin" view-name="/admin/login" /> 
+	<!-- Forwards requests to the "/" resource to the "welcome" view
+	 <mvc:view-controller path="/admin" view-name="/admin/login" />
 	-->
-	
+
 	<mvc:annotation-driven>
 		<mvc:message-converters register-defaults="true">
 			<!-- fastjosn spring support -->
@@ -36,7 +36,7 @@
 				<property name="supportedMediaTypes" value="application/json" />
 			</bean>
 		</mvc:message-converters>
-	</mvc:annotation-driven> 
+	</mvc:annotation-driven>
 	<!-- Configures support for @Controllers <mvc:annotation-driven/>相当于注册了DefaultAnnotationHandlerMapping
 	和AnnotationMethodHandlerAdapter两个bean，配置一些messageconverter。即解决了@Controller注解的使用前提配置。
 	如果不用这个，则要声明下面2个bean
@@ -55,11 +55,11 @@
 		 拦截器注册 -->
 		<!-- <property name="interceptors">
 			<bean class="com.company.project.common.springmvc.interceptor.SharedRenderVariableInterceptor"/>
-		</property> 
+		</property>
 	</bean>
 		-->
-	
-	
+
+
 	<!-- jsp视图 -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
@@ -81,12 +81,18 @@
 			<mvc:mapping path="/field**/**" />
 			<bean class="com.chenxin.authority.web.interseptor.LoginInterceptor"></bean>
 		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/typography*" />
+			<mvc:mapping path="/code*" />
+			<mvc:mapping path="/buttons*" />
+			<bean class="com.chenxin.authority.web.interseptor.PjaxInterceptor"></bean>
+		</mvc:interceptor>
 	</mvc:interceptors>
 
 	<!--开发期间注释掉，上线后启用 错误解析器 发生错误默认会跳转到/web-inf/views/timeout.jsp -->
-	<!-- <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> <property name="defaultErrorView" 
-		value="timeout" /> <property name="exceptionMappings"> <props> <prop key="java.sql.SQLException">timeout</prop> <prop key="java.lang.RuntimeException">timeout</prop> 
-		<prop key="org.springframework.transaction.TransactionException">timeout</prop> <prop key="org.springframework.dao.DataAccessException">timeout</prop> 
+	<!-- <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> <property name="defaultErrorView"
+		value="timeout" /> <property name="exceptionMappings"> <props> <prop key="java.sql.SQLException">timeout</prop> <prop key="java.lang.RuntimeException">timeout</prop>
+		<prop key="org.springframework.transaction.TransactionException">timeout</prop> <prop key="org.springframework.dao.DataAccessException">timeout</prop>
 		</props> </property> </bean> -->
 
 	<!-- 国际化,并且可以批定文件编码,可以使用classpath: 或者WEB-INF/ 前缀 -->

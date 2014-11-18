@@ -14,11 +14,11 @@
 	</context-param>
 	<context-param>
 		<param-name>spring.profiles.default</param-name>
-		<param-value>H2</param-value>
+		<param-value>MYSQL</param-value>
 	</context-param>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>		
+	</listener>
 	<!-- Spring MVC start -->
 	<servlet>
 		<servlet-name>SpringMVC</servlet-name>
@@ -66,7 +66,7 @@
 	<listener>
 		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
 	</listener>
-	<!-- 系统初始化监听器 
+	<!-- 系统初始化监听器
 	-->
 	<listener>
 		<listener-class>com.chenxin.authority.web.listener.SystemInitListener</listener-class>

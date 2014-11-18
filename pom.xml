@@ -9,18 +9,27 @@
 	<version>1.0.0</version>
 
 	<properties>
-		<java.version>1.6</java.version>
-		<spring.version>3.2.2.RELEASE</spring.version>
-		<slf4j.version>1.7.3</slf4j.version>
-		<logback.version>1.0.10</logback.version>
-		<aspectj.version>1.6.11</aspectj.version>
-		<jackson.version>1.9.7</jackson.version>
+		<java.version>1.7</java.version>
+		<spring.version>4.0.5.RELEASE</spring.version>
+		<spring-data-jpa.version>1.7.1.RELEASE</spring-data-jpa.version>
+		<hibernate-validator.version>5.0.3.Final</hibernate-validator.version>
+		<hibernate.version>4.3.5.Final</hibernate.version>
+		<slf4j.version>1.7.7</slf4j.version>
+		<guava.version>17.0</guava.version>
+		<logback.version>1.1.2</logback.version>
+		<aspectj.version>1.7.4</aspectj.version>
+		<jackson.version>2.4.0</jackson.version>
 		<proxool.version>0.9.1</proxool.version>
 		<bonecp.version>0.7.1.RELEASE</bonecp.version>
 		<axis2.version>1.6.1</axis2.version>
 		<wro4j.version>1.4.5</wro4j.version>
+		<h2.version>1.3.176</h2.version>
+		<junit.version>4.11</junit.version>
+		<commons-lang3.version>3.3.2</commons-lang3.version>
+		<commons-io.version>2.4</commons-io.version>
+		<joda-time.version>2.3</joda-time.version>
 	</properties>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -55,7 +64,7 @@
 				<version>1.7</version>
 				<executions>
 					<execution><!-- 打包之前做 -->
-						<phase>prepare-package</phase>  
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>run</goal>
 						</goals>
@@ -79,7 +88,7 @@
 									<mapper type="regexp" from="^(.*)-min\.(jsp)$" to="\1.\2" />
 								</move>
 								<echo message="成功用uglifyjs压缩 JSP 文件" />
-								
+
 								<echo message="开始用uglifyjs压缩 JS 文件. 请耐心等待！" />
 								<property name="uglifyjs" value="${project.build.directory}/uglify/uglifyjs" />
 								<property name="js.compress.out.directory" value="${project.build.directory}/${project.build.finalName}/resources/js" />
@@ -94,13 +103,13 @@
 									<mapper type="regexp" from="^(.*)\.(js)$" to="\1-min.\2" />
 								</apply>
 								<move todir="${js.compress.out.directory}">
-									<fileset dir="${js.compress.directory}"  >
-									 	<include name="**/*-min.js"/>
+									<fileset dir="${js.compress.directory}">
+										<include name="**/*-min.js" />
 									</fileset>
 									<mapper type="regexp" from="^(.*)-min\.(js)$" to="\1.\2" />
 								</move>
 								<echo message="成功用uglifyjs压缩 JS 文件" />
-								
+
 							</target>
 						</configuration>
 					</execution>
@@ -149,7 +158,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-				<!-- 声明：packagingExcludes中的*.properties文件均位于src/main/resources目录中 warSourceExcludes中的?test/*,venue/**位于src/main/webapp目录中 -->
+					<!-- 声明：packagingExcludes中的*.properties文件均位于src/main/resources目录中 warSourceExcludes中的?test/*,venue/**位于src/main/webapp目录中 -->
 					<warSourceExcludes>resources/js/**/*.js,WEB-INF/views/**/*.jsp</warSourceExcludes>
 					<archive>
 						<!-- 不把maven的依赖加入 -->
@@ -181,9 +190,7 @@
 					</includes>
 					<!-- 忽略单元测试失败 -->
 					<!-- 命令：mvn package -Dmaven.test.failure.ignore=true <testFailureIgnore>true</testFailureIgnore> -->
-					<!-- 跳过单元测试
-					<skip>true</skip>
-					 -->
+					<!-- 跳过单元测试 <skip>true</skip> -->
 					<!-- 命令：mvn -package -Dmaven.test.skip=true <skip>true</skip> -->
 				</configuration>
 			</plugin>
@@ -202,10 +209,11 @@
 			<version>2.1</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- junit -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -260,18 +268,19 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-crypto</artifactId>
-			<version>3.1.0.RELEASE</version>
+			<version>3.2.5.RELEASE</version>
 		</dependency>
+		<!-- joda -->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
-			<version>2.0</version>
+			<version>${joda-time.version}</version>
 		</dependency>
 		<!-- json -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>1.1.26</version>
+			<version>1.2.1</version>
 		</dependency>
 		<!-- log4j -->
 		<dependency>
@@ -303,34 +312,40 @@
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.6</version>
+			<version>1.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.1</version>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.2.2</version>
 		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.4</version>
-		</dependency>
 		<!-- jdbc driver -->
 		<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>druid</artifactId>
-				<version>0.2.8</version>
-			</dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>1.0.10</version>
+		</dependency>
 		<!-- other -->
+		<!-- email -->
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
-			<version>1.4</version>
+			<version>1.4.7</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>1.1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -346,8 +361,7 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
-<!-- 			<version>1.2.0.RC1</version> -->
-			<version>1.2.0.RELEASE</version>
+			<version>${spring-data-jpa.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>junit</groupId>
@@ -360,30 +374,40 @@
 			<artifactId>spring-orm</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		<!-- h2 -->
 		<dependency>
-		    <groupId>com.h2database</groupId>
-		    <artifactId>h2</artifactId>
-			<version>1.3.168</version>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${h2.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.1.7.Final</version>
+			<version>${hibernate.version}</version>
 		</dependency>
+		<!-- JSR303 Bean Validator -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>4.3.0.Final</version>
+			<version>${hibernate-validator.version}</version>
 		</dependency>
+		<!-- google java library -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>13.0.1</version>
+			<version>${guava.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
-			<version>1.8.3</version>
+			<version>1.9.2</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.lazyluke</groupId>

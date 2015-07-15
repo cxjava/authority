@@ -1,6 +1,9 @@
 .classpath
 .project
 .springBeans
+authority.iml
+
+.idea/
 .settings/
 target/
 logs/

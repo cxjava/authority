@@ -10,7 +10,7 @@
 
 	<properties>
 		<java.version>1.7</java.version>
-		<spring.version>4.0.5.RELEASE</spring.version>
+		<spring.version>4.1.7.RELEASE</spring.version>
 		<spring-data-jpa.version>1.7.1.RELEASE</spring-data-jpa.version>
 		<hibernate-validator.version>5.0.3.Final</hibernate-validator.version>
 		<hibernate.version>4.3.5.Final</hibernate.version>
@@ -35,7 +35,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.5</version>
+				<version>2.7</version>
 				<executions>
 					<execution>
 						<id>copy-config</id>
@@ -58,68 +58,11 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.7</version>
-				<executions>
-					<execution><!-- 打包之前做 -->
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<target>
-								<echo message="开始用uglifyjs压缩 JSP 文件. 请耐心等待！" />
-								<property name="uglifyjs" value="${project.build.directory}/uglify/uglifyjs" />
-								<property name="jsp.compress.out.directory" value="${project.build.directory}/${project.build.finalName}/WEB-INF" />
-								<property name="jsp.compress.directory" value="src/main/webapp/WEB-INF" />
-								<apply executable="node" parallel="false" failonerror="true" dest="${jsp.compress.directory}">
-									<fileset dir="${jsp.compress.directory}" includes="**/*.jsp" />
-									<arg line=" ${uglifyjs}" />
-									<arg line=" --ascii" />
-									<arg line=" -o" />
-									<targetfile />
-									<srcfile />
-									<mapper type="regexp" from="^(.*)\.(jsp)$" to="\1-min.\2" />
-								</apply>
-								<move todir="${jsp.compress.out.directory}">
-									<fileset dir="${jsp.compress.directory}" includes="**/*-min.jsp" />
-									<mapper type="regexp" from="^(.*)-min\.(jsp)$" to="\1.\2" />
-								</move>
-								<echo message="成功用uglifyjs压缩 JSP 文件" />
 
-								<echo message="开始用uglifyjs压缩 JS 文件. 请耐心等待！" />
-								<property name="uglifyjs" value="${project.build.directory}/uglify/uglifyjs" />
-								<property name="js.compress.out.directory" value="${project.build.directory}/${project.build.finalName}/resources/js" />
-								<property name="js.compress.directory" value="src/main/webapp/resources/js" />
-								<apply executable="node" parallel="false" failonerror="true" dest="${js.compress.directory}">
-									<fileset dir="${js.compress.directory}" includes="**/*.js" />
-									<arg line=" ${uglifyjs}" />
-									<arg line=" --ascii" />
-									<arg line=" -o" />
-									<targetfile />
-									<srcfile />
-									<mapper type="regexp" from="^(.*)\.(js)$" to="\1-min.\2" />
-								</apply>
-								<move todir="${js.compress.out.directory}">
-									<fileset dir="${js.compress.directory}">
-										<include name="**/*-min.js" />
-									</fileset>
-									<mapper type="regexp" from="^(.*)-min\.(js)$" to="\1.\2" />
-								</move>
-								<echo message="成功用uglifyjs压缩 JS 文件" />
-
-							</target>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<!-- CSS压缩 -->
 			<plugin>
 				<groupId>net.alchim31.maven</groupId>
 				<artifactId>yuicompressor-maven-plugin</artifactId>
-				<version>1.3.0</version>
+				<version>1.5.1</version>
 				<executions>
 					<execution>
 						<phase>prepare-package</phase>
@@ -128,8 +71,17 @@
 						</goals>
 						<configuration>
 							<includes>
-								<include>**/*.css</include>
+								<include>resources/css/**/*.css</include>
+								<include>resources/js/**/*.js</include>
 							</includes>
+							<excludes>
+								<exclude>**/*-min.js</exclude>
+								<exclude>**/*.min.js</exclude>
+								<exclude>**/*-min.css</exclude>
+								<exclude>**/*.min.css</exclude>
+							</excludes>
+							<jswarn>false</jswarn>
+							<encoding>UTF-8</encoding>
 							<nosuffix>true</nosuffix><!-- 不需要后缀 -->
 							<linebreakpos>-1</linebreakpos><!-- 是否在一行 -->
 						</configuration>
@@ -139,7 +91,7 @@
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>8.1.5.v20120716</version>
+				<version>8.1.16.v20140903</version>
 			</plugin>
 			<plugin>
 				<!-- 编译插件 -->
@@ -156,10 +108,10 @@
 				<!-- 打war包插件 -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.2</version>
+				<version>2.6</version>
 				<configuration>
 					<!-- 声明：packagingExcludes中的*.properties文件均位于src/main/resources目录中 warSourceExcludes中的?test/*,venue/**位于src/main/webapp目录中 -->
-					<warSourceExcludes>resources/js/**/*.js,WEB-INF/views/**/*.jsp</warSourceExcludes>
+					<warSourceExcludes>resources/js/**/*.js,resources/css/**/*.css,WEB-INF/views/**/*.jsp</warSourceExcludes>
 					<archive>
 						<!-- 不把maven的依赖加入 -->
 						<addMavenDescriptor>false</addMavenDescriptor>
@@ -170,7 +122,7 @@
 				<!-- tomcat插件 -->
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.1</version>
+				<version>2.2</version>
 				<configuration>
 					<!-- 用户名和密码 -->
 					<username>admin</username>
@@ -191,6 +143,7 @@
 					<!-- 忽略单元测试失败 -->
 					<!-- 命令：mvn package -Dmaven.test.failure.ignore=true <testFailureIgnore>true</testFailureIgnore> -->
 					<!-- 跳过单元测试 <skip>true</skip> -->
+					<skip>true</skip>
 					<!-- 命令：mvn -package -Dmaven.test.skip=true <skip>true</skip> -->
 				</configuration>
 			</plugin>
@@ -239,6 +192,7 @@
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
@@ -379,7 +333,6 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>${h2.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>

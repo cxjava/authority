@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
-import com.chenxin.authority.pojo.BaseField;
-import com.chenxin.authority.pojo.ExtPager;
+import com.chenxin.authority.entity.BaseField;
+import com.chenxin.authority.entity.ExtPager;
 import com.google.common.collect.Maps;
 
 /**

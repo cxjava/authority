@@ -1,13 +1,14 @@
 package com.chenxin.authority.dao;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
-
+import com.chenxin.authority.entity.BaseModule;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.chenxin.authority.pojo.BaseModule;
+
+import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class BaseModuleRepositoryTest extends Dao {
 	// private static final Logger logger =

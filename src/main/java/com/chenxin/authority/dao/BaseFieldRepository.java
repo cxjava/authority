@@ -1,13 +1,12 @@
 package com.chenxin.authority.dao;
 
+import com.chenxin.authority.entity.BaseField;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.repository.PagingAndSortingRepository;
+public interface BaseFieldRepository extends JpaRepository<BaseField, Long>, JpaSpecificationExecutor<BaseField> {
 
-import com.chenxin.authority.pojo.BaseField;
-
-public interface BaseFieldRepository extends PagingAndSortingRepository<BaseField, Long>, JpaSpecificationExecutor<BaseField> {
-
-	List<BaseField> findByEnabled(Integer enabled);
+    List<BaseField> findByEnabled(Integer enabled);
 }

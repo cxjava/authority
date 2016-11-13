@@ -1,24 +1,20 @@
 package com.chenxin.authority.service;
 
-import static org.junit.Assert.*;
-
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
+import com.chenxin.authority.dao.BaseUserRepository;
+import com.chenxin.authority.entity.BaseUser;
+import com.chenxin.authority.entity.BaseUserRole;
+import com.chenxin.authority.entity.ExtPager;
+import com.chenxin.authority.util.EncryptUtil;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
-import com.chenxin.authority.common.utils.EncryptUtil;
-import com.chenxin.authority.dao.BaseUserRepository;
-import com.chenxin.authority.pojo.BaseUser;
-import com.chenxin.authority.pojo.BaseUserRole;
-import com.chenxin.authority.pojo.ExtPager;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Maty Chen
@@ -50,6 +46,7 @@ public class BaseUserServiceTest extends Services {
 	}
 
 	@Test
+	@Ignore
 	public void testSelectByAccount() {
 		Collection<Long> roleIdsCollection = Lists.newArrayList();
 		base = getBaseUser();

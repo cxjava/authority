@@ -1,10 +1,9 @@
 package com.chenxin.authority.dao;
 
+import com.chenxin.authority.entity.BaseRole;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
-import com.chenxin.authority.pojo.BaseRole;
-
-public interface BaseRoleRepository extends PagingAndSortingRepository<BaseRole, Long>, JpaSpecificationExecutor<BaseRole> {
+public interface BaseRoleRepository extends JpaRepository<BaseRole, Long>, JpaSpecificationExecutor<BaseRole> {
 
 }

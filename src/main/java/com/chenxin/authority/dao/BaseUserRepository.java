@@ -1,16 +1,15 @@
 package com.chenxin.authority.dao;
 
+import com.chenxin.authority.entity.BaseUser;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.repository.PagingAndSortingRepository;
+public interface BaseUserRepository extends JpaRepository<BaseUser, Long>, JpaSpecificationExecutor<BaseUser> {
 
-import com.chenxin.authority.pojo.BaseUser;
+    List<BaseUser> findByAccount(String account);
 
-public interface BaseUserRepository extends PagingAndSortingRepository<BaseUser, Long>, JpaSpecificationExecutor<BaseUser> {
-
-	List<BaseUser> findByAccount(String account);
-	
-	List<BaseUser> findByAccountAndEmail(String account,String email);
+    List<BaseUser> findByAccountAndEmail(String account, String email);
 
 }

@@ -1,13 +1,12 @@
 package com.chenxin.authority.base;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Random;
-
+import com.chenxin.authority.entity.BaseUser;
+import com.chenxin.authority.entity.Table;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.chenxin.authority.pojo.BaseUser;
-import com.chenxin.authority.pojo.Table;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Random;
 
 /**
  * 

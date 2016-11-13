@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body th:with="user=${session.CURRENT_USER},ctx=${#httpServletRequest.getContextPath()+'/'},fields=${application.fields}">
+<div th:id="${param.id[0]}" id="test12"></div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var param = /*[[${param.id[0]?:'{}'}]]*/ '',
+            ctx = eval("(" + /*[[${ctx?:'/'}]]*/ '{}'
+                    + ")");
+    yepnope({
+        load: [
+            /*[[@{/resources/extjs/ux/treegrid/treegrid.css}]]*/ "/resources/extjs/ux/treegrid/treegrid.css",
+            /*[[@{/resources/extjs/ux/treegrid/TreeGridSorter.js}]]*/ "/resources/extjs/ux/treegrid/TreeGridSorter.js",
+            /*[[@{/resources/extjs/ux/treegrid/TreeGridColumnResizer.js}]]*/ "/resources/extjs/ux/treegrid/TreeGridColumnResizer.js",
+            /*[[@{/resources/extjs/ux/treegrid/TreeGridNodeUI.js}]]*/ "/resources/extjs/ux/treegrid/TreeGridNodeUI.js",
+            /*[[@{/resources/extjs/ux/treegrid/TreeGridLoader.js}]]*/ "/resources/extjs/ux/treegrid/TreeGridLoader.js",
+            /*[[@{/resources/extjs/ux/treegrid/TreeGridColumns.js}]]*/ "/resources/extjs/ux/treegrid/TreeGridColumns.js",
+            /*[[@{/resources/extjs/ux/treegrid/TreeGrid.js}]]*/ "/resources/extjs/ux/treegrid/TreeGrid.js"
+        ]
+    });
+    yepnope.injectJs(/*[[@{/resources/js/user/role.js}]]*/ '');
+    /*]]>*/
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body th:with="user=${session.CURRENT_USER},ctx=${#httpServletRequest.getContextPath()+'/'},fields=${application.fields}">
+<div th:id="${param.id[0]}" id="test123"></div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var param = /*[[${param.id[0]?:'{}'}]]*/ '';
+    MODULEMAP = eval("(" + /*[[${moduleMap?:'{}'}]]*/ '{}'
+            + ")");
+    LEAF = eval("(" + /*[[${fields['leaf']?:'{}'}]]*/ '{}'
+            + ")");
+    ctx = eval("(" + /*[[${ctx?:'/'}]]*/ '{}'
+            + ")");
+    EXPANDED = eval("(" + /*[[${fields['expanded']?:'{}'}]]*/ '{}'
+            + ")");
+    ISDISPLAY = eval("(" + /*[[${fields['isdisplay']?:'{}'}]]*/ '{}'
+            + ")");
+    yepnope.injectJs(/*[[@{/resources/js/user/module.js}]]*/ '');
+    /*]]>*/
+</script>
+</body>
+</html>

@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.chenxin.authority.pojo.BaseUserRole;
+import com.chenxin.authority.entity.BaseUserRole;
 
 public class BaseUserRoleRepositoryTest extends Dao {
 	@Autowired

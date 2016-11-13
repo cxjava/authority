@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<body  th:with="user=${session.CURRENT_USER},ctx=${#httpServletRequest.getContextPath()+'/'},fields=${application.fields}">
+
+<div id="changePwdDiv" style="width: 100%; height: 100%;">
+	<div id="changePwdToolBarDiv"></div>
+	<div id="changePwdFormDiv"></div>
+</div>
+
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	var userId=/*[[${user.id?:'123'}]]*/ '';
+	ctx = eval("(" + /*[[${ctx?:'/'}]]*/ '{}'
+			+ ")");
+	yepnope.injectJs(/*[[@{/resources/js/user/changepwd.js}]]*/ '');
+	/*]]>*/
+</script>
+</body>
+</html>

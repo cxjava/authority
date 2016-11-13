@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body  th:with="user=${session.CURRENT_USER},ctx=${#httpServletRequest.getContextPath()+'/'},fields=${application.fields}">
+<div th:id="${param.id[0]}" id="test"></div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var param=/*[[${param.id[0]?:'{}'}]]*/ '',
+    ENABLED = eval("(" + /*[[${fields['enabled']?:'{}'}]]*/ '{}'
+            + ")");
+    ctx = eval("(" + /*[[${ctx?:'/'}]]*/ '{}'
+            + ")");
+    yepnope.injectJs(/*[[@{/resources/js/user/field.js}]]*/ '');
+    /*]]>*/
+</script>
+</body>
+</html>

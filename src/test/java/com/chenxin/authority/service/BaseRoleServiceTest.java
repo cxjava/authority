@@ -9,8 +9,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
-import com.chenxin.authority.pojo.BaseRole;
-import com.chenxin.authority.pojo.ExtPager;
+import com.chenxin.authority.entity.BaseRole;
+import com.chenxin.authority.entity.ExtPager;
 import com.google.common.collect.Maps;
 
 /**

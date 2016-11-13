@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<style th:inline="text">
+		.cancel {
+			background-image: url([[@{/resources/images/icons/cancel.png}]]) !important;
+			background-repeat: no-repeat;
+		}
+		.send {
+			background-image: url([[@{/resources/images/icons/arrow_right.png}]]) !important;
+			background-repeat: no-repeat;
+		}
+	</style>
+</head>
+<body>
+<div id="findPwdDiv" style="width: 100%; height: 100%;">
+	<div id="findPwdToolBarDiv"></div>
+	<div id="findPwdFormDiv"></div>
+</div>
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	yepnope.injectJs(/*[[@{/resources/js/user/findpwd.js}]]*/ '');
+	/*]]>*/
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<body th:with="user=${session.CURRENT_USER},ctx=${#httpServletRequest.getContextPath()+'/'},fields=${application.fields}">
+<div th:id="${param.id[0]}" id="test12"></div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var param = /*[[${param.id[0]?:'{}'}]]*/ '',
+            ctx = eval("(" + /*[[${ctx?:'/'}]]*/ '{}'
+                    + ")");
+    SEX = eval("(" + /*[[${fields['sex']?:'{}'}]]*/ '{}'
+            + ")");
+    yepnope.injectJs(/*[[@{/resources/js/user/user.js}]]*/ '');
+    /*]]>*/
+</script>
+</body>
+</html>

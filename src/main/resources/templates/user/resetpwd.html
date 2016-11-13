@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title th:text="#{login.title}">重置密码</title>
+<link rel="stylesheet" type="text/css" th:href="@{/resources/bootstrap/css/bootstrap.min.css}" href="/resources/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/resources/bootstrap/css/bootstrap-responsive.min.css}" href="/resources/bootstrap/css/bootstrap-responsive.min.css" />
+<style type="text/css">
+.well {
+	background-color: #F5F5F5;
+	border: 1px solid rgba(0, 0, 0, 0.05);
+	border-radius: 4px 4px 4px 4px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+	margin-bottom: 20px;
+	min-height: 20px;
+	padding: 19px;
+}
+</style>
+</head>
+<body>
+	<div class="container" style="padding-top: 20px;">
+		<div class="row-fluid">
+			<div class="span3">&nbsp;</div>
+			<div class="span6">
+				<div class="alert alert-error" th:if="${error!=null}">
+					<a data-dismiss="alert" class="close">×</a> <strong th:text="${error}">异常信息</strong>
+				</div>
+				1<strong th:text="${msg}">错误信息</strong>
+				2<strong th:text="${error}">错误信息</strong>
+				<div th:switch="${msg}">
+					<div class="alert alert-error" th:case="''">
+						<a data-dismiss="alert" class="close">×</a> <strong th:text="${msg}">错误信息</strong>
+					</div>
+					<form th:case="*" class="well form-horizontal" th:action="@{/resetpwd}" action="/resetpwd" method="post">
+						<input type="hidden" size="40" name="u" th:value="${u}" value="" />
+						<input type="hidden" size="40" name="t" th:value="${t}" value="" />
+						<fieldset>
+							<div class="control-group">
+								<label for="newpwd" class="control-label">新密码</label>
+								<div class="controls">
+									<input type="text" id="newpwd" class="input" name="newpwd" placeholder="请输入新密码"/>
+								</div>
+							</div>
+							<div class="control-group">
+								<label for="renewpwd" class="control-label">确认密码</label>
+								<div class="controls">
+									<input type="text" id="renewpwd" class="input" name="renewpwd" placeholder="请输入确认密码"/>
+								</div>
+							</div>
+							<div class="control-group">
+								<label for="submit" class="control-label"></label>
+								<div class="controls">
+									<button class="btn btn-primary" type="submit" id="submit">提交</button>
+									<button class="btn" type="reset">重置</button>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+			<div class="span3">&nbsp;</div>
+		</div>
+	</div>
+	<script type="text/javascript" th:src="@{/resources/jquery/jquery-1.7.2.min.js}" src="/resources/jquery/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" th:src="@{/resources/bootstrap/js/bootstrap.min.js}" src="/resources/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<body th:with="user=${session.CURRENT_USER},ctx=${#httpServletRequest.getContextPath()+'/'},fields=${application.fields}">
+<div id="headerDiv">
+	<table style="width:100%;height:100%;table-layout:fixed;">
+		<tr>
+			<td width="180px"><a th:href="${ctx}" href="/"><img th:src="@{/resources/images/header.png}" src="/resources/images/header.png"></img></a></td>
+			<td align="center">
+				<span style="padding:3px 10px 3px 18px;height:20px;" class="user" th:text="${user.realName }"><span id="sayHelloSpan"></span></span>
+				<span style="padding:3px 10px 3px 18px;height:20px;" class="user_edit" ><a href="javascript:void(0);" id="editUser">账户信息</a></span>
+				<span style="padding:3px 10px 3px 18px;height:20px;" class="key" ><a href="javascript:void(0);" id="editPassword">修改密码</a></span>
+				<span style="padding:3px 10px 3px 18px;height:20px;" class="user_go"><a href="javascript:void(0);" id="logout">退出</a></span>
+			</td>
+			<td width="250px" align="right" style="padding-right:5px;" class="loginInfo">
+				<div>上次登录时间: <span th:text="${#dates.format(user.lastLoginTime, 'yyyy-MM-dd HH:mm:ss')}"></span></div>
+			</td>
+		</tr>
+	</table>
+</div>
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	ctx = eval(/*[[${ctx?:'/'}]]*/ '/');
+	yepnope.injectJs(/*[[@{/resources/js/header.js}]]*/ '');
+	/*]]>*/
+</script>
+</body>
+</html>

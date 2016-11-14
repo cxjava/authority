@@ -1,5 +1,6 @@
 package com.chenxin.authority.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ public class BaseUser extends IdEntity {
     @NotBlank
     private String account;
     @NotBlank
+    @JSONField(serialize = false)
     private String password;
     /**
      * nick name
@@ -34,6 +36,7 @@ public class BaseUser extends IdEntity {
     private Integer errorCount;
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
+//    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date lastLoginTime;
     private String lastLoginIp;
     private String remark;

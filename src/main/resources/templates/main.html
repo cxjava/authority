@@ -3,6 +3,8 @@
       xmlns="http://www.w3.org/1999/xhtml">
 <head th:with="user=${session.CURRENT_USER},ctx=${#httpServletRequest.getContextPath()+'/'},fields=${application.fields}">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="shortcut icon" href="../../static/images/favicon.ico" th:href="@{/resources/images/favicon.ico}" type="image/x-icon"/>
+    <link rel="icon" href="../../static/images/favicon.ico" th:href="@{/resources/images/favicon.ico}" type="image/x-icon"/>
     <title th:text="#{login.title}">主页</title>
     <script type="text/javascript" src="../static/loader/yepnope.min.js" th:src="@{/resources/loader/yepnope.min.js}"></script>
     <script th:inline="javascript">

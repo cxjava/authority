@@ -16,15 +16,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 import java.util.*;
 
 @Service
@@ -34,15 +31,13 @@ public class BaseUserService {
     private BaseUserRepository baseUserRepository;
     @Autowired
     private BaseUserRoleRepository baseUserRoleRepository;
-    /**
-     * 读取配置文件的值，分号后面为没有此配置项时的默认值
-     */
-    @Value("${email.host:smtp.163.com}")
-    private String emailHost;
-    @Value("${email.account:test@qq.com.cn}")
-    private String emailAccount;
-    @Value("${email.password:test}")
-    private String emailPassword;
+
+    @Value("${email.from:Admin}")
+    private String emailFrom;
+
+    @Autowired
+    private JavaMailSender mailSender;
+
     @Value("${system.url:http://localhost:8888/}")
     private String systemUrl;
     /**
@@ -248,60 +243,23 @@ public class BaseUserService {
         dataBaseUser.setPassword(token);// 设置密码
         this.baseUserRepository.save(dataBaseUser);
 
+
         String title = "亲爱的 " + dataBaseUser.getAccount() + "，请重新设置你的帐户密码！";
         String url = systemUrl + token.toUpperCase() + "/" + dataBaseUser.getId();
         url = "<a href='" + url + "'/>" + url + "</a>";
         // 一小时有效
         String body = "请点击下面链接，重新设置您的密码：<br/>" + url + " ,此链接一小时有效!<br/>" + "如果该链接无法点击，请直接拷贝以上网址到浏览器地址栏中访问。";
-        this.execSend(dataBaseUser.getEmail(), title, body);
+
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(emailFrom);
+        message.setTo(dataBaseUser.getEmail());
+        message.setSubject(title);
+        message.setText(body);
+        mailSender.send(message);
+
         return "01";
     }
-
-    /**
-     * 发送邮件
-     */
-    private boolean execSend(String address, String title, String body) {
-        Properties props = new Properties();
-        // 定义邮件服务器的地址
-        props.put("mail.smtp.host", emailHost);
-        props.put("mail.smtp.auth", "true");
-        // 取得Session
-        Session session = Session.getDefaultInstance(props, new Authenticator() {
-
-            public PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(emailAccount, emailPassword);
-            }
-        });
-        MimeMessage message = new MimeMessage(session);
-        // 邮件标题
-        try {
-            message.setSubject(title);
-            // 发件人的邮件地址
-            message.setFrom(new InternetAddress(emailAccount));
-            // 接收邮件的地址
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(address));
-            // 邮件发送的时间日期
-            message.setSentDate(new Date());
-            // 新建一个MimeMultipart对象用来存放BodyPart对象 related意味着可以发送html格式的邮件
-            Multipart mp = new MimeMultipart("related");
-            // 新建一个存放信件内容的BodyPart对象
-            BodyPart bodyPart = new MimeBodyPart();// 正文
-            // 给BodyPart对象设置内容和格式/编码方式
-            bodyPart.setContent(body, "text/html;charset=utf-8");
-            // 将BodyPart加入到MimeMultipart对象中
-            mp.addBodyPart(bodyPart);
-            // 设置邮件内容
-            message.setContent(mp);
-            // 发送邮件
-            Transport.send(message);
-        } catch (MessagingException e) {
-            logger.error("MessagingException:{}", e);
-            throw new ServiceException(e, "邮件发送失败！", "");
-        }
-        logger.info("向邮件地址:{}发送邮件成功！", address);
-        return true;
-    }
-
 
     public Page<BaseUser> selectByParameters(ExtPager pager, Map<String, Object> parameters) {
         PageRequest pageable = JpaTools.getPageRequest(pager, "");

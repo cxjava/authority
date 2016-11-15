@@ -28,8 +28,17 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
         // addPathPatterns 用于添加拦截规则
         // excludePathPatterns 用户排除拦截
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**")
-                .excludePathPatterns("/**/favicon.ico*", "/login*", "/logout*", "/checkimage.jpg*",
-                        "/findpwd*", "/error*", "/", "/druid**", "/resetpwd**");
+                .excludePathPatterns(
+                        "/",
+                        "/**/favicon.ico*",
+                        "/login*",
+                        "/logout*",
+                        "/checkimage.jpg*",
+                        "/findpwd*",
+                        "/error*",
+                        "/druid**",
+                        "/resetpwd**/**"
+                );
         super.addInterceptors(registry);
     }
 

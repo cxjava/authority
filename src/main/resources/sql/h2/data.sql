@@ -20,8 +20,8 @@ INSERT INTO t_base_role_module (id,role_id,module_id) VALUES (7,1,11);
 INSERT INTO t_base_role_module (id,role_id,module_id) VALUES (8,1,14);
 INSERT INTO t_base_role_module (id,role_id,module_id) VALUES (9,1,21);
 
-INSERT INTO t_base_user (id,account,password,real_name,sex,email,mobile,office_phone,error_count,last_login_time,last_login_ip,remark) VALUES (1,'admin','6043ae1095884cf9663d140ee6450b49b8489b3aa073a8eec024492b976ee2a24aee0c272369121b','超级管理员',0,'admin@qq.com.cn','119','110',0,'2012-11-07 15:52:04','127.0.0.1','用户信息');
-INSERT INTO t_base_user (id,account,password,real_name,sex,email,mobile,office_phone,error_count,last_login_time,last_login_ip,remark) VALUES (2,'test','ddee6e95fae5bb5f8890a6f9ef7d0d1db744ca4417e94c05595ef280046a49021eba3291ee9c9cf8','测试用户',0,'test@qq.com','119','110',0,'2012-11-06 16:52:07',NULL,NULL);
+INSERT INTO t_base_user (id,account,password,real_name,sex,email,mobile,office_phone,error_count,last_login_time,last_login_ip,remark) VALUES (1,'admin','82e8f97c21f97ef47e49decd78f9c5030f980d5fad49e1fa03ac2446f97168f0966cb2b6983111c54a1bc6c70795b3c5711163072237638e29da68257bc4d927','超级管理员',0,'admin@qq.com.cn','119','110',0,'2012-11-07 15:52:04','127.0.0.1','用户信息');
+INSERT INTO t_base_user (id,account,password,real_name,sex,email,mobile,office_phone,error_count,last_login_time,last_login_ip,remark) VALUES (2,'test','f018df33bdf949e620af66275b2fa271046cc8ce6c1d2e9ab050e392c957a7452dcea1f7e38ec31c16c50527c845ff71e8ce9fcc38073be41b158c486e35b3a2','测试用户',0,'test@qq.com','119','110',0,'2012-11-06 16:52:07',NULL,NULL);
 
 INSERT INTO t_base_user_role (id,user_id,role_id) VALUES  (1,1,1);
 INSERT INTO t_base_user_role (id,user_id,role_id) VALUES  (2,2,2);

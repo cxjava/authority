@@ -26,8 +26,8 @@
 				<div class="alert alert-error" th:if="${error!=null}">
 					<a data-dismiss="alert" class="close">×</a> <strong th:text="${error}">异常信息</strong>
 				</div>
-				1<strong th:text="${msg}">错误信息</strong>
-				2<strong th:text="${error}">错误信息</strong>
+				<strong th:text="${msg}">错误信息</strong>
+				<strong th:text="${error}">错误信息</strong>
 				<div th:switch="${msg}">
 					<div class="alert alert-error" th:case="''">
 						<a data-dismiss="alert" class="close">×</a> <strong th:text="${msg}">错误信息</strong>

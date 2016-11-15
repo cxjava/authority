@@ -5,6 +5,7 @@ import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
 import com.google.code.kaptcha.util.ConfigException;
 import com.google.code.kaptcha.util.ConfigHelper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,16 +16,37 @@ import java.util.Properties;
  */
 @Configuration
 public class KaptchaConfiguration {
+
+
+    @Value("${kaptcha.border:no}")
+    private String border;
+
+    @Value("${kaptcha.textproducer.char.space:0}")
+    private String space;
+
+    @Value("${kaptcha.textproducer.font.color:blue}")
+    private String color;
+
+    @Value("${kaptcha.noise.color:blue}")
+    private String noiseColor;
+
+    @Value("${kaptcha.textproducer.char.length:6}")
+    private String length;
+
+    @Value("${kaptcha.textproducer.font.names:Verdana,Cambria,Consolas,sans-serif,SimSun,Arial,Courier New}")
+    private String fontNames;
+
+
     @Bean
     public DefaultKaptcha captchaProducer() {
         DefaultKaptcha captchaProducer = new DefaultKaptcha();
         Properties properties = new Properties();
-        properties.put("kaptcha.textproducer.font.color", "blue");
-        properties.put("kaptcha.noise.color", "blue");
-        properties.put("kaptcha.border", "no");
-        properties.put("kaptcha.textproducer.char.space", "-2");
-        properties.put("kaptcha.textproducer.char.length", "6");
-        properties.put("kaptcha.textproducer.font.names", "华文彩云,华文行楷,方正舒体,华文隶书,幼圆,华文琥珀");
+        properties.put("kaptcha.border", border);
+        properties.put("kaptcha.noise.color", noiseColor);
+        properties.put("kaptcha.textproducer.font.color", color);
+        properties.put("kaptcha.textproducer.char.space", space);
+        properties.put("kaptcha.textproducer.char.length", length);
+        properties.put("kaptcha.textproducer.font.names", fontNames);
         Config config = new Config(properties);
         ConfigHelper configHelper = new ConfigHelper() {
             @Override
@@ -53,4 +75,5 @@ public class KaptchaConfiguration {
         captchaProducer.setConfig(config);
         return captchaProducer;
     }
+
 }

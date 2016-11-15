@@ -183,7 +183,7 @@ DROP TABLE IF EXISTS `t_base_user`;
 CREATE TABLE `t_base_user` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `account` varchar(64) NOT NULL COMMENT '账号',
-  `password` varchar(128) NOT NULL COMMENT '密码\r\norg.springframework.security.crypto.password.StandardPasswordEncoder.StandardPasswordEncoder(CharSequence secret)',
+  `password` varchar(128) NOT NULL COMMENT '密码 123456',
   `real_name` varchar(64) DEFAULT NULL COMMENT '用户真实姓名',
   `sex` int(1) unsigned DEFAULT NULL COMMENT '性别 0:男 1:女',
   `email` varchar(64) DEFAULT NULL COMMENT '电子邮件地址',
@@ -202,8 +202,8 @@ CREATE TABLE `t_base_user` (
 
 /*!40000 ALTER TABLE `t_base_user` DISABLE KEYS */;
 INSERT INTO `t_base_user` (`id`,`account`,`password`,`real_name`,`sex`,`email`,`mobile`,`office_phone`,`error_count`,`last_login_time`,`last_login_ip`,`remark`) VALUES 
- (2,'test','ddee6e95fae5bb5f8890a6f9ef7d0d1db744ca4417e94c05595ef280046a49021eba3291ee9c9cf8','测试用户',0,'test@qq.com','119','110',0,'2012-11-06 16:52:07',NULL,NULL),
- (1,'admin','6043ae1095884cf9663d140ee6450b49b8489b3aa073a8eec024492b976ee2a24aee0c272369121b','超级管理员',0,'admin@qq.com.cn','119','110',0,'2012-11-07 15:52:04','127.0.0.1','用户信息');
+ (2,'test','f018df33bdf949e620af66275b2fa271046cc8ce6c1d2e9ab050e392c957a7452dcea1f7e38ec31c16c50527c845ff71e8ce9fcc38073be41b158c486e35b3a2','测试用户',0,'test@qq.com','119','110',0,'2012-11-06 16:52:07',NULL,NULL),
+ (1,'admin','82e8f97c21f97ef47e49decd78f9c5030f980d5fad49e1fa03ac2446f97168f0966cb2b6983111c54a1bc6c70795b3c5711163072237638e29da68257bc4d927','超级管理员',0,'admin@qq.com.cn','119','110',0,'2012-11-07 15:52:04','127.0.0.1','用户信息');
 /*!40000 ALTER TABLE `t_base_user` ENABLE KEYS */;
 
 

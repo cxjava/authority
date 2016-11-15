@@ -18,7 +18,7 @@ public class EncryptUtil {
     private static final HashFunction hashing = Hashing.sha512();
 
     public static String encrypt(String rawPassword) {
-       return  hashing.hashString(rawPassword, Charsets.UTF_8).toString();
+        return hashing.hashString(rawPassword, Charsets.UTF_8).toString();
     }
 
     public static boolean match(String rawPassword, String encodedPassword) {

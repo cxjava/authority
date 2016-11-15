@@ -98,7 +98,7 @@ public class UserController {
             parameters.put("newPassword", newPassword);
 
             // 比较原密码
-            if (!userId.equals(user.getId()) || !EncryptUtil.match(oldPassword+user.getAccount(), user.getPassword())) {
+            if (!userId.equals(user.getId()) || !EncryptUtil.match(oldPassword + user.getAccount(), user.getPassword())) {
                 return new ExtReturn(false, "原密码不正确！请重新输入！");
             }
 
